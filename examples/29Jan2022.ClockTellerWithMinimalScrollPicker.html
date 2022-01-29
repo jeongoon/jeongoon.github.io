@@ -5337,6 +5337,7 @@ var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$initCmdWith = F3(
 						state)
 					])));
 	});
+var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$MouseUnknown = {$: 'MouseUnknown'};
 var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$SnapIdle = {$: 'SnapIdle'};
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
@@ -5387,6 +5388,7 @@ var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$initMinimalState = fu
 		idString: idString,
 		initTargetScrollPos: -1,
 		lastScrollClock: $elm$time$Time$millisToPosix(0),
+		mouseStatus: $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$MouseUnknown,
 		optionCenterRelPos: -1,
 		optionIdInTheCenter: $elm$core$Maybe$Nothing,
 		optionIdToItemDict: $elm$core$Dict$empty,
@@ -7220,6 +7222,8 @@ var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$FindCenterOption = fu
 var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$InvalidOptionId = function (a) {
 	return {$: 'InvalidOptionId', a: a};
 };
+var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$MouseDown = {$: 'MouseDown'};
+var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$MouseUp = {$: 'MouseUp'};
 var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$NoOp = {$: 'NoOp'};
 var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$OnMouseDown = {$: 'OnMouseDown'};
 var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$OnMouseUp = {$: 'OnMouseUp'};
@@ -8804,10 +8808,18 @@ var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$updateWith = F4(
 						$elm$time$Time$now));
 			case 'OnMouseDown':
 				var _v7 = A2($elm$core$Debug$log, 'OnMouseDown', $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$OnMouseDown);
-				return _Utils_Tuple2(state, $elm$core$Platform$Cmd$none);
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{mouseStatus: $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$MouseDown}),
+					$elm$core$Platform$Cmd$none);
 			case 'OnMouseUp':
 				var _v8 = A2($elm$core$Debug$log, 'OnMouseUp', $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$OnMouseUp);
-				return _Utils_Tuple2(state, $elm$core$Platform$Cmd$none);
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{mouseStatus: $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$MouseUp}),
+					$elm$core$Platform$Cmd$none);
 			case 'OnKey':
 				var keyCodeString = msg.a;
 				return _Utils_Tuple2(state, $elm$core$Platform$Cmd$none);
@@ -14676,6 +14688,10 @@ var $mdgriffith$elm_ui$Element$el = F2(
 				_List_fromArray(
 					[child])));
 	});
+var $mdgriffith$elm_ui$Internal$Model$Fill = function (a) {
+	return {$: 'Fill', a: a};
+};
+var $mdgriffith$elm_ui$Element$fill = $mdgriffith$elm_ui$Internal$Model$Fill(1);
 var $mdgriffith$elm_ui$Internal$Model$OnlyDynamic = F2(
 	function (a, b) {
 		return {$: 'OnlyDynamic', a: a, b: b};
@@ -15016,6 +15032,7 @@ var $mdgriffith$elm_ui$Element$spacing = function (x) {
 			x,
 			x));
 };
+var $elm$core$Debug$toString = _Debug_toString;
 var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$End = {$: 'End'};
 var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$OnScroll = {$: 'OnScroll'};
 var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$Start = {$: 'Start'};
@@ -16630,10 +16647,6 @@ var $jeongoon$elmnt_scrollpicker$Elmnt$MinimalScrollPicker$defaultBaseSettingsWi
 			pickerLength,
 			pickerWidth);
 	});
-var $mdgriffith$elm_ui$Internal$Model$Fill = function (a) {
-	return {$: 'Fill', a: a};
-};
-var $mdgriffith$elm_ui$Element$fill = $mdgriffith$elm_ui$Internal$Model$Fill(1);
 var $mdgriffith$elm_ui$Internal$Model$Max = F2(
 	function (a, b) {
 		return {$: 'Max', a: a, b: b};
@@ -17882,7 +17895,16 @@ var $jeongoon$elmnt_scrollpicker$ClockTellerWithMinimalScrollPicker$exampleView 
 							$elm$core$String$padLeft,
 							2,
 							_Utils_chr('0'),
-							$elm$core$String$fromInt(model.minuteValue))))))
+							$elm$core$String$fromInt(model.minuteValue)))))),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$centerX,
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+						]),
+					$mdgriffith$elm_ui$Element$text(
+						'SecondPicker MouseStatus: ' + $elm$core$Debug$toString(model.secondPickerState.mouseStatus)))
 				])));
 };
 var $jeongoon$elmnt_scrollpicker$ClockTellerWithMinimalScrollPicker$main = $elm$browser$Browser$element(
