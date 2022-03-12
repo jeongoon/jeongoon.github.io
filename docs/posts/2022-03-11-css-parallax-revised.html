@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+
+    <title>MJ's kind weird Code - 2022-03-10-css-parallax-revised</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Fredoka:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,200;0,400;0,700;1,200;1,400;1,700&family=Mali:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700&family=Oswald:wght@300;500;700&family=Unica+One&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Fredoka:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Mali:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700&family=Oswald:wght@300;500;700&family=Unica+One&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../css/Mar2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/code.css" />
+  </head>
+  <body class="surface-color">
+    <header class="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 2022-03-10-css-parallax-revised<p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on March 10, 2022
+    
+</div>
+
+<h1 id="credit-information">Credit Information</h1>
+<p>This article is highly based on <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/">Keith Clark’s article</a>.</p>
+<h1 id="the-parallax-effects-soley-from-css">The Parallax Effects soley from CSS</h1>
+<p>It has been more than 8 years since he post about parallax effect by using css
+transformation. the Most of major web browser implements differently, so we need
+to embrace the caveat after all.</p>
+<p>However it still has technical merit if we could gain those effects even
+without javascript. and so many websites have the basic parallax on their home page.
+so why don’t you check out?</p>
+<h1 id="css-transformation">Css Transformation</h1>
+<p>the basic concepts are very well explained in</p>
+<p><a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#the-theory">The Theory</a>
+on Keith’s article.</p>
+<p>concisely, to get 3d transformation we need,</p>
+<ol type="1">
+<li><code>a</code> perspective to see the object on the page.
+(which is generally not moving during transformation)</li>
+<li>an anchor element(normally <code>div</code>) contains the elements which is
+actually tranformed.</li>
+<li>transformation origin
+(default is the center of the anchor (parent) element.</li>
+</ol>
+<p>In another words – in css:
+<em>(this is different from original article but using same magic)</em></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">perspective</span>: <span class="dv">100</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">height</span>: <span class="dv">100</span><span class="dt">vh</span><span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">overflow-x</span>: <span class="dv">hidden</span><span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">overflow-y</span>: <span class="bu">auto</span><span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-group</span> {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* we can have serveral pallax group but</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">     * we are going to use only one group here */</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">position</span>: <span class="dv">relative</span><span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">height</span>: <span class="dv">500</span><span class="dt">px</span><span class="op">;</span> <span class="co">/* fallback for older browsers */</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">height</span>: <span class="dv">100</span><span class="dt">vh</span><span class="op">;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* prevents the browser flattening the `css-parallax-group` elements */</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">transform-style</span>: preserve-3d<span class="op">;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-layer</span> {</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* common settings for an element under `css-parallax-group` */</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* v fill the space of the container */</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">top</span>: <span class="dv">0</span><span class="op">;</span> <span class="kw">right</span>: <span class="dv">0</span><span class="op">;</span> <span class="kw">bottom</span>: <span class="dv">0</span><span class="op">;</span> <span class="kw">left</span>: <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">position</span>: <span class="dv">relative</span><span class="op">;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">/* about css selectors:</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"> * https://www.w3schools.com/cssref/css_selectors.asp</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-layer.as-background</span> {</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* v pull out from the content flow */</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">position</span>: <span class="dv">absolute</span><span class="op">;</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">transform</span>: translateZ(<span class="dv">-400</span><span class="dt">px</span>)<span class="op">;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>   <span class="kw">-webkit-transform</span>: translateZ(<span class="dv">-400</span><span class="dt">px</span>)<span class="op">;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-layer</span> <span class="op">&gt;</span> <span class="op">*</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="op">,</span> <span class="fu">.css-parallax-layer.as-base</span> {</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">z-index</span>: <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* prevents the browser flattening the `css-parallax-group` elements */</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">transform-style</span>: preserve-3d<span class="op">;</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>So if the elements are located in different depth (on Z-axis) and moving relatively
+to the <code>perspective</code> will be transformed differrently. and which is <code>real</code>
+parallax <code>literally</code>.</p>
+<p>and <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/demo1/">THIS</a> is first demo to understand how the tranformation</p>
+<h1 id="but-size-matters">But Size Matters</h1>
+<p>As you can see the example above, we only care about moving speed, not transformed size,
+so Keith explain it as <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#depth-correction"><code>Depth correction</code></a>.</p>
+<p>So we need to scale up if it’s bellow the display plane or vice versa.
+He didn’t mention about how scale is calculated. (because it is maybe too simple?)
+and this is a <code>poor</code> explanation.</p>
+<pre class="ascii"><code>                      /‖    ⤒
+                     / ‖
+                    /  ‖
+                  |/   ‖
+                  |    ‖
+                 /|⤒   ‖    n
+                / |    ‖
+               /  |m   ‖
+              /   |    ‖
+perspective) .____|⤓___‖   ⤓
+                  |
+                  |    ↑ real position
+                  ↑ display plane
+
+             ⇤p⇥ ⇤k⇥
+
+
+so we can see to triangle:
+                    m
+  small :  tan θ = ---
+                    p
+
+                     n
+  large :  tan θ = ----
+                    p+k
+
+   or
+
+  p : (p+k) = m : n
+
+and the scale amount we need is transforming from `m` to `n` (real size)
+i.e)   `n / m` is the one.
+           n     (p+k)
+  scale = --- = ------
+           m       p
+
+so if we set p(perspective) as 1px and k (1px:  negate of -1px)
+
+          (1 + 1)
+  scale = -------   = 2
+             1</code></pre>
+<h1 id="trouble-shootings">Trouble shootings</h1>
+<h2 id="height-calculation-caveat">Height Calculation caveat!</h2>
+<p>If see the picture bellow, we will see the scroll is not stopped upto the where
+article ends.</p>
+<p><em>Screenshot of bottom page on Edge</em>
+<img src="../images/CssParallax-WrongHeightCalculation.png" alt="Wrong Scroll Amount on Edge" /></p>
+<p><em>but there is no problem on Firefox 97.0 (64-bit)</em></p>
+<p><a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#update-25-feb-2015">explaination on Keith’s article</a></p>
+<p>However In my case, the calculation is wrong vertically not horizontally,
+my similar solution is done by adding <code>perspective-origin</code> and <code>transform-origin</code>
+as bellow.</p>
+<p>```css
+.css-parallax-toplevel {
+/* .. snip .. <em>/
+/</em> v fix wrong calculation visual size(height) of background
+* on webkit based browsers.
+<em>/
+perspective-origin: center bottom;
+/</em> .. snip again .. */
+}</p>
+<p>.css-parallax-layer {
+/* .. snip .. */</p>
+<pre><code>/* v fix wrong calculation visual size(height) of background
+ *   on webkit based browsers.
+ */
+transform-origin: center bottom; /* X-axis, Y-axis per each */
+/* .. snip again .. */</code></pre>
+<p>}</p>
+<h2 id="more-caveat-explained">More caveat explained</h2>
+<p>Unfortunately I don’t have any iOS products, Window either.
+Keith mentioned about some trouble shooting on different web browsers.</p>
+<p>please find more information <a href="https://keithclark.co.uk/articles/practical-css-parallax/#browser-quirks">Here</a>.</p>
+<h2 id="problem-on-vivaldi">Problem on Vivaldi</h2>
+<p>(WIP)
+but there is no working around, I think bug report required.</p>
+<h2 id="problem-on-fffirefox-for-mobile">Problem on FF(Firefox) for mobile</h2>
+<p>(WIP)
+but there is no working around, I think bug report required.</p>
+<h1 id="first-my-css-parallax-example">First my css parallax example</h1>
+<p>I have some article about css parallax which is work in process.
+and <a href="../examples/07Mar2022.CssParallax/cssParallaxExample.html"><strong>THIS</strong></a> is the first version of working Html+Css.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>This parallax effects is still useful for basic website. and as mobile device is
+getting faster and more features, the effect techniques are also applicative on
+mobile device as well.</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->

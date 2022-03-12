@@ -1,6 +1,7 @@
 /* credit : https://keithclark.co.uk/articles/pure-css-parallax-websites/ */
 
-.css-parallax-toplevel {
+.css-parallax-toplevel { /* top-level means we can only have one perspective
+                          * as we are going to scroll if overflowing vertically */
     height: 500px; /* fallback for older browsers */
     height: 100vh;
     width: 100vw;
