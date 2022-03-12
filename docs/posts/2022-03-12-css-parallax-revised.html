@@ -44,6 +44,10 @@
 
 <h2 id="credit-information">Credit Information</h2>
 <p>This article is highly based on <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/">Keith Clark’s article</a>.</p>
+<p>Another article I found is from <a href="https://orangeable.com/css/parallax-scroll">orangetable.com</a>
+which has simpler approach but also talked about another kind of caveat
+found on Safarai and iOS.
+<em>cannot link directly</em></p>
 <hr />
 <h1 id="the-parallax-effects-soley-from-css">The Parallax Effects soley from CSS</h1>
 <p>It has been more than eight years since he posted about parallax effect by using css
@@ -56,13 +60,13 @@ so why don’t you check out?</p>
 <p>the basic concepts are very well explained in</p>
 <p><a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#the-theory">The Theory</a>
 on Keith’s article.</p>
-<p>concisely, to get 3d transformation we need,</p>
+<p>concisely, to get 3d transformation we need three elements with some attributes.</p>
 <ol type="1">
-<li><code>a</code> perspective to see the object on the page.
+<li>base element and a <code>perspective</code> from where we see the object on the page.
 (which is generally not moving during transformation)</li>
-<li>an anchor element(normally <code>div</code>) contains the elements which is
+<li>an <code>anchor element</code>(normally <code>div</code>) contains the elements which is
 actually tranformed.</li>
-<li>transformation origin
+<li><code>transformation origin</code>
 (default is the center of the anchor (parent) element.</li>
 </ol>
 <p>In another words – in css:
@@ -109,9 +113,9 @@ actually tranformed.</li>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* prevents the browser flattening the `css-parallax-group` elements */</span></span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">transform-style</span>: preserve-3d<span class="op">;</span></span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>So if the elements are located in different depth (on Z-axis) and moving relatively
-to the <code>perspective</code> will be transformed differrently. and which is <code>real</code>
-parallax <code>literally</code>.</p>
+<p>So if the elements are located in different depth (on Z-axis) and moving
+relatively to the <code>perspective</code> will be transformed differrently.
+and which is <em>literally</em> <code>real</code> parallax.</p>
 <p>and <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/demo1/">THIS</a> is first demo to understand how the tranformation</p>
 <h1 id="but-size-matters">But Size Matters</h1>
 <p>As you can see the example above, we only care about moving speed, not transformed size,
@@ -191,7 +195,7 @@ as bellow.</p>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">transform-origin</span>: <span class="dv">center</span> <span class="dv">bottom</span><span class="op">;</span> <span class="co">/* X-axis, Y-axis per each */</span></span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* .. snip again .. */</span></span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<h2 id="more-caveat-explained">More caveat explained</h2>
+<h2 id="more-caveat-and-bugs-explained">More caveat and bugs explained</h2>
 <p>Unfortunately I don’t have any iOS products, Window either.
 Keith mentioned about some trouble shooting on different web browsers.</p>
 <p>please find more information <a href="https://keithclark.co.uk/articles/practical-css-parallax/#browser-quirks">Here</a>.</p>
@@ -201,7 +205,7 @@ but there is no working around, I think bug report required.</p>
 <h2 id="problem-on-fffirefox-for-mobile">Problem on FF(Firefox) for mobile</h2>
 <p>(WIP)
 but there is no working around, I think bug report required.</p>
-<h1 id="first-my-css-parallax-example">First my css parallax example</h1>
+<h1 id="my-first-css-parallax-example">My first css parallax example</h1>
 <p>I have some article about css parallax which is work in process.
 and <a href="../examples/07Mar2022.CssParallax/cssParallaxExample.html"><strong>THIS</strong></a> is the first version of working Html+Css.</p>
 <h1 id="conclusion">Conclusion</h1>
