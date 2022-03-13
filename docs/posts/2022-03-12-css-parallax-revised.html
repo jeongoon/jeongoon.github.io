@@ -49,18 +49,20 @@ which has simpler approach but also talked about another kind of caveat
 found on Safarai and iOS.
 <em>cannot link directly</em></p>
 <hr />
-<h1 id="the-parallax-effects-soley-from-css">The Parallax Effects soley from CSS</h1>
-<p>It has been more than eight years since he posted about parallax effect by using css
-transformation. the Most of major web browser implements differently, so we need
-to embrace the caveat after all.</p>
+<h1 id="the-parallax-effects-soley-by-css">The Parallax Effects soley by CSS</h1>
+<p>It has been more than eight years since he posted about parallax effect
+by using css transformation. the Most of major web browser implements
+differently, so we need to embrace the caveats in the end.</p>
 <p>However it still has technical merit if we could gain those effects even
-without javascript. and so many websites have the basic parallax on their home page.
-so why don’t you check out?</p>
+without javascript. and so many websites have the basic parallax on their
+home page..</p>
+<p>So why don’t you check out?</p>
 <h1 id="css-transformation">Css Transformation</h1>
 <p>the basic concepts are very well explained in</p>
 <p><a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#the-theory">The Theory</a>
 on Keith’s article.</p>
-<p>concisely, to get 3d transformation we need three elements with some attributes.</p>
+<p>concisely, to get 3d transformation we need:</p>
+<p><code>three elements with some attributes</code></p>
 <ol type="1">
 <li>base element and a <code>perspective</code> from where we see the object on the page.
 (which is generally not moving during transformation)</li>
@@ -140,14 +142,11 @@ perspective) .____|⤓___‖   ⤓
              ⇤p⇥ ⇤k⇥
 
 
-so we can see to triangle:
-                    m
-  small :  tan θ = ---
-                    p
+so we can see two triangles:
+                    m                         n
 
-                     n
-  large :  tan θ = ----
-                    p+k
+  small :  tan θ = ---      large :  tan θ = ----
+                    p                        p+k
 
    or
 
@@ -166,15 +165,16 @@ so if we set p(perspective) as 1px and k (1px:  negate of -1px)
              1</code></pre>
 <h1 id="trouble-shootings">Trouble shootings</h1>
 <h2 id="height-calculation-wrong">Height Calculation wrong!</h2>
-<p>If see the picture bellow, we will find that the scroll had not stopped upto the
-where article ends and even worth it is also beyond the background.</p>
+<p>If seeing the screen capture bellow, we will find that the scroll
+had not stopped upto the where article ended and - even worth -
+scrolling kept going beyond the background as well.</p>
 <figure>
 <img src="../images/CssParallax-WrongHeightCalculation.png" alt="Wrong Scroll Position on Edge" /><figcaption aria-hidden="true">Wrong Scroll Position on Edge</figcaption>
 </figure>
 <p><em>but there is no problem on Firefox 97.0 (64-bit)</em></p>
 <p>Why is this happening?
-<a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#update-25-feb-2015">explaination on Keith’s article</a></p>
-<p>However In my case, the calculation is wrong vertically not horizontally,
+<a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#update-25-feb-2015">explanation on Keith’s article</a></p>
+<p>However, In my case, the calculation is wrong vertically not horizontally,
 my similar solution is done by adding <code>perspective-origin</code> and <code>transform-origin</code>
 as bellow.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> {</span>
@@ -195,15 +195,25 @@ as bellow.</p>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">transform-origin</span>: <span class="dv">center</span> <span class="dv">bottom</span><span class="op">;</span> <span class="co">/* X-axis, Y-axis per each */</span></span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* .. snip again .. */</span></span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>keep origin on X-axis <code>center</code> but <code>bottom</code> on Y-axis.</p>
 <h2 id="more-caveat-and-bugs-explained">More caveat and bugs explained</h2>
 <p>Unfortunately I don’t have any iOS products, Window either.
 Keith mentioned about some trouble shooting on different web browsers.</p>
 <p>please find more information <a href="https://keithclark.co.uk/articles/practical-css-parallax/#browser-quirks">Here</a>.</p>
-<h2 id="problem-on-vivaldi">Problem on Vivaldi</h2>
-<p>(WIP)
-but there is no working around, I think bug report required.</p>
-<h2 id="problem-on-fffirefox-for-mobile">Problem on FF(Firefox) for mobile</h2>
-<p>(WIP)
+<h2 id="problem-on-vivaldi-work-in-progress">Problem on Vivaldi (Work In Progress)</h2>
+<figure>
+<img src="../images/CssParallax-13Mar2022.VivaldiGlitches.png" alt="Blurred Text on Vivaldi" /><figcaption aria-hidden="true">Blurred Text on Vivaldi</figcaption>
+</figure>
+<p>I haven’t found working around yet.
+<em>But If you select the text, it shows correctly.</em>
+(so maybe using javascript to select individually? nah… I guess that
+a bug report required.)</p>
+<h2 id="problem-on-fffirefox-for-mobile-work-in-progress">Problem on FF(Firefox) for mobile (Work In Progress)</h2>
+<figure>
+<img src="../images/CssParallax-13Mar2022.FirefoxAlwaysBottomMenu.jpg" alt="Bottom Menu always show on FF Mobile" /><figcaption aria-hidden="true">Bottom Menu always show on FF Mobile</figcaption>
+</figure>
+<p>This bug prevents for user to see content at the bottom which is,
+in my opinion, serious problem.
 but there is no working around, I think bug report required.</p>
 <h1 id="my-first-css-parallax-example">My first css parallax example</h1>
 <p>I have some article about css parallax which is work in process.
