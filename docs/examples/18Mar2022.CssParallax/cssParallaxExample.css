@@ -1,4 +1,10 @@
 /* credit : https://keithclark.co.uk/articles/pure-css-parallax-websites/ */
+/* update 18th March:
+ * change arrange the layouts (overlapping background and cover especially)
+ * by grid.
+ *
+ * ref: https://css-tricks.com/snippets/css/complete-guide-grid/
+ */
 
 .css-parallax-toplevel { /* top-level means we can only have one perspective
                           * as we are going to scroll if overflowing vertically */
@@ -7,16 +13,34 @@
     width: 100vw;
     overflow-x: hidden;
     overflow-y: auto;
+
+    display: grid;
+    grid-template-rows:
+        [a-group-row-top] auto
+        [a-group-row-bottom content-row-top] auto
+        [cover-row-bottom]
 }
 
-.css-parallax-group {
+.css-parallax-group-orig {
     position: relative;
     height: 500px; /* fallback for older browsers */
     height: 100vh;
-
 }
 
-.css-parallax-layer {
+
+.css-parallax-group {
+    grid-row: a-group-row-top / a-group-row-bottom;
+
+    display: grid;
+    /* setup only for how to arrange them vertically */
+    grid-template-rows:
+        [row-top background-row-top cover-row-top] 75vh
+        [cover-row-bottom] 25vh
+        [background-bottom] auto
+        [row-bottom]
+}
+
+.css-parallax-layer-orig {
     /* common settings for an element under `css-parallax-group` */
 
     /* v workaround for Gnome Web
@@ -33,13 +57,30 @@
     position: relative;
 }
 
-.css-parallax-layer.as-background {
+.css-parallax-layer {
+    grid-column: 1 / -1; /* use whole columns */
+    transform-origin: center bottom;
+}
+
+.css-parallax-layer.as-background-orig {
     position: relative;
 }
 
-.css-parallax-toplevel > *
+.css-parallax-layer.as-background {
+    grid-row: background-row-top / background-row-bottom;
+}
+
+/*
+.css-parallax-toplevel > 
 , .css-parallax-layer.as-base {
     position: relative;
+} */
+.css-parallax-layer.as-base {
+    grid-row: cover-row-top / cover-row-bottom;
+}
+
+.css-parallax-toplevel > .background-skirt {
+    grid-row: content-row-top / content-row-bottom;
 }
 
 .css-parallax-toplevel + div {
@@ -52,7 +93,7 @@
 }
 
 .set-background-image {
-    width: 100vw;
+    width: min(100vw, 105%); /* width: 100% has some minor issues */
     height: 100vh;
 
     background-image: url(background.jpg);
@@ -81,11 +122,12 @@
 
     .css-parallax-group {
         transform-style: preserve-3d;
+        /* change grid layout to overlap background with cover and contents */
     }
 
     .css-parallax-layer.as-background {
         /* v pull out from the content flow */
-        position: absolute;
+        /*position: absolute;*/ /* no need */
 
         transform: translateZ(-400px) scale(5);
        -webkit-transform: translateZ(-400px) scale(5);
