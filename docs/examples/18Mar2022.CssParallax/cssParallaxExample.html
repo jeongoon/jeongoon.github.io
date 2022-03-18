@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, height=device-height, viewport-fit=cover, initial-scale=1">
     <link type="text/css" href="cssParallaxExample.css" rel="stylesheet">
   </head>
-  <body>
+  <body style="background: black">
     <nav class="navbar">
       <ul>
         <li> <a href="/examples/7Mar2022.CssParallax/cssParallaxExample.html">Original Example</a>
@@ -36,9 +36,12 @@
       </div>
       <div class="caption">NASA’s James Webb Space Telescope team has begun the three-month process of aligning the telescope. To work together as a single mirror, the telescope’s 18 primary mirror segments need to match each other to a fraction of a wavelengthg of light.
       </div>
-      <div class="credits">Credits: NASA/Chris Gunn
+      <div class="credits" style="padding-bottom: 10px">Credits: NASA/Chris Gunn
       </div>
+      <!-- background-skirt can be used as rest background area -->
       <div class="background-skirt background-white">
+
+      <!-- and following contents will be shown on top of above div -->
       <div class="padding-1rem">
         <p>
           For original full explanation of how the Css parallax scroll effects works,
@@ -97,21 +100,6 @@
         <p>For more information about the Webb mission, visit:</p>
         <p align="center"><a href="https://webb.nasa.gov/"><strong>https://webb.nasa.gov</strong></a></p>
       </div>
-<!--
-      <div class="css-parallax-background-anchor" style="position: absolute; top: 600vh; z-index: -
-1000">
-        <div class="css-parallax-background">
-          <div class="background-image"></div>
-        </div>
-        <div class="css-parallax-window flex-row-center-center">
-          <p><h1 class="margin-auto on-background-title border">
-            This is a CSS Parallax Example</h1></p>
-          <p><h1 class="margin-auto border on-background-sub-title">
-            NASA to Discuss Webb Telescope Progress, Mirror Alignment
-          </h1></p>
-        </div>
-      </div>
--->
     </div> <!--  <div class="css-parallax-toplevel-container line-height-1_5"> -->
   </body>
 </html>

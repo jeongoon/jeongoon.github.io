@@ -17,9 +17,11 @@
     display: grid;
     grid-template-rows:
         [a-group-row-top] auto
-        [a-group-row-bottom content-row-top] auto
-        [cover-row-bottom];
-    grid-auto-flow: row dense;
+        [a-group-row-bottom caption-row-top] auto
+        [caption-row-bottom skirt-row-top] auto
+        [skirt-row-bottom] auto
+        [credit-row-top] auto
+        [credit-row-bottom]
 }
 
 .css-parallax-group-orig {
@@ -30,6 +32,7 @@
 
 
 .css-parallax-group {
+    grid-column: 1 / -1;
     grid-row: a-group-row-top / a-group-row-bottom;
 
     display: grid;
@@ -81,7 +84,8 @@
 }
 
 .css-parallax-toplevel > .background-skirt {
-    grid-row: content-row-top / content-row-bottom;
+    grid-column: 1 / -1;
+    grid-row: skirt-row-top / skirt-row-bottom;
 }
 
 .css-parallax-toplevel + div {
