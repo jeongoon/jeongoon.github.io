@@ -18,7 +18,8 @@
     grid-template-rows:
         [a-group-row-top] auto
         [a-group-row-bottom content-row-top] auto
-        [cover-row-bottom]
+        [cover-row-bottom];
+    grid-auto-flow: row dense;
 }
 
 .css-parallax-group-orig {
