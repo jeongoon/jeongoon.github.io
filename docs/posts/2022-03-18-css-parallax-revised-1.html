@@ -42,19 +42,18 @@
     
 </div>
 
-<h1 id="this-is-draft">THIS IS DRAFT</h1>
-<p><em>I don’t have enough time but I could possibly unpublish the draft in hakyll..</em></p>
-<h2 id="credit-information">Credit Information</h2>
-<p>This article is highly based on <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/">Keith Clark’s article</a>.</p>
-<p>The original article could be a series:
-- <a href="../posts/2022-03-12-css-parallax-revised-0.html">Css Parallax Effect revised in 2022</a></p>
+<h1 id="css-parallax-series">Css Parallax Series</h1>
+<ol type="1">
+<li><a href="../posts/2022-03-12-css-parallax-revised-0.html">Css Parallax Effect revised in 2022</a></li>
+<li><em>Css Parallax Effect revised with css grid</em></li>
+</ol>
 <hr />
 <p>After some investigate about css, I found <code>grid</code> is great tool for layout.</p>
 <h1 id="grid-layout">Grid layout</h1>
 <p>And one article I’d like to recommend are:</p>
 <ul>
 <li><a href="https://css-tricks.com/snippets/css/complete-guide-grid/">A Complete Guide to Grid from Css-Tricks</a></li>
-<li>FIXME …</li>
+<li><a href="https://medium.com/samsung-internet-dev/common-responsive-layouts-with-css-grid-and-some-without-245a862f48df">Common Responsive Layouts with CSS Grid (and some without!)</a></li>
 </ul>
 <p>Only thing which bothers me, grid is relatively recent method.</p>
 <figure>
@@ -74,7 +73,7 @@
 .                               .
 .                               .
 </code></pre>
-<h1 id="previous-method-for-overlapping">Previous method for overlapping</h1>
+<h1 id="previous-traditional-method-for-overlapping">Previous (traditional) method for overlapping</h1>
 <p>if one element is has <code>relative</code> <code>position</code> and another has <code>absolute</code> <code>position</code>
 they are overlapped because their position calculated again from the beginning.</p>
 <p>a possible pseudo code look like:</p>
@@ -141,37 +140,59 @@ the background, this is one possible way to do it:</p>
 <h1 id="my-second-css-parallax-example">My Second css parallax example</h1>
 <p>Try <a href="../examples/18Mar2022.CssParallax/cssParallaxExample.html">Second Example</a> and inspect or view the source on your favourite web browser:</p>
 <p>It just look almost same as <a href="../examples/07Mar2022.CssParallax/cssParallaxExample.html">First Example</a>.</p>
-<h1 id="one-more-thing..">One more thing..</h1>
-<p>However one more thing I’d like to mention is that.
+<p>However one more thing I’d like to mention is that
 <code>white</code> background contents after parllaxed background actually consists of
 white and blank <code>div</code> which posses whole <code>grid rows</code>, and the real contents on
 the top which only consume each <code>grid row</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> { <span class="co">/* top-level means we can only have one perspective</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">                          * as we are going to scroll if overflowing vertically */</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* .. snip .. */</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span>: grid<span class="op">;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-template-rows</span>:</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        [a-group-row-top] <span class="bu">auto</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        [a-group-row-bottom content-row-top] <span class="bu">auto</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        [cover-row-bottom]</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>and …</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> <span class="op">&gt;</span> <span class="fu">.background-skirt</span> {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-row</span>: content-row-top / cover-row-bottom<span class="op">;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>      ...</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;credits&quot;</span> <span class="er">style</span><span class="ot">=</span><span class="st">&quot;padding-bottom: 10px&quot;</span><span class="kw">&gt;</span>Credits: NASA/Chris Gunn</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;/div&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="co">&lt;!-- background-skirt can be used as rest background area --&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;background-skirt background-white&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="co">&lt;!-- and following contents will be shown on top of above div --&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;padding-1rem&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;p&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>          For original full explanation of how the Css parallax scroll effects works,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>          <span class="kw">&lt;a</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;https://orangeable.com/tools/css-parallax-scroll&quot;</span><span class="kw">&gt;</span>visit this site<span class="kw">&lt;/a&gt;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      ...</span></code></pre></div>
+<p>so let’s see the grid layout first:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> { <span class="co">/* top-level means we can only have one perspective</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">                          * as we are going to scroll if overflowing vertically */</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* .. snip .. */</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span>: grid<span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-template-rows</span>:</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        [a-group-row-top] <span class="bu">auto</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        [a-group-row-bottom caption-row-top] <span class="bu">auto</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        [caption-row-bottom skirt-row-top] <span class="bu">auto</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        [skirt-row-bottom] <span class="bu">auto</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        [credit-row-top] <span class="bu">auto</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        [credit-row-bottom]</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>and <code>background-skirt</code> defined as:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> <span class="op">&gt;</span> <span class="fu">.background-skirt</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-column</span>: <span class="dv">1</span> / <span class="dv">-1</span><span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-row</span>: skirt-row-top / skirt-row-bottom<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h2 id="why-this-is-useful">Why this is useful?</h2>
 <p>Your background will disapear at sometime while scrolling,
-and if your main contents (let’s say an article) doesn’t cover whole width.
-and you will see the bare, ugly basic background at the back.</p>
-<h2 id="unexpected-side-effect">Unexpected side effect</h2>
-<p>If you really look at the first and second example of mine, you can see
-the caption on first example goes at the bottom on second example.</p>
-<p>because my grid layout only knows about <code>2 rows</code>, and when another row added.
-it is just appended at the bottom of the original layout.</p>
-<p>I think this is a side effect, but could be possiblly used as a footer element
-for quick result.
-(of course, you’d better plan for footer in the grid layout)</p>
-<p>That’s it!</p>
+So you might need to cover your main contents with non-transluent background.
+and in this case, once you set the main surface. you don’t need to set
+background every time you add any <code>div</code> after <code>background-skirt</code></p>
+<p><em>this is not the only way but you could treat another background as one object</em></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Modern websites offer more convenient conepts like <code>grid</code>.
+Why don’t you adopt the new feature rather than embrace the unsupported or
+out-dated web-browsers?</p>
+<h2 id="make-a-grid-layout-as-your-friend">Make a grid layout as your friend</h2>
+<p>One more thing I’d like to mention is that
+<code>in the same grid</code>, you can arrange your children as you planned
+in grid layout no matter which one comes first in the order of html node.</p>
+<p>Im my example, I put <code>credits</code> divsion before articles but it shows in the end
+as a footer, which makes me think the contents more as structural docments.</p>
+<p>Okay, That’s all for today!</p>
 
     </div>
 

@@ -227,6 +227,11 @@ html, body {
     background: hsla(300 50% 30% / 0.9);
 }
 
+.caption {
+    grid-column: 1 / -1;
+    grid-row: caption-row-top / caption-row-bottom;
+}
+
 .on-background-sub-title {
     color: hsla(300 50% 30% / 0.9);
     background:  hsla(300 50% 80% / 0.95);
