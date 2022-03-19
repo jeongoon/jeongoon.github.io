@@ -191,6 +191,7 @@
 }
 
 html, body {
+    font-size: 16px;
     overflow: hidden;
     /* please refer to
       https://jeongoon.github.io/posts/2022-0312-css-parallax-revised-0.html#bug-with-text-size-adjust-on-chrome-mobile
