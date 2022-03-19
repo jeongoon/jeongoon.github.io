@@ -309,6 +309,14 @@ html, body {
     html, body {
         font-size: 4vw;
     }
+    .on-background-title
+    , .credits
+    , .caption {
+        color: hsl(100 50% 80%);
+        background: hsla(100 50% 30% / 0.9);
+    }
+
+    
 }
 
 @media only screen and (orientation: landscape) and (min-width: 1200px) {
