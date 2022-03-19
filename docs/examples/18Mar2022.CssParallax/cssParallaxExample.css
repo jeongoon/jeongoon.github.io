@@ -295,14 +295,20 @@ html, body {
 
 @media only scren (pointer: coarse) and (orientation: landscape) {
     html, body {
-        font-size: 22.5px;
+        font-size: 50px;
+    }
+    .on-background-title
+    , .credits
+    , .caption {
+        color: hsl(200 50% 80%);
+        background: hsla(200 50% 30% / 0.9);
     }
 }
 
-@media only screen and (pointer: coarse) and (min-width: 576px)
+@media only screen and (pointer: coarse) and (min-width: 992px)
        and (orientation: portrait) {
     html, body {
-        font-size: 2.8vw;
+        font-size: 3.5vw;
     }
     .on-background-title
     , .credits
