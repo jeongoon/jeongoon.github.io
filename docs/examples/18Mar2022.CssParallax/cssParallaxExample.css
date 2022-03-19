@@ -98,7 +98,7 @@
 }
 
 .set-background-image {
-    width: min(100vw, 105%); /* width: 100% has some minor issues */
+    width: 100vw; /* width: 100% has some minor issues */
     height: 100vh;
 
     background-image: url(background.jpg);
