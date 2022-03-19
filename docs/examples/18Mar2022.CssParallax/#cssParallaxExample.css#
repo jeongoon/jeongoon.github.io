@@ -293,10 +293,10 @@ html, body {
 /* fix: meta ... viewport .. initial-scale: 1 */
 /* don't use meta and change font-size according to device width */
 
- /* slightly increase the font size on portrait mode on mobile */
+ /* slightly increase the font size on landscape mode on mobile */
 @media only screen and (pointer: coarse) and (max-with: 992px) {
     html, body {
-        font-size: 3.5vw;
+        font-size: 3.6vw;
     }
 }
 

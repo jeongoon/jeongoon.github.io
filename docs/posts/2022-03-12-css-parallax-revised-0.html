@@ -230,42 +230,26 @@ but there is no working around, I think bug report required.</p>
 <p>If you are see the site with <code>Desktop Mode</code>, there is no problem on Chrome.</p>
 <p>Howevery on mobile, it looks like below.
 <em>Brave mobile also does the same mis-caculation.</em></p>
-<figure>
-<img src="../images/CssParallax-18Mar2022.Chrome-RightHandesideCropped.jpg" alt="Right hand side cropped on Chrome Mobile" /><figcaption aria-hidden="true">Right hand side cropped on Chrome Mobile</figcaption>
-</figure>
+<p><a href="../images/CssParallax-18Mar2022.Chrome-RightHandesideCropped.jpg">Right hand side cropped on Chrome Mobile</a></p>
 <h3 id="solution">solution</h3>
 <p>remove any line like below</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;meta</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;viewport&quot;</span> <span class="er">content</span><span class="ot">=</span><span class="st">&quot;width=device-width, height=device-height, viewport-fit=contain, initial-scale=1&quot;</span><span class="kw">&gt;</span></span></code></pre></div>
 <p>and add your own text level. my testing values are shown below so far:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="kw">only</span> <span class="dv">screen</span> <span class="kw">and</span> (<span class="kw">min-width</span>: <span class="dv">400</span><span class="dt">px</span>) {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    html<span class="op">,</span> body {</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-size</span>: <span class="dv">3.5</span><span class="dt">vw</span><span class="op">;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="kw">only</span> <span class="dv">screen</span> <span class="kw">and</span> (<span class="kw">min-width</span>: <span class="dv">576</span><span class="dt">px</span>) {</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    html<span class="op">,</span> body {</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-size</span>: <span class="dv">3.5</span><span class="dt">vw</span><span class="op">;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="kw">only</span> <span class="dv">screen</span> <span class="kw">and</span> (<span class="kw">min-width</span>: <span class="dv">768</span><span class="dt">px</span>) {</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    html<span class="op">,</span> body {</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-size</span>: <span class="dv">2.5</span><span class="dt">vw</span><span class="op">;</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="kw">only</span> <span class="dv">screen</span> <span class="kw">and</span> (<span class="kw">min-width</span>: <span class="dv">992</span><span class="dt">px</span>) {</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    html<span class="op">,</span> body {</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-size</span>: <span class="dv">16</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="kw">only</span> <span class="dv">screen</span> <span class="kw">and</span> (<span class="kw">min-width</span>: <span class="dv">1200</span><span class="dt">px</span>) {</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    html<span class="op">,</span> body {</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-size</span>: <span class="dv">16</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a> <span class="co">/* slightly increase the font size on landscape mode on mobile */</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="kw">only</span> <span class="dv">screen</span> <span class="kw">and</span> (<span class="kw">pointer</span>: coarse) <span class="kw">and</span> (<span class="kw">orientation</span>: <span class="dv">portrait</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       <span class="kw">and</span> (<span class="kw">max-with</span>: <span class="dv">992</span><span class="dt">px</span>) {</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    html<span class="op">,</span> body {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-size</span>: <span class="dv">3.5</span><span class="dt">vw</span><span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="explanation">Explanation</h2>
+<ul>
+<li><p><code>only screen</code> is used to be ignored on older browsers</p></li>
+<li><p>If screen size is upto medium scale the font-size as 3.5vw
+(which is maximum value for chrome on android so far)</p></li>
+<li><p>(pointer: coarse) is used to detect mobile device.</p></li>
+<li><p>and please don’t forget to use all the font size by using <code>rem</code> or <code>em</code></p></li>
+</ul>
 <h1 id="conclusion">Conclusion</h1>
 <p><em>quick wrapping up</em></p>
 <ol type="1">
