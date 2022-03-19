@@ -316,6 +316,6 @@ html, body {
 
 @media only screen and (pointer: coarse) (min-width: 1200px) {
     html, body {
-        font-size: 3.5vw;
+        font-size: 4vw;
     }
 }
