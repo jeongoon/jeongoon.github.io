@@ -191,7 +191,6 @@
 }
 
 html, body {
-    font-size: 16px;
     overflow: hidden;
     /* please refer to
       https://jeongoon.github.io/posts/2022-0312-css-parallax-revised-0.html#bug-with-text-size-adjust-on-chrome-mobile
@@ -288,4 +287,35 @@ html, body {
     justify-content: space-around;
     padding: 0.5rem;
     list-style: none;
+}
+
+
+@media only screen and (min-width: 400px) {
+    html, body {
+        font-size: 3.5vw;
+    }
+}
+
+@media only screen and (min-width: 576px) {
+    html, body {
+        font-size: 3.5vw;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    html, body {
+        font-size: 2.5vw;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    html, body {
+        font-size: 16px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    html, body {
+        font-size: 16px;
+    }
 }
