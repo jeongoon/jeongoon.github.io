@@ -316,12 +316,12 @@ html, body {
 
 @media only screen and (pointer: coarse) and (min-width: 1200px) {
     html, body {
-        font-size: 5vw;
+        font-size: 30px;
     }
 }
 
 @media only screen and (pointer: coarse) and (min-width: 1440px) {
     html, body {
-        font-size: 6vw;
+        font-size: 30px;
     }
 }
