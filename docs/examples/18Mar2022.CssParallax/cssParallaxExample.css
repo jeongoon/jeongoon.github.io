@@ -293,7 +293,7 @@ html, body {
 /* fix: meta ... viewport .. initial-scale: 1 */
 /* don't use meta and change font-size according to device width */
 
-@media only scren (pointer: coarse) and (orientation: landscape) {
+@media only screen and (pointer: coarse) and (orientation: landscape) {
     html, body {
         font-size: 50px;
     }
@@ -305,7 +305,7 @@ html, body {
     }
 }
 
-@media only screen and (pointer: coarse) and (min-width: 992px)
+@media only screen and (pointer: coarse) and (min-width: 768px)
        and (orientation: portrait) {
     html, body {
         font-size: 3.5vw;
