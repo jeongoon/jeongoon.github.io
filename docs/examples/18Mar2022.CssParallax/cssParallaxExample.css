@@ -310,12 +310,18 @@ html, body {
 
 @media only screen and (pointer: coarse) and (min-width: 992px) {
     html, body {
-        font-size: 3.5vw;
+        font-size: 4vw;
     }
 }
 
 @media only screen and (pointer: coarse) (min-width: 1200px) {
     html, body {
-        font-size: 4vw;
+        font-size: 5vw;
+    }
+}
+
+@media only screen and (pointer: coarse) (min-width: 1440px) {
+    html, body {
+        font-size: 5.5vw;
     }
 }
