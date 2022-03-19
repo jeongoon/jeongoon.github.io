@@ -294,6 +294,20 @@ html, body {
 /* don't use meta and change font-size according to device width */
 
 @media only screen and (pointer: coarse) and (min-width: 576px)
+       and (orientation: portrait) and (max-width: 767px) {
+    html, body {
+        font-size: 2.8vw;
+    }
+}
+
+@media only screen and (pointer: coarse) and (min-width: 768px)
+       and (orientation: portrait) and (max-width: 1199px) {
+    html, body {
+        font-size: 3vw;
+    }
+}
+
+@media only screen and (pointer: coarse) and (min-width: 1200px)
        and (orientation: portrait) {
     html, body {
         font-size: 3.5vw;
