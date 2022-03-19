@@ -7,15 +7,17 @@
     <meta name="author" content="Myoungjin Jeon">
 
 
+    <meta name="description" content="show example css parallax applied.">
+
+
     <meta name="keywords" content="css, parallax">
 
 
     <title>MJ's kind weird Code - Css Parallax Effect revised in 2022</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Fredoka:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,200;0,400;0,700;1,200;1,400;1,700&family=Mali:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700&family=Oswald:wght@300;500;700&family=Unica+One&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Fredoka:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Mali:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700&family=Oswald:wght@300;500;700&family=Unica+One&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="../css/Mar2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/19Mar2022.css" />
     <link rel="stylesheet" type="text/css" href="../css/code.css" />
   </head>
   <body class="surface-color">
@@ -224,11 +226,28 @@ a bug report required.)</p>
 <p>This bug prevents for user to see content at the bottom which is,
 in my opinion, serious problem.
 but there is no working around, I think bug report required.</p>
+<h2 id="bug-with-text-size-adjust-on-chrome-mobile">Bug with <code>text-size-adjust</code> on Chrome Mobile</h2>
+<p>If you are see the site with <code>Desktop Mode</code>, there is no problem on Chrome.</p>
+<p>However, If you use default text-size-adjust settings on chrome, viewport of the
+each <code>div</code> get affected. see the the picture below.</p>
+<figure>
+<img src="../images/CssParallax-18Mar2022.Chrome-RightHandesideCropped.jpg" alt="Right hand side cropped on Chrome Mobile" /><figcaption aria-hidden="true">Right hand side cropped on Chrome Mobile</figcaption>
+</figure>
+<p><strong>quick fix: </strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>html<span class="op">,</span> body {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>      <span class="co">/* .. snip .. */</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>      -moz-text-size-adjust: <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">-webkit-text-size-adjust</span>: <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      text-size-adjust: <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="co">/* 100% better than `none`</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">       * because </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">       */</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h1 id="conclusion">Conclusion</h1>
 <p><em>quick wrapping up</em></p>
 <ol type="1">
-<li>still useful</li>
-<li>hard to debug if something goes wrong.
+<li>pros: the effect is smoother than java script version.</li>
+<li>cons: hard to debug if something goes wrong.
 (typo, misunderstanding)</li>
 </ol>
 <p>I found that this parallax effects is still useful for basic website.

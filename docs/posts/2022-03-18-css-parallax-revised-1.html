@@ -7,15 +7,17 @@
     <meta name="author" content="Myoungjin Jeon">
 
 
+    <meta name="description" content="show example css parallax applied.">
+
+
     <meta name="keywords" content="css, parallax, grid">
 
 
     <title>MJ's kind weird Code - Css Parallax Effect revised with css grid.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Fredoka:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,200;0,400;0,700;1,200;1,400;1,700&family=Mali:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700&family=Oswald:wght@300;500;700&family=Unica+One&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Fredoka:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Mali:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700&family=Oswald:wght@300;500;700&family=Unica+One&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="../css/Mar2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/19Mar2022.css" />
     <link rel="stylesheet" type="text/css" href="../css/code.css" />
   </head>
   <body class="surface-color">
@@ -59,7 +61,8 @@
 <figure>
 <img src="../images/CssParallax-18Mar2022.caniuse-grid-ios.jpg" alt="Not Supported for iOS until 2016" /><figcaption aria-hidden="true">Not Supported for iOS until 2016</figcaption>
 </figure>
-<p>But nowaways, many major site stop support older browsers, So let’s move on.</p>
+<p>However It is safe to say that most of social media websites stop support older
+browsers.(Youtube, Facebook, etc). So let’s move on.</p>
 <p>The basic layout is just a column with overlapped at the same position.</p>
 <pre class="ascii"><code>+-------------------------------+
 |                               |
@@ -100,7 +103,7 @@ they are overlapped because their position calculated again from the beginning.<
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">z-index</span>: <span class="dv">1</span><span class="op">;</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">...</span></span></code></pre></div>
-<p>But this could be updated to:</p>
+<p><strong>and how about if we change it to grid layout?</strong></p>
 <h2 id="firstly-make-a-layout">Firstly, make a layout:</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#container</span> {</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span>: grid<span class="op">;</span></span>
@@ -122,8 +125,8 @@ they are overlapped because their position calculated again from the beginning.<
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Even different variable names are used in here, the original layout
 doesn’t really ditinguish between <code>background-row-top</code> and <code>cover-row-top</code>
-or <code>background-row-bottom</code> and <code>cover-row-bottom</code>.
-<em>all the variable in the same bracket indicates the same position</em></p>
+or <code>background-row-bottom</code> and <code>cover-row-bottom</code>.</p>
+<p><em>all the variable in the same bracket indicates the same position.</em></p>
 <p>But It has advantage if we want use a different layout by just changing
 <code>#container</code> grid settings:</p>
 <p>for example, If you want to place the cover slightly above the center of
@@ -146,7 +149,7 @@ white and blank <code>div</code> which posses whole <code>grid rows</code>, and 
 the top which only consume each <code>grid row</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>      ...</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;credits&quot;</span> <span class="er">style</span><span class="ot">=</span><span class="st">&quot;padding-bottom: 10px&quot;</span><span class="kw">&gt;</span>Credits: NASA/Chris Gunn</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;credits&quot;</span><span class="kw">&gt;</span>Credits: NASA/Chris Gunn</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;/div&gt;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="co">&lt;!-- background-skirt can be used as rest background area --&gt;</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;background-skirt background-white&quot;</span><span class="kw">&gt;</span></span>
@@ -159,18 +162,17 @@ the top which only consume each <code>grid row</code>.</p>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      ...</span></code></pre></div>
 <p>so let’s see the grid layout first:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> { <span class="co">/* top-level means we can only have one perspective</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">                          * as we are going to scroll if overflowing vertically */</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* .. snip .. */</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span>: grid<span class="op">;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-template-rows</span>:</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        [a-group-row-top] <span class="bu">auto</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        [a-group-row-bottom caption-row-top] <span class="bu">auto</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        [caption-row-bottom skirt-row-top] <span class="bu">auto</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        [skirt-row-bottom] <span class="bu">auto</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        [credit-row-top] <span class="bu">auto</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        [credit-row-bottom]</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* .. snip .. */</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span>: grid<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-template-rows</span>:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        [a-group-row-top] <span class="bu">auto</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        [a-group-row-bottom caption-row-top] <span class="bu">auto</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        [caption-row-bottom skirt-row-top] <span class="bu">auto</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        [skirt-row-bottom] <span class="bu">auto</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        [credit-row-top] <span class="bu">auto</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        [credit-row-bottom]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>and <code>background-skirt</code> defined as:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> <span class="op">&gt;</span> <span class="fu">.background-skirt</span> {</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-column</span>: <span class="dv">1</span> / <span class="dv">-1</span><span class="op">;</span></span>
