@@ -52,7 +52,7 @@
 <hr />
 <p>After some investigate about css, I found <code>grid</code> is great tool for layout.</p>
 <h1 id="grid-layout">Grid layout</h1>
-<p>My recommened article about <code>grid layout</code> are:</p>
+<p>My recommened articles regarding to <code>grid layout</code> are:</p>
 <ul>
 <li><a href="https://css-tricks.com/snippets/css/complete-guide-grid/">A Complete Guide to Grid from Css-Tricks</a></li>
 <li><a href="https://medium.com/samsung-internet-dev/common-responsive-layouts-with-css-grid-and-some-without-245a862f48df">Common Responsive Layouts with CSS Grid (and some without!)</a></li>
@@ -112,7 +112,7 @@ they are overlapped because their position calculated again from the beginning.<
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        [cover-row-bottom background-row-bottom] <span class="bu">auto</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        [row-bottom]</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<h2 id="and-applied-at-background-as">And applied at background as:</h2>
+<h2 id="and-apply-the-grid-row-and-column-at-the-background-as">And apply the grid row and column at the background as:</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#background</span> {</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-column</span>: <span class="dv">1</span> / <span class="dv">-1</span><span class="op">;</span> <span class="co">/* use all columns */</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-row</span>: background-row-top / background-row-bottom<span class="op">;</span></span>
@@ -123,7 +123,7 @@ they are overlapped because their position calculated again from the beginning.<
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-row</span>: cover-row-top / cover-row-bottom<span class="op">;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">z-index</span>: <span class="dv">1</span><span class="op">;</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>Even different variable names are used in here, the original layout
+<p><strong>Note:</strong> Even different variable names are used in here, the original layout
 doesn’t really ditinguish between <code>background-row-top</code> and <code>cover-row-top</code>
 or <code>background-row-bottom</code> and <code>cover-row-bottom</code>.</p>
 <p><em>all the variable in the same bracket indicates the same position.</em></p>
@@ -178,22 +178,23 @@ the top which only consume each <code>grid row</code>.</p>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-column</span>: <span class="dv">1</span> / <span class="dv">-1</span><span class="op">;</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-row</span>: skirt-row-top / skirt-row-bottom<span class="op">;</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<h2 id="why-this-is-useful">Why this is useful?</h2>
+<h2 id="what-is-the-benefit">What is the benefit?</h2>
+<p><em>Even tough this is not a only way to set background,</em> you can create
+a rest of background as one element.</p>
 <p>Your background will disapear at sometime while scrolling,
-So you might need to cover your main contents with non-transluent background.
-and in this case, once you set the main surface. you don’t need to set
-background every time you add any <code>div</code> after <code>background-skirt</code></p>
-<p><em>this is not the only way but you could treat another background as one object</em></p>
+so you might need to cover the after background. I call it <code>background skirt</code> here.</p>
+<p>In this way, once <code>background-skirt</code> is created as a individual element,
+we don’t need to think about the rest of background.</p>
 <h1 id="conclusion">Conclusion</h1>
-<p>Modern websites offer more convenient conepts like <code>grid</code>.
+<p>Modern websites offer more convenient concepts like <code>grid</code>.
 Why don’t you adopt the new feature rather than embrace the unsupported or
-out-dated web-browsers?</p>
-<h2 id="make-a-grid-layout-as-your-friend">Make a grid layout as your friend</h2>
+out-dated web-browsers in 2022?</p>
 <p>One more thing I’d like to mention is that
-<code>in the same grid</code>, you can arrange your children as you planned
-in grid layout no matter which one comes first in the order of html node.</p>
-<p>Im my example, I put <code>credits</code> divsion before articles but it shows in the end
-as a footer, which makes me think the contents more as structural docments.</p>
+we can focus our layout in the <code>grid template</code> and apply it later,
+no matter where you write down your <em>children</em> element in your grid div.</p>
+<p>In this way, we can think our contents structure in more logical way.</p>
+<p>Im my example, <code>credits</code> divsion is placed before the actual articles
+but it shows in the end as a footer if you look at the html source code.</p>
 <p>Okay, That’s all for today!</p>
 
     </div>
