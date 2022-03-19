@@ -305,7 +305,7 @@ html, body {
     }
 }
 
-@media only screen (orientation: portrait) and (min-width: 1200px) {
+@media only screen (orientation: landscape) and (min-width: 1200px) {
     html, body {
         font-size: 3.5vw;
     }
