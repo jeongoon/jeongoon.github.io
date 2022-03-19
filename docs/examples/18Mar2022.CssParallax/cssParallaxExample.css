@@ -298,6 +298,6 @@ html, body {
 
 @media only screen and (pointer: coarse) and (min-width: 576px) {
     html, body {
-        font-size: 100px;
+        font-size: 5vw;
     }
 }
