@@ -293,9 +293,10 @@ html, body {
 /* fix: meta ... viewport .. initial-scale: 1 */
 /* don't use meta and change font-size according to device width */
 
+ /* slightly increase the font size on landscape mode on mobile */
 @media only screen and (pointer: coarse) and (orientation: landscape) {
     html, body {
-        font-size: 50px;
+        font-size: 22.5px;
     }
     .on-background-title
     , .credits
@@ -305,10 +306,10 @@ html, body {
     }
 }
 
-@media only screen and (pointer: coarse) and (min-width: 768px)
+@media only screen and (pointer: coarse) and (min-width: 992px)
        and (orientation: portrait) {
     html, body {
-        font-size: 3.8vw;
+        font-size: 3.5vw;
     }
     .on-background-title
     , .credits
