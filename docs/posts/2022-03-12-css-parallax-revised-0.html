@@ -21,7 +21,7 @@
     <link rel="stylesheet" type="text/css" href="../css/code.css" />
   </head>
   <body class="surface-color">
-    <header class="main-header">
+    <header id="main-header">
       <div id="logo" class="font-atma primary-color">
         <a href="../">MJ's Kind Weird Code</a>
       </div>
@@ -134,7 +134,7 @@ and which is <em>literally</em> <code>real</code> parallax.</p>
 <h1 id="but-size-matters">But Size Matters</h1>
 <p>As you can see the example above, we only care about moving speed, not transformed size,
 so Keith explain it as <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#depth-correction"><code>Depth correction</code></a>.</p>
-<p>So we need to scale up if it’s bellow the display plane or vice versa.
+<p>So we need to scale up if it’s below the display plane or vice versa.
 He didn’t mention about how scale is calculated. (because it is maybe too simple?)
 and this is a <code>poor</code> explanation.</p>
 <pre class="ascii"><code>                      /‖    ⤒
@@ -177,7 +177,7 @@ so if we set p(perspective) as 1px and k (1px:  negate of -1px)
              1</code></pre>
 <h1 id="trouble-shootings">Trouble shootings</h1>
 <h2 id="height-calculation-wrong">Height Calculation wrong!</h2>
-<p>If seeing the screen capture bellow, we will find that the scroll
+<p>If seeing the screen capture below, we will find that the scroll
 had not stopped upto the where article ended and - even worth -
 scrolling kept going beyond the background as well.</p>
 <figure>
@@ -209,8 +209,9 @@ as bellow.</p>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>keep origin on X-axis <code>center</code> but <code>bottom</code> on Y-axis.</p>
 <h2 id="more-caveat-and-bugs-explained">More caveat and bugs explained</h2>
-<p>Unfortunately I don’t have any iOS products, Window either.
-Keith mentioned about some trouble shooting on different web browsers.</p>
+<p>Unfortunately I don’t have any iOS products, MS Windows either.</p>
+<p><em>maybe I should go Apple centre or JB hi-fi for checking those</em></p>
+<p>However, Keith mentioned about some trouble shooting on different web browsers.</p>
 <p>please find more information <a href="https://keithclark.co.uk/articles/practical-css-parallax/#browser-quirks">Here</a>.</p>
 <h2 id="problem-on-vivaldi-work-in-progress">Problem on Vivaldi (Work In Progress)</h2>
 <figure>
@@ -231,7 +232,9 @@ but there is no working around, I think bug report required.</p>
 <p>If you are see the site with <code>Desktop Mode</code>, there is no problem on Chrome.</p>
 <p>Howevery on mobile, it looks like below.
 <em>Brave mobile also does the same mis-caculation.</em></p>
-<p><a href="../images/CssParallax-18Mar2022.Chrome-RightHandesideCropped.jpg">Right hand side cropped on Chrome Mobile</a></p>
+<figure>
+<img src="../images/CssParallax-18Mar2022.Chrome-RightHandesideCropped.jpg" alt="Right hand side cropped on Chrome Mobile" /><figcaption aria-hidden="true">Right hand side cropped on Chrome Mobile</figcaption>
+</figure>
 <h3 id="solution">solution</h3>
 <p>remove any line like below</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;meta</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;viewport&quot;</span> <span class="er">content</span><span class="ot">=</span><span class="st">&quot;width=device-width, height=device-height, viewport-fit=contain, initial-scale=1&quot;</span><span class="kw">&gt;</span></span></code></pre></div>
@@ -254,9 +257,9 @@ but there is no working around, I think bug report required.</p>
 <h2 id="explanation">Explanation</h2>
 <ul>
 <li><p><code>only screen</code> is used to be ignored on older browsers</p></li>
-<li><p>If screen size is upto medium scale the font-size as 3.5vw
+<li><p>If screen size is equal or less than medium, scale the font-size as 3.5vw.
 (which is maximum value for chrome on android so far)
-but on landscape mode, viewport normally wider, use less scaling: 2.5vw</p></li>
+but, on landscape mode – viewport normally wider – use less scaling: 2.5vw.</p></li>
 <li><p>(pointer: coarse) is used to detect mobile device.</p></li>
 <li><p>and please don’t forget to use all the font size by using <code>rem</code> or <code>em</code></p></li>
 </ul>
