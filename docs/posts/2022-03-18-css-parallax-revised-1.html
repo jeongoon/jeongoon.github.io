@@ -46,7 +46,7 @@
 </div>
 <div class="info">
   
-  Tags: <a title="All pages tagged 'css'." href="../tags/css.thml">css</a>, <a title="All pages tagged 'parallax'." href="../tags/parallax.thml">parallax</a>
+  Tags: <a title="All pages tagged 'css'." href="../tags/css.html">css</a>, <a title="All pages tagged 'parallax'." href="../tags/parallax.html">parallax</a>
   
 </div>
 
@@ -185,22 +185,30 @@ the top which only consume each <code>grid row</code>.</p>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-row</span>: skirt-row-top / skirt-row-bottom<span class="op">;</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h2 id="what-is-the-benefit">What is the benefit?</h2>
+<p><strong>You can make a individual element which doesn’t rely on location</strong></p>
 <p><em>Even tough this is not a only way to set background,</em> you can create
 a rest of background as one element.</p>
 <p>Your background will disapear at sometime while scrolling,
 so you might need to cover the after background. I call it <code>background skirt</code> here.</p>
 <p>In this way, once <code>background-skirt</code> is created as a individual element,
 we don’t need to think about the rest of background.</p>
+<h2 id="there-is-another-general-benefit-when-using-grid">There is another general benefit when using <strong>grid</strong></h2>
+<ol type="1">
+<li><strong>More logical or component-based design</strong></li>
+<li><strong>Better control for responsive web site</strong></li>
+</ol>
+<p>One more thing I’d like to mention is that
+we can focus our layout in the <code>grid template</code> and apply it later,
+no matter where you write down your <em>children</em> element in your grid div.</p>
+<p>In this way, we can think our contents structure in more logical way.
+Or you could get advantage when you are planning the different layouts
+when designing responsive web sites.</p>
+<p>Im my example, <code>credits</code> divsion is placed before the actual articles
+but it shows in the end as a footer if you look at the html source code.</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>Modern websites offer more convenient concepts like <code>grid</code>.
 Why don’t you adopt the new feature rather than embrace the unsupported or
 out-dated web-browsers in 2022?</p>
-<p>One more thing I’d like to mention is that
-we can focus our layout in the <code>grid template</code> and apply it later,
-no matter where you write down your <em>children</em> element in your grid div.</p>
-<p>In this way, we can think our contents structure in more logical way.</p>
-<p>Im my example, <code>credits</code> divsion is placed before the actual articles
-but it shows in the end as a footer if you look at the html source code.</p>
 <p>Okay, That’s all for today!</p>
 
     </div>
