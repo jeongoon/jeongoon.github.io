@@ -98,7 +98,7 @@
 }
 
 .set-background-image {
-    width: 100vw; /* width: 100% has some minor issues */
+    width: min(105%, 100vw); /* width: 100% has some minor issues */
     height: 100vh;
 
     background-image: url(background.jpg);
@@ -117,8 +117,6 @@
 
     .css-parallax-toplevel {
         perspective: 100px;
-       -webkit-perspective: 100px;
-
        /* v fix wrong calculation visual size(height) of background
         *   on webkit based browsers.
         */
