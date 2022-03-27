@@ -52,8 +52,9 @@
 
 <p><strong>This module applys css parallax on Yesod by creating Yesod widget</strong>.</p>
 <p>And article written in <a href="https://wiki.haskell.org/Literate_programming">Literate Haskell</a>.</p>
+<p>In other words, this article in raw format(<em>.lhs</em>) could be actually used in <code>yesod</code>.</p>
 <p>If you are not familar with yesod, you might need to get more information from:
-<a href="https://www.yesodweb.com/">yesod website</a></p>
+<a href="https://www.yesodweb.com/">yesod website</a>.</p>
 <pre><code>Table of Contents
 - Synopsis (How to use)
   - Precaution
@@ -541,8 +542,8 @@ for the structure.</p>
 <span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">^{</span>footerContent<span class="kw">}</span></span>
 <span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>|]</span></code></pre></div>
 <h2 id="about-my-literate-haskell-usage">About My Literate Haskell Usage</h2>
-<p>When ghc is compling literate haskell file. if something goes wrong,
-it doesn’t suggest what to do next. and if there is one line ghc cannot
+<p>When ghc is compling literate haskell file and if something goes wrong,
+it doesn’t suggest what to do next. And if there is one line ghc cannot
 understand it will just spit out the error messages like below.</p>
 <p>this is a capture for literate pre-processor typo error messages</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">src/Widget/CssParallax.lhs</span> line 502: unlit: Program line next to comment</span>
@@ -552,7 +553,7 @@ understand it will just spit out the error messages like below.</p>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">`</span><span class="ex">unlit</span><span class="st">' failed in phase `Literate pre-processor'</span><span class="ex">.</span> <span class="er">(</span><span class="ex">Exit</span> code: 1<span class="kw">)</span></span></code></pre></div>
 <p>And it only says my first line of code is incorrect.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> <span class="kw">|</span>  <span class="ex">This</span> module applys css parallax on Yesod by creating Yesod widget</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">^</span></span></code></pre></div>
 <p>for the first time I met those error, I had totally no idea what to do next.</p>
