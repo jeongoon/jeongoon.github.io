@@ -58,7 +58,7 @@
 <p><code class="verbatim">[[/link/to/yourimagewith.extension/]]</code></p>
 <p><em>.png</em> extension works <em>.webp</em> is not working for embeded image on hakyll blog.</p>
 <h2 id="hakyll---pandoc-powered-blog-system">Hakyll - Pandoc-Powered Blog System</h2>
-<p>When I look around the hakyll temlates, I found there are more than one kind of
+<p>When I look around the hakyll templates, I found there are more than one kind of
 tempalte language like <em>*.markdown,</em> <em>*.rst</em>. I vaguely realize that hakyll maybe support more
 file formats. and I found <a href="https://turbomack.github.io/">Marek Fajkus’s Blog</a>.</p>
 <p>Yes. It is possible to write a blog with org-mode.
@@ -357,7 +357,8 @@ table generate the keybindings according to it.</p>
 </tr>
 </tbody>
 </table>
-</div>
+</div></li>
+<li><p>emacs lisp to turn the table into shortcuts</p>
 <div class="sourceCode" id="cb2" data-org-language="emacs-lisp" data-var="shortcuts-data=myjin/shortcuts-list"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">dolist</span> (r shortcuts-data)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let</span> (key-after-map binding-type link extra-info)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">setq</span> key-map       (<span class="kw">nth</span> <span class="dv">0</span> r)</span>
