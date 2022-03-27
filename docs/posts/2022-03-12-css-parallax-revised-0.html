@@ -65,11 +65,11 @@ found on Safarai and iOS.</p>
 <h1 id="my-first-css-parallax-example">My first css parallax example</h1>
 <p>I have some article about css parallax which is work in process.
 and <a href="../examples/07Mar2022.CssParallax/cssParallaxExample.html"><strong>THIS</strong></a> is the first version of working Html+Css.</p>
-<h1 id="the-parallax-effects-soley-by-css">The Parallax Effects soley by CSS</h1>
+<h1 id="the-parallax-effects-solely-by-css">The Parallax Effects solely by CSS</h1>
 <p>It has been more than eight years since he posted about parallax effect
 by using css transformation. the Most of major web browser implements
 differently, so we need to embrace the caveats in the end.</p>
-<p>However it still has technical merit if we could gain those effects even
+<p>However, it still has technical merit if we could gain those effects even
 without javascript. and so many websites have the basic parallax on their
 home page..</p>
 <p>So why don’t you check out?</p>
@@ -83,7 +83,7 @@ on Keith’s article.</p>
 <li>base element and a <code>perspective</code> from where we see the object on the page.
 (which is generally not moving during transformation)</li>
 <li>an <code>anchor element</code>(normally <code>div</code>) contains the elements which is
-actually tranformed.</li>
+actually transformed.</li>
 <li><code>transformation origin</code>
 (default is the center of the anchor (parent) element.</li>
 </ol>
@@ -97,7 +97,7 @@ actually tranformed.</li>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-group</span> {</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* we can have serveral pallax group but</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* we can have several parallax group but</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">     * we are going to use only one group here */</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">position</span>: <span class="dv">relative</span><span class="op">;</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">height</span>: <span class="dv">500</span><span class="dt">px</span><span class="op">;</span> <span class="co">/* fallback for older browsers */</span></span>
@@ -132,15 +132,16 @@ actually tranformed.</li>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">transform-style</span>: preserve-3d<span class="op">;</span></span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>So if the elements are located in different depth (on Z-axis) and moving
-relatively to the <code>perspective</code> will be transformed differrently.
+relatively to the <code>perspective</code> will be transformed differently.
 and which is <em>literally</em> <code>real</code> parallax.</p>
-<p>and <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/demo1/">THIS</a> is first demo to understand how the tranformation</p>
+<p>and <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/demo1/">The Demo #1</a>
+is firsthe first one for you to understand how the transformation works.</p>
 <h1 id="but-size-matters">But Size Matters</h1>
-<p>As you can see the example above, we only care about moving speed, not transformed size,
-so Keith explain it as <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#depth-correction"><code>Depth correction</code></a>.</p>
+<p>As you can see the example above, we only care about moving speed,
+not transformed size,so Keith explain it as <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#depth-correction"><code>Depth correction</code></a>.</p>
 <p>So we need to scale up if it’s below the display plane or vice versa.
-He didn’t mention about how scale is calculated. (because it is maybe too simple?)
-and this is a <code>poor</code> explanation.</p>
+He didn’t mention about how the value of scale is calculated. (because it is maybe too simple?)
+and this is a <code>poor</code> explanation from me.</p>
 <pre class="ascii"><code>                      /‖    ⤒
                      / ‖
                     /  ‖
@@ -159,8 +160,8 @@ perspective) .____|⤓___‖   ⤓
 
 
 so we can see two triangles:
-                    m                         n
 
+                    m                         n
   small :  tan θ = ---      large :  tan θ = ----
                     p                        p+k
 
@@ -182,7 +183,7 @@ so if we set p(perspective) as 1px and k (1px:  negate of -1px)
 <h1 id="trouble-shootings">Trouble shootings</h1>
 <h2 id="height-calculation-wrong">Height Calculation wrong!</h2>
 <p>If seeing the screen capture below, we will find that the scroll
-had not stopped upto the where article ended and - even worth -
+had not stopped up to the where article ended and - even worth -
 scrolling kept going beyond the background as well.</p>
 <figure>
 <img src="../images/CssParallax-WrongHeightCalculation.png" alt="Wrong Scroll Position on Edge" /><figcaption aria-hidden="true">Wrong Scroll Position on Edge</figcaption>
@@ -192,7 +193,7 @@ scrolling kept going beyond the background as well.</p>
 <a href="https://keithclark.co.uk/articles/pure-css-parallax-websites/#update-25-feb-2015">explanation on Keith’s article</a></p>
 <p>However, In my case, the calculation is wrong vertically not horizontally,
 my similar solution is done by adding <code>perspective-origin</code> and <code>transform-origin</code>
-as bellow.</p>
+as below.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.css-parallax-toplevel</span> {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* .. snip .. */</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* v fix wrong calculation visual size(height) of background</span></span>
@@ -214,7 +215,7 @@ as bellow.</p>
 <p>keep origin on X-axis <code>center</code> but <code>bottom</code> on Y-axis.</p>
 <h2 id="more-caveat-and-bugs-explained">More caveat and bugs explained</h2>
 <p>Unfortunately I don’t have any iOS products, MS Windows either.</p>
-<p><em>maybe I should go Apple centre or JB hi-fi for checking those</em></p>
+<p><em>maybe I should go Apple centre or JB hi-fi for checking those??</em></p>
 <p>However, Keith mentioned about some trouble shooting on different web browsers.</p>
 <p>please find more information <a href="https://keithclark.co.uk/articles/practical-css-parallax/#browser-quirks">Here</a>.</p>
 <h2 id="problem-on-vivaldi-work-in-progress">Problem on Vivaldi (Work In Progress)</h2>
@@ -224,7 +225,7 @@ as bellow.</p>
 <p>I haven’t found working around yet.
 <em>But If you select the text, it shows correctly.</em>
 (so maybe using javascript to select individually? nah… I guess that
-a bug report required.)</p>
+a bug report is required.)</p>
 <h2 id="problem-on-fffirefox-for-mobile-work-in-progress">Problem on FF(Firefox) for mobile (Work In Progress)</h2>
 <figure>
 <img src="../images/CssParallax-13Mar2022.FirefoxAlwaysBottomMenu.jpg" alt="Bottom Menu always revealed on FF Mobile" /><figcaption aria-hidden="true">Bottom Menu always revealed on FF Mobile</figcaption>
@@ -233,13 +234,13 @@ a bug report required.)</p>
 in my opinion, serious problem.
 but there is no working around, I think bug report required.</p>
 <h2 id="bug-with-meta-viewport-...-initial-scale1">Bug with <code>meta viewport ... initial-scale=1</code></h2>
-<p>If you are see the site with <code>Desktop Mode</code>, there is no problem on Chrome.</p>
-<p>Howevery on mobile, it looks like below.
-<em>Brave mobile also does the same mis-caculation.</em></p>
+<p>If you are seeing the site with <code>Desktop Mode</code>, there is no problem on Chrome.</p>
+<p>However, on <code>Mobile Mode</code>, it looks like below.
+<em>Brave mobile also does the same miscaculation.</em></p>
 <figure>
 <img src="../images/CssParallax-18Mar2022.Chrome-RightHandesideCropped.jpg" alt="Right hand side cropped on Chrome Mobile" /><figcaption aria-hidden="true">Right hand side cropped on Chrome Mobile</figcaption>
 </figure>
-<h3 id="solution">solution</h3>
+<h3 id="solution">Solution</h3>
 <p>remove any line like below</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;meta</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;viewport&quot;</span> <span class="er">content</span><span class="ot">=</span><span class="st">&quot;width=device-width, height=device-height, viewport-fit=contain, initial-scale=1&quot;</span><span class="kw">&gt;</span></span></code></pre></div>
 <p>and add your own text level. my testing values are shown below so far:</p>
@@ -251,7 +252,7 @@ but there is no working around, I think bug report required.</p>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">/* but increase slightly on landscape mode on mobile */</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">/* but increase not too much on landscape mode on mobile */</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="kw">only</span> <span class="dv">screen</span> <span class="kw">and</span> (<span class="kw">pointer</span>: coarse)  <span class="kw">and</span> (<span class="kw">orientation</span>: <span class="dv">landscape</span>)</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>       <span class="kw">and</span> (<span class="kw">max-width</span>: <span class="dv">992</span><span class="dt">px</span>) {</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    html<span class="op">,</span> body {</span>
@@ -263,14 +264,14 @@ but there is no working around, I think bug report required.</p>
 <li><p><code>only screen</code> is used to be ignored on older browsers</p></li>
 <li><p>If screen size is equal or less than medium, scale the font-size as 3.5vw.
 (which is maximum value for chrome on android so far)
-but, on landscape mode – viewport normally wider – use less scaling: 2.5vw.</p></li>
+but, on landscape mode – viewport normally wider – use less scaling: 2vw.</p></li>
 <li><p>(pointer: coarse) is used to detect mobile device.</p></li>
 <li><p>and please don’t forget to use all the font size by using <code>rem</code> or <code>em</code></p></li>
 </ul>
 <h1 id="conclusion">Conclusion</h1>
 <p><em>quick wrapping up</em></p>
 <ol type="1">
-<li>pros: the effect is smoother than java script version.</li>
+<li>pros: the effect is smoother than javascript version.</li>
 <li>cons: hard to debug if something goes wrong.
 (typo, misunderstanding)</li>
 </ol>

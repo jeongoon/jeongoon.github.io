@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="writing the blog in org-mode is possible in hakyll thanks to pandoc">
+
+
+    <meta name="keywords" content="emacs, org-mode, hakyll, pandoc">
+
+
+    <title>MJ's kind weird Code - Org mode In Hakyll</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../css/22Mar2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Org mode In Hakyll
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on March 27, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'hakyll'." href="../tags/hakyll.html">hakyll</a>, <a title="All pages tagged 'org-mode'." href="../tags/org-mode.html">org-mode</a>, <a title="All pages tagged 'emacs'." href="../tags/emacs.html">emacs</a>, <a title="All pages tagged 'pandoc'." href="../tags/pandoc.html">pandoc</a>
+  
+</div>
+
+<h1 id="blogging-with-org-mode">Blogging with Org Mode??</h1>
+<p>Below picture shows how it looks like when I writing in <strong>emacs org-mode</strong>.
+– of course – in emacs editor.</p>
+<p><img src="../images/27Mar2022-hakyll-emacs-org-mode-supported.png" /></p>
+<p><strong>Note:</strong> To embed the image you need to write down like:</p>
+<p><code class="verbatim">[[/link/to/yourimagewith.extension/]]</code></p>
+<p><em>.png</em> extension works <em>.webp</em> is not working for embeded image on hakyll blog.</p>
+<h2 id="hakyll---pandoc-powered-blog-system">Hakyll - Pandoc-Powered Blog System</h2>
+<p>When I look around the hakyll temlates, I found there are more than one kind of
+tempalte language like <em>*.markdown,</em> <em>*.rst</em>. I vaguely realize that hakyll maybe support more
+file formats. and I found <a href="https://turbomack.github.io/">Marek Fajkus’s Blog</a>.</p>
+<p>Yes. It is possible to write a blog with org-mode.
+I like org-mode but I forgot the many key-binding after setting my emacs via `org-babel`</p>
+<h2 id="coding-block-test">Coding block test</h2>
+<h3 id="not-so-minibuffer">Not so minibuffer</h3>
+<p>This emacs-lisp code is one of the my emacs settings, and increase the size of minibuffer
+sligtly. Emacs settings is quite programmable and even better with `org-babel`.</p>
+<div class="sourceCode" id="cb1" data-org-language="emacs-lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setq</span> resize-mini-windows <span class="kw">nil</span>) <span class="co">;; set `nil' to keep size after resizing</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                               <span class="co">;; minibuffer and do something else</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> resize-minibuffer-window </span>(&amp;optional greeting-message)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  (interactive) <span class="co">; needed because we will use inside global-set-key as well</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let*</span> ((minibuffer-orig-height (window-size (minibuffer-window)))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>         (minibuffer-new-height <span class="dv">7</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>         (delta (<span class="op">-</span> minibuffer-new-height minibuffer-orig-height))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">if</span> (<span class="op">=</span> <span class="dv">0</span> delta)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">nil</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">progn</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>          (window-resize (minibuffer-window) delta)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>          (<span class="kw">when</span> greeting-message (message <span class="st">&quot;Have a nice one. ;^]&quot;</span>))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        )))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">;; resize minibuffer on terminal and window-system when initializing</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>(add-hook 'window-state-change-hook (<span class="kw">lambda</span> ()</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                                      (resize-minibuffer-window <span class="kw">t</span>)))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>(global-set-key (kbd <span class="st">&quot;C-l&quot;</span>) (<span class="kw">lambda</span>()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                              (interactive) <span class="co">; without this emacs will complain</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                              (redraw-display)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                              (resize-minibuffer-window)))</span></code></pre></div>
+<h2 id="more-emacs-org-mode-resource">More Emacs / Org Mode resource</h2>
+<h3 id="youtube">YouTube</h3>
+<ol>
+<li><p><a href="https://www.youtube.com/user/mzamansky">Mike Zamansky’s Youtube Channel</a></p>
+<p>Talks about not only about org-mode but also variety of emacs stuff.</p></li>
+<li><p><a href="https://www.youtube.com/channel/UCAiiOTio8Yu69c3XnR7nQBQ">System Crafters’s Youtube Channel</a></p>
+<p>Relatively new youtuber. I glimpse his videos which I think professional videos.</p></li>
+<li><p><a href="https://www.youtube.com/user/koenighaunstetten">Rainer König Youtube Channel</a></p>
+<p>His org-mode is best so far</p></li>
+</ol>
+<h2 id="hacking-more-feature-for-hakyll">HACKING More Feature for hakyll</h2>
+<ul>
+<li>Support series - which is not slightly different from tag
+maybe I could possilbly use special tag for a series but I’d like to
+use some table of content on the series in a related blog. So I don’t need to
+update the link of whole blogs posts.</li>
+<li>Syntax highlight on some text like “TODO” “HACKING” “XXX” etc.</li>
+</ul>
+<h2 id="learning-org-mode-and-blogging-at-the-same-time.">Learning Org-mode and Blogging at the same time.</h2>
+<ul>
+<li>Deadline or schedule disappear when we just pressed the shortcuts.
+Because it goes beginning of the lines.
+DEADLINE: &lt;2022-03-27 Sun&gt;</li>
+</ul>
+<h3 id="schedule-test">schedule test</h3>
+<ul>
+<li>SCHEDULED: &lt;2022-03-28 Mon&gt;</li>
+</ul>
+<h2 id="more-tests">More Tests</h2>
+<h3 id="foot-note">Foot note</h3>
+<h3 id="tables">Tables</h3>
+<ol>
+<li><p>Shortcuts Table (mainly for file or buffer)</p>
+<p>below table is actually working table for my extra key bindings. and the code after
+table generate the keybindings according to it.</p>
+<div id="myjin/shortcuts-list">
+<table>
+<thead>
+<tr class="header">
+<th>Keymap</th>
+<th>Key</th>
+<th>Binding Type</th>
+<th>Link</th>
+<th>Extra Info</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>t</td>
+<td>m</td>
+<td>file</td>
+<td>~/proj/.code-memo.org</td>
+<td>nil</td>
+<td>nil for no prefix</td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>b</td>
+<td>file</td>
+<td>~/gtd/inbox.org</td>
+<td>nil</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>t</td>
+<td>g</td>
+<td>file</td>
+<td>~/gtd/gtd.org</td>
+<td>nil</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>i</td>
+<td>file</td>
+<td>myoungjin-init.org</td>
+<td>t</td>
+<td>t for using user-emacs-directory</td>
+</tr>
+<tr class="odd">
+<td>t</td>
+<td>s</td>
+<td>buff</td>
+<td><strong>scratch</strong></td>
+<td>nil</td>
+<td>it looks bold when type <strong><strong>scratch</strong></strong></td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>e</td>
+<td>file</td>
+<td>~/gtd/english.org</td>
+<td>nil</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>t</td>
+<td>p</td>
+<td>toggle</td>
+<td>paredit-mode</td>
+<td></td>
+<td>toggle mode</td>
+</tr>
+<tr class="even">
+<td>g</td>
+<td>C-c d</td>
+<td>func</td>
+<td>paredit-forward-down</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>g</td>
+<td>C-c s</td>
+<td>func</td>
+<td>paredit-splice-sexp</td>
+<td></td>
+<td>for terminal compatibility</td>
+</tr>
+<tr class="even">
+<td>g</td>
+<td>C-c &lt;left&gt;</td>
+<td>func</td>
+<td>paredit-backward-slurp-sexp</td>
+<td></td>
+<td>..</td>
+</tr>
+<tr class="odd">
+<td>g</td>
+<td>C-c &lt;right&gt;</td>
+<td>func</td>
+<td>paredit-backward-barf-sexp</td>
+<td></td>
+<td>..</td>
+</tr>
+<tr class="even">
+<td>g</td>
+<td>C-]</td>
+<td>func</td>
+<td>fold-dwim-toggle</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>g</td>
+<td>C-x [</td>
+<td>func</td>
+<td>fold-dwim-hide-all</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>g</td>
+<td>C-x ]</td>
+<td>func</td>
+<td>fold-dwim-show-all</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>t</td>
+<td>j</td>
+<td>func</td>
+<td>tabbar-backward</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>k</td>
+<td>func</td>
+<td>tabbar-forward</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>t</td>
+<td>h</td>
+<td>func</td>
+<td>tabbar-backward-group</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>l</td>
+<td>func</td>
+<td>tabbar-forward-group</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>g</td>
+<td>C-c DEL</td>
+<td>func</td>
+<td>myjin/hungry-delete-backward</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>g</td>
+<td>C-c C-d</td>
+<td>func</td>
+<td>myjin/hungry-delete-forward</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>g</td>
+<td>C-c a</td>
+<td>func</td>
+<td>org-agenda</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>g</td>
+<td>C-c c</td>
+<td>func</td>
+<td>org-capture</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>org-mode</td>
+<td>M-n</td>
+<td>func</td>
+<td>org-next-link</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>org-mode</td>
+<td>M-p</td>
+<td>func</td>
+<td>org-previous-link</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>org-mode</td>
+<td>C-c m RET</td>
+<td>func</td>
+<td>myjin/org-insert-todo-heading</td>
+<td></td>
+<td>WORKAROUND</td>
+</tr>
+<tr class="even">
+<td>org-mode</td>
+<td>C-c m \</td>
+<td>func</td>
+<td>org-insert-todo-heading-respect-content</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>rust-mode</td>
+<td>C-c C-c</td>
+<td>func</td>
+<td>rust-run</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode" id="cb2" data-org-language="emacs-lisp" data-var="shortcuts-data=myjin/shortcuts-list"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">dolist</span> (r shortcuts-data)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let</span> (key-after-map binding-type link extra-info)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">setq</span> key-map       (<span class="kw">nth</span> <span class="dv">0</span> r)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>          key-after-map (<span class="kw">nth</span> <span class="dv">1</span> r)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>          binding-type  (<span class="kw">nth</span> <span class="dv">2</span> r)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>          link          (<span class="kw">nth</span> <span class="dv">3</span> r)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>          extra-info    (<span class="kw">nth</span> <span class="dv">4</span> r))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">cond</span> ((<span class="kw">or</span> (<span class="kw">string=</span> key-map <span class="st">&quot;&quot;</span>) (<span class="kw">string=</span> key-map <span class="st">&quot;g&quot;</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> key-map 'global-map))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">string=</span> key-map <span class="st">&quot;t&quot;</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> key-map 'myjin-map))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            (<span class="kw">t</span> (<span class="kw">setq</span> key-map (<span class="kw">intern</span> (concat key-map <span class="st">&quot;-map&quot;</span>)))))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">cond</span> ((<span class="kw">equal</span> binding-type <span class="st">&quot;file&quot;</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> extra-info  (<span class="kw">if</span> (<span class="kw">string=</span> extra-info <span class="st">&quot;t&quot;</span>) <span class="kw">t</span> <span class="kw">nil</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;open a file&quot;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                (interactive)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                (<span class="kw">require</span> 'which-key)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                (myjin/load-file ,link ,extra-info))))</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;buff&quot;</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;open a link&quot;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                (interactive) (switch-to-buffer ,link))))</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;toggle&quot;</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;toggle major mode&quot;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                (interactive)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                (<span class="kw">let*</span> ((s (<span class="kw">intern</span> ,link))</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                       (on? (<span class="kw">symbol-value</span> s))</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>                       (inverse-on (<span class="kw">if</span> on? -<span class="dv">1</span> <span class="dv">1</span>)))</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                       (<span class="kw">funcall</span> s inverse-on)))))</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;func&quot;</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;call a function&quot;</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>                (interactive) (<span class="kw">funcall</span> (<span class="kw">intern</span> ,link))))))))</span></code></pre></div></li>
+</ol>
+<h2 id="thank-you-for-reading">Thank you for Reading</h2>
+<p>It’s time to use more schedule and GTD stuff integrated with blog system!!!</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->
