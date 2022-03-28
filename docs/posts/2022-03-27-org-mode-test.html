@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../css/22Mar2022.css" />
-    <link rel="stylesheet" type="text/css" href="../css/code.css" />
+    <link rel="stylesheet" type="text/css" href="../css/28Mar2022.code.css" />
   </head>
   <body class="surface-color">
     <header id="main-header">
@@ -51,20 +51,27 @@
 </div>
 
 <h1 id="blogging-with-org-mode">Blogging with Org Mode??</h1>
-<p>Below picture shows how it looks like when I writing in <strong>emacs org-mode</strong>.
+<p>The picture below shows how it looks like when I writing in <strong>emacs org-mode</strong>
 – of course – in emacs editor.</p>
 <p><img src="../images/27Mar2022-hakyll-emacs-org-mode-supported.png" /></p>
 <p><strong>Note:</strong> To embed the image you need to write down like:</p>
 <p><code class="verbatim">[[/link/to/yourimagewith.extension/]]</code></p>
-<p><em>.png</em> extension works <em>.webp</em> is not working for embeded image on hakyll blog.</p>
+<p><em>.png</em> extension works. <em>.jpg</em> should do as well.</p>
+<p>However, <em>.webp</em> is not recognized for embeded image on hakyll blog.</p>
 <h2 id="hakyll---pandoc-powered-blog-system">Hakyll - Pandoc-Powered Blog System</h2>
 <p>When I look around the hakyll templates, I found there are more than one kind of
 tempalte language like <em>*.markdown,</em> <em>*.rst</em>. I vaguely realize that hakyll maybe support more
-file formats. and I found <a href="https://turbomack.github.io/">Marek Fajkus’s Blog</a>.</p>
-<p>Yes. It is possible to write a blog with org-mode.
-I like org-mode but I forgot the many key-binding after setting my emacs via `org-babel`</p>
+file formats. And I found <a href="https://turbomack.github.io/">Marek Fajkus’s Blog</a>. where the author write the artilces actually
+org-mode. <a href="https://raw.githubusercontent.com/turboMaCk/turboMaCk.github.io/develop/posts/2016-12-21-org-mode-in-hakyll.org">please visit: an example of his raw code in org mode</a></p>
+<p>Yes. It is possible to write a blog with org-mode. 👍</p>
+<p>I like org-mode but I forgot the many key-binding after setting my emacs via <a href="https://github.com/jeongoon/dotfiles/blob/master/config/emacs/myoungjin-init.org">org-babel</a>.
+But it was absolutely remarkable setup method which I never experienced before.</p>
+<p>Foot note test: Hakyll Homepage Link is at the bottom. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
+The links will be located in <code>&lt;section class="footnotes"&gt;</code> at the bottom just before footer.
+So we could possibly re-arrange them on the other part of the page. which is, I think,
+awsome!</p>
 <h2 id="coding-block-test">Coding block test</h2>
-<h3 id="not-so-minibuffer">Not so minibuffer</h3>
+<h3 id="not-so-minibuffer-an-example-emacs-lisp-code-from-me">Not so minibuffer (an example emacs-lisp code from me)</h3>
 <p>This emacs-lisp code is one of the my emacs settings, and increase the size of minibuffer
 sligtly. Emacs settings is quite programmable and even better with `org-babel`.</p>
 <div class="sourceCode" id="cb1" data-org-language="emacs-lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setq</span> resize-mini-windows <span class="kw">nil</span>) <span class="co">;; set `nil' to keep size after resizing</span></span>
@@ -94,12 +101,13 @@ sligtly. Emacs settings is quite programmable and even better with `org-babel`.<
 <h2 id="more-emacs-org-mode-resource">More Emacs / Org Mode resource</h2>
 <h3 id="youtube">YouTube</h3>
 <ol>
+<li><p><a href="https://www.youtube.com/user/koenighaunstetten">Rainer König Youtube Channel</a></p>
+<p>His org-mode series is the best so far.</p></li>
 <li><p><a href="https://www.youtube.com/user/mzamansky">Mike Zamansky’s Youtube Channel</a></p>
-<p>Talks about not only about org-mode but also variety of emacs stuff.</p></li>
+<p>Talks about not only about org-mode but also variety of emacs stuff.
+which really helps when I was trying to setup my emacs.</p></li>
 <li><p><a href="https://www.youtube.com/channel/UCAiiOTio8Yu69c3XnR7nQBQ">System Crafters’s Youtube Channel</a></p>
 <p>Relatively new youtuber. I glimpse his videos which I think professional videos.</p></li>
-<li><p><a href="https://www.youtube.com/user/koenighaunstetten">Rainer König Youtube Channel</a></p>
-<p>His org-mode is best so far</p></li>
 </ol>
 <h2 id="hacking-more-feature-for-hakyll">HACKING More Feature for hakyll</h2>
 <ul>
@@ -112,7 +120,8 @@ update the link of whole blogs posts.</li>
 <h2 id="learning-org-mode-and-blogging-at-the-same-time.">Learning Org-mode and Blogging at the same time.</h2>
 <ul>
 <li>Deadline or schedule disappear when we just pressed the shortcuts.
-Because it goes beginning of the lines.
+Because it goes beginning of the lines. below codes are, on the contrast,
+I moved from the original place which is displayed.
 DEADLINE: &lt;2022-03-27 Sun&gt;</li>
 </ul>
 <h3 id="schedule-test">schedule test</h3>
@@ -124,8 +133,17 @@ DEADLINE: &lt;2022-03-27 Sun&gt;</li>
 <h3 id="tables">Tables</h3>
 <ol>
 <li><p>Shortcuts Table (mainly for file or buffer)</p>
-<p>below table is actually working table for my extra key bindings. and the code after
-table generate the keybindings according to it.</p>
+<p>If we input like below, it will looks like the following html.</p>
+<pre class="example"><code>#+BEGIN_SRC
+#+NAME: myjin/shortcuts-list
+| Keymap    | Key         | Binding Type | Link                                
+|-----------+-------------+--------------+----------------------------- .....
+| t         | m           | file         | ~/proj/.code-memo.org               
+#+END_SRC
+
+</code></pre>
+<p><strong>Note:</strong> each table has the name which we can refer later.
+I don’t have any style for table, so it will look very boring. 🥱</p>
 <div id="myjin/shortcuts-list">
 <table>
 <thead>
@@ -177,7 +195,7 @@ table generate the keybindings according to it.</p>
 <td>buff</td>
 <td><strong>scratch</strong></td>
 <td>nil</td>
-<td>it looks bold when type <strong><strong>scratch</strong></strong></td>
+<td>it looks bold when type <code class="verbatim">**scratch**</code></td>
 </tr>
 <tr class="even">
 <td>t</td>
@@ -358,50 +376,58 @@ table generate the keybindings according to it.</p>
 </tbody>
 </table>
 </div></li>
-<li><p>emacs lisp to turn the table into shortcuts</p>
-<div class="sourceCode" id="cb2" data-org-language="emacs-lisp" data-var="shortcuts-data=myjin/shortcuts-list"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">dolist</span> (r shortcuts-data)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let</span> (key-after-map binding-type link extra-info)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">setq</span> key-map       (<span class="kw">nth</span> <span class="dv">0</span> r)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>          key-after-map (<span class="kw">nth</span> <span class="dv">1</span> r)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>          binding-type  (<span class="kw">nth</span> <span class="dv">2</span> r)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>          link          (<span class="kw">nth</span> <span class="dv">3</span> r)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>          extra-info    (<span class="kw">nth</span> <span class="dv">4</span> r))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">cond</span> ((<span class="kw">or</span> (<span class="kw">string=</span> key-map <span class="st">&quot;&quot;</span>) (<span class="kw">string=</span> key-map <span class="st">&quot;g&quot;</span>))</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> key-map 'global-map))</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">string=</span> key-map <span class="st">&quot;t&quot;</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> key-map 'myjin-map))</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            (<span class="kw">t</span> (<span class="kw">setq</span> key-map (<span class="kw">intern</span> (concat key-map <span class="st">&quot;-map&quot;</span>)))))</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">cond</span> ((<span class="kw">equal</span> binding-type <span class="st">&quot;file&quot;</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> extra-info  (<span class="kw">if</span> (<span class="kw">string=</span> extra-info <span class="st">&quot;t&quot;</span>) <span class="kw">t</span> <span class="kw">nil</span>))</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;open a file&quot;</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                (interactive)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                (<span class="kw">require</span> 'which-key)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                (myjin/load-file ,link ,extra-info))))</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;buff&quot;</span>)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;open a link&quot;</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                (interactive) (switch-to-buffer ,link))))</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;toggle&quot;</span>)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;toggle major mode&quot;</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                (interactive)</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                (<span class="kw">let*</span> ((s (<span class="kw">intern</span> ,link))</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                       (on? (<span class="kw">symbol-value</span> s))</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>                       (inverse-on (<span class="kw">if</span> on? -<span class="dv">1</span> <span class="dv">1</span>)))</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                       (<span class="kw">funcall</span> s inverse-on)))))</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;func&quot;</span>)</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;call a function&quot;</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>                (interactive) (<span class="kw">funcall</span> (<span class="kw">intern</span> ,link))))))))</span></code></pre></div></li>
+<li><p><strong>emacs lisp</strong> to turn the table into shortcuts</p>
+<p>Each table has a name for it which is not shown here but it looks like:</p>
+<div class="sourceCode" id="cb3" data-org-language="emacs-lisp" data-var="shortcuts-data=myjin/shortcuts-list"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">dolist</span> (r shortcuts-data)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let</span> (key-after-map binding-type link extra-info)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">setq</span> key-map       (<span class="kw">nth</span> <span class="dv">0</span> r)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          key-after-map (<span class="kw">nth</span> <span class="dv">1</span> r)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>          binding-type  (<span class="kw">nth</span> <span class="dv">2</span> r)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>          link          (<span class="kw">nth</span> <span class="dv">3</span> r)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>          extra-info    (<span class="kw">nth</span> <span class="dv">4</span> r))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">cond</span> ((<span class="kw">or</span> (<span class="kw">string=</span> key-map <span class="st">&quot;&quot;</span>) (<span class="kw">string=</span> key-map <span class="st">&quot;g&quot;</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> key-map 'global-map))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">string=</span> key-map <span class="st">&quot;t&quot;</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> key-map 'myjin-map))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>            (<span class="kw">t</span> (<span class="kw">setq</span> key-map (<span class="kw">intern</span> (concat key-map <span class="st">&quot;-map&quot;</span>)))))</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">cond</span> ((<span class="kw">equal</span> binding-type <span class="st">&quot;file&quot;</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">setq</span> extra-info  (<span class="kw">if</span> (<span class="kw">string=</span> extra-info <span class="st">&quot;t&quot;</span>) <span class="kw">t</span> <span class="kw">nil</span>))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;open a file&quot;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                (interactive)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                (<span class="kw">require</span> 'which-key)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                (myjin/load-file ,link ,extra-info))))</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;buff&quot;</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;open a link&quot;</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                (interactive) (switch-to-buffer ,link))))</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;toggle&quot;</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;toggle major mode&quot;</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>                (interactive)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>                (<span class="kw">let*</span> ((s (<span class="kw">intern</span> ,link))</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>                       (on? (<span class="kw">symbol-value</span> s))</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>                       (inverse-on (<span class="kw">if</span> on? -<span class="dv">1</span> <span class="dv">1</span>)))</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>                       (<span class="kw">funcall</span> s inverse-on)))))</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>          ((<span class="kw">equal</span> binding-type <span class="st">&quot;func&quot;</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>           (define-key (<span class="kw">symbol-value</span> key-map) (kbd key-after-map)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>             `(<span class="kw">lambda</span> () <span class="st">&quot;call a function&quot;</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>                (interactive) (<span class="kw">funcall</span> (<span class="kw">intern</span> ,link))))))))</span></code></pre></div></li>
 </ol>
 <h2 id="thank-you-for-reading">Thank you for Reading</h2>
-<p>It’s time to use more schedule and GTD stuff integrated with blog system!!!</p>
+<p>It’s time to use more schedule and GTD stuff integrated with blog system!!!
+And this is why I love the emacs system.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="http://jaspervdj.be/hakyll">http://jaspervdj.be/hakyll</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
     </div>
 

@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../css/22Mar2022.css" />
-    <link rel="stylesheet" type="text/css" href="../css/code.css" />
+    <link rel="stylesheet" type="text/css" href="../css/28Mar2022.code.css" />
   </head>
   <body class="surface-color">
     <header id="main-header">
@@ -213,15 +213,22 @@ results in Widget data type.</p>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>             font-weight: bold;</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>             text-align: center;</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         }</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>     ]</span></code></pre></div>
-<p>So we can later interpolate with other Widgets like</p>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>     ]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>   toWidget</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>     [hamlet|</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>       &lt;footer&gt;</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>         &lt;p&gt;That's all folks!</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>     |]</span></code></pre></div>
+<p>So we can later interpolate with other Widgets like:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ot">page ::</span> <span class="dt">Widget</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>page <span class="ot">=</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  [whamlet|</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;p&gt;</span>This is my page. I hope you enjoyed it.</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="kw">^{</span>footer<span class="kw">}</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  |]</span></code></pre></div>
-<p>So basically every element could be a <code>Widget</code></p>
+<p>Suprisingly, we don’t ned to worry about mixed template lanuages.
+Above code use Html(Hamlet) and Css(Lucius) at the same time.</p>
+<p>So basically every element could be a <code>Widget</code>.</p>
 <p>We can load our widget(s) later, which is explained in:
 <a href="https://www.yesodweb.com/book/widgets#widgets_using_widgets">here</a></p>
 <h2 id="making-widget">Making Widget</h2>
