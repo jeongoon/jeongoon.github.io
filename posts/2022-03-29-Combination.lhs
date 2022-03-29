@@ -116,18 +116,18 @@ combinations (m:ms) 2 = sequence [[m], ms] ++ (combinations ms 2)
 Pattern matching in Raku
 ------------------------
 
-Pattern matching in [Raku](www.raku.org) also has similar pattern.
+Pattern matching in [Raku](www.raku.org) also has similar structure.
 ~~I guess this idea came from haskell or C++~~
 
 ```perl
  # combinations []     _  = []
- sub combinations([], Any) { [] }
+ sub combinations( [] , Any ) { [] }
 
  # combinations (m:ms) 1 = [m] : (combinations ms 1)
  sub combinations( Array $ms is copy, 1 ) {
      my $m = $ms.shift;
-     [[$m]]
-     .append( [samewith( $ms, 1 ) ]
+     [ [$m] ]
+         .append( [samewith( $ms, 1 ) ]
      );
  }
 ```
