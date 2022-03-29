@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="solving 99 question on haskell.org and">
+
+
+    <meta name="keywords" content="haskell, combinations, raku, documentation">
+
+
+    <title>MJ's kind weird Code - Combinations in haskell</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../css/22Mar2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/29Mar2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Combinations in haskell
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on March 29, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'haskell'." href="../tags/haskell.html">haskell</a>, <a title="All pages tagged 'combinations'." href="../tags/combinations.html">combinations</a>, <a title="All pages tagged 'raku'." href="../tags/raku.html">raku</a>, <a title="All pages tagged 'documentation'." href="../tags/documentation.html">documentation</a>
+  
+</div>
+
+<p>Copyright (c) 2020 JEON Myoungjin &lt;jeongoon@g… &gt;</p>
+<h1 id="another-combination-module-from-me">Another Combination Module from me</h1>
+<p>This module was creaeted when I solve <a href="https://perlweeklychallenge.org/blog/perl-weekly-challenge-083/#TASK2">The Perl Weekly Challange #083</a>.</p>
+<p>I made another implementation for imperative method long time ago, which results
+in satisfying enough in pure perl code. However, It was impossible to achieve
+the same result in haskell because it is not natural for haskell to approach
+the similar (imperataive) way.
+But <em>I’m not saying this is the best combination solution</em>, I’d rather it looks
+a bit tricky and ugly. In comparison in solution in
+<a href="https://wiki.haskell.org/99_questions/Solutions/26">99 Questions</a>,
+this module shows relatively faster result.</p>
+<h1 id="documentation-is-always-good-idea">Documentation Is Always Good Idea</h1>
+<p>However, I didn’t write down any comments on it. Now the person who is
+suffurring to understand what the code exacatly does is myself. 😂
+And no commentary or documentation always makes Haskell
+striving for getting popularity, IMHO.</p>
+<p>So I changed the format into literate haskell and try to blog about it.
+at the same time, I could get another chance to writing a blog in literate
+haskell to find some missing-feature and workaround.</p>
+<p>This is a simple module and not a academic module either.
+However I found something is useful or similar to another language.</p>
+<p>First of all, we need to declare what is the module name and
+write down the which function or data type we will export.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Combinations</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  ( combinations</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">where</span></span></code></pre></div>
+<p>This module makes serveral implementation with <code>pattern matching</code>
+under the same function name. But overall code should satisfy the
+type annotation and cover all the cases it could happen.</p>
+<p>So type annotation will give us the hint of look and feel of function. 🤔</p>
+<p><strong>Note:</strong> argument order is opposite from the <a href="https://wiki.haskell.org/99_questions/Solutions/26">99 questions on haskell.org.</a>
+which is actually good order for <a href="http://learnyouahaskell.com/higher-order-functions#curried-functions">partial application</a>.
+However, other language – let’s say python – normally has the order of
+what I put, which was easier for me during solving the PWC #083 Task#2.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">combinations ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [[a]]</span></code></pre></div>
+<p>First thing we could imagine is that if there is nothing to select.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>combinations []     _  <span class="ot">=</span> []</span></code></pre></div>
+<p>Yes, empty list is the only the answer.</p>
+<p>How about if we have at least one candidate and choose one from them?</p>
+<p>There are so many ways to do it. but below code will serve enough.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">1</span> <span class="ot">=</span> [m] <span class="op">:</span> (combinations ms <span class="dv">1</span>)</span></code></pre></div>
+<p>last (combinations ms 1) will results in [[a]], so entire result
+also has tye same type as [[a]].</p>
+<p><em>BTW, Another variation might be like below.</em></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>combinations ms <span class="dv">1</span> <span class="ot">=</span> [ [m] <span class="op">|</span> m <span class="ot">&lt;-</span> ms ]</span></code></pre></div>
+<p><em>which I think more human-friendly syntax.</em></p>
+<p>I add some pattern matching for better performance.
+which is <code>select 2 out of the choices</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>combinations [_]    <span class="dv">2</span> <span class="ot">=</span> []</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>combinations [e,f]  <span class="dv">2</span> <span class="ot">=</span> [[e,f]]</span></code></pre></div>
+And <code>sequence</code> function shows good performance on this as well.
+I used it.
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">2</span> <span class="ot">=</span> <span class="fu">sequence</span> [[m], ms] <span class="op">++</span> (combinations ms <span class="dv">2</span>)</span></code></pre></div>
+<h1 id="pattern-matching-in-raku">Pattern matching in Raku</h1>
+<p>Pattern matching in <a href="www.raku.org">Raku</a> also has similar pattern.
+I guess this idea coming from haskell or C++</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">sub </span><span class="fu">combinations</span>([], Any) { [] }</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">sub </span><span class="fu">combinations</span>( Array <span class="dt">$ms</span> is copy, <span class="dv">1</span> ) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">my</span> <span class="dt">$m</span> = <span class="dt">$ms</span>.<span class="fu">shift</span>;</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    [[<span class="dt">$m</span>]]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    .append( [samewith( <span class="dt">$ms</span>, <span class="dv">1</span> ) ]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    );</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>BTW, raku has its own combination function for user. handy!</p>
+Lastly, I wrote for the other general cases.
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>combinations mList  n <span class="ot">=</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">case</span> totalLen <span class="ot">`compare`</span> n <span class="kw">of</span></span></code></pre></div>
+<p>And I could gain an insight of the pattern from above choice of 1 or 2.
+If we are trying to choose from empty list, result is empty list.
+And if the number of choice and the number of candidates are the same,
+return a list of one element which selects everything in the candidates.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>    <span class="dt">LT</span> <span class="ot">-&gt;</span> []</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">EQ</span> <span class="ot">-&gt;</span> [mList]</span></code></pre></div>
+<p>So now we did cover the number of choice up to <code>2</code>.
+And I build up the pattern from num. of choice <code>3</code>.</p>
+<pre class="ascii"><code>
+-- for easier writing flip the order of arguments.
+combinations' = flip combinations
+mList = [1,2,3,4,5]
+
+      mList                         mList
+        |                             |
+  combinations' 1              combinations' 3
+        |                             |
+        v                             v
+[ [1],                     [ [1] ++ comb |
+                               comb &lt;- combinations' 2 [2,3,4,5] ]
+                           ++
+  [2],                     [ [2] ++ comb |
+                               comb &lt;- combinations' 2 [3,4,5] ]
+                           ++
+  [3],
+  [4],                     ...
+  [5],
+]</code></pre>
+<p>And finally generalized form of the function is below.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>    _  <span class="ot">-&gt;</span> [ <span class="kw">let</span> leaders <span class="ot">=</span> <span class="fu">map</span> <span class="fu">fst</span> tups</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>            <span class="kw">in</span>  leaders <span class="op">++</span> followers <span class="op">|</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>            tups <span class="ot">&lt;-</span> combinations (<span class="fu">zip</span> mList [<span class="dv">0</span> <span class="op">..</span> room])  n',</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> skipCount <span class="ot">=</span> ((<span class="fu">snd</span><span class="op">.</span><span class="fu">last</span>) tups) <span class="op">+</span> <span class="dv">1</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                followers <span class="ot">&lt;-</span> (combinations (<span class="fu">drop</span> skipCount mList) <span class="dv">2</span>) ]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    totalLen    <span class="ot">=</span> <span class="fu">length</span> mList</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    room        <span class="ot">=</span> totalLen <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    n'          <span class="ot">=</span> n <span class="op">-</span> <span class="dv">2</span></span></code></pre></div>
+<p>If you look into full code without comments:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Combinations</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  ( combinations</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">where</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ot">combinations ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>combinations []     _  <span class="ot">=</span> []</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">1</span> <span class="ot">=</span> [m] <span class="op">:</span> (combinations ms <span class="dv">1</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>combinations [_]    <span class="dv">2</span> <span class="ot">=</span> []</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>combinations [e,f]  <span class="dv">2</span> <span class="ot">=</span> [[e,f]]</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">2</span> <span class="ot">=</span> <span class="fu">sequence</span> [[m], ms] <span class="op">++</span> (combinations ms <span class="dv">2</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>combinations mList  n <span class="ot">=</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">case</span> totalLen <span class="ot">`compare`</span> n <span class="kw">of</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">LT</span> <span class="ot">-&gt;</span> []</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">EQ</span> <span class="ot">-&gt;</span> [mList]</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    _  <span class="ot">-&gt;</span> [ <span class="kw">let</span> leaders <span class="ot">=</span> <span class="fu">map</span> <span class="fu">fst</span> tups</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>            <span class="kw">in</span>  leaders <span class="op">++</span> followers <span class="op">|</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>            tups <span class="ot">&lt;-</span> combinations (<span class="fu">zip</span> mList [<span class="dv">0</span> <span class="op">..</span> room])  n',</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> skipCount <span class="ot">=</span> ((<span class="fu">snd</span><span class="op">.</span><span class="fu">last</span>) tups) <span class="op">+</span> <span class="dv">1</span>,</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                followers <span class="ot">&lt;-</span> (combinations (<span class="fu">drop</span> skipCount mList) <span class="dv">2</span>) ]</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    totalLen    <span class="ot">=</span> <span class="fu">length</span> mList</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    room        <span class="ot">=</span> totalLen <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    n'          <span class="ot">=</span> n <span class="op">-</span> <span class="dv">2</span></span></code></pre></div>
+<p>It’s not very clear what I was trying to say in this code.
+Because I’m a novice haskeller and so does other haskellers.
+Why don’t you use literate format if you can?</p>
+<h1 id="and-about-usage">And About Usage</h1>
+<p>It would be more than happy if I find how I could actually use them
+on documentation, wouldn’t it?</p>
+<p>Probably <code>ghci</code> is the best for quick testing!</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> ghci</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">λ</span><span class="op">&gt;</span> :l Combinations.hs</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[1</span> of 1] Compiling Combinations     <span class="er">(</span> <span class="ex">Combinations.hs,</span> interpreted <span class="kw">)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Ok,</span> one module loaded.</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">λ</span><span class="op">&gt;</span> combinations [1,2,3,4,5] 3</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[[1,2,3],[1,2,4],[1,2,5],[1,3,4],[1,3,5],[1,4,5],[2,3,4],[2,3,5],[2,4,5],[3,4,5]]</span></span></code></pre></div>
+<p>Documentation is important. and “literate haskell” helps me a lot to do it.</p>
+<p>Okay. that’s all for today!</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->

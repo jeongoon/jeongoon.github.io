@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../css/22Mar2022.css" />
-    <link rel="stylesheet" type="text/css" href="../css/28Mar2022.code.css" />
+    <link rel="stylesheet" type="text/css" href="../css/29Mar2022.code.css" />
   </head>
   <body class="surface-color">
     <header id="main-header">
@@ -126,12 +126,12 @@ around the <code>div</code>)</p></li>
 <span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                                          |]</span>
 <span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>                , moreContents <span class="ot">=</span></span>
 <span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>                    [</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="pp">#if PRODUCTION</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a> <span class="op">#</span>if <span class="dt">PRODUCTION</span></span>
 <span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>                      toWidget <span class="op">$</span>(hamletFile <span class="st">&quot;templates/home-main.hamlet&quot;</span>)</span>
 <span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>                      <span class="co">-- we can add more .. ??</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="pp">#else</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a> <span class="op">#</span>else</span>
 <span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>                      toWidget <span class="op">$</span>(hamletFileReload <span class="st">&quot;templates/home-main.hamlet&quot;</span>)</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a> <span class="op">#</span>endif</span>
 <span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>                    ]</span>
 <span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>                }</span>
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>              ]</span>
@@ -142,11 +142,11 @@ around the <code>div</code>)</p></li>
 <span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- ^ load extra css</span></span>
 <span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>        setTitle <span class="st">&quot;Cafe Blossom&quot;</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="pp">#if PRODUCTION</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a> <span class="op">#</span>if <span class="dt">PRODUCTION</span></span>
 <span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        toWidgetHead <span class="op">$</span>(luciusFile <span class="st">&quot;templates/homepage.lucius&quot;</span>)</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="pp">#else</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a> <span class="op">#</span>else</span>
 <span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>        toWidgetHead <span class="op">$</span>(luciusFileReload <span class="st">&quot;templates/homepage.lucius&quot;</span>)</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a> <span class="op">#</span>endif</span>
 <span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>        parallaxWidget parallaxSettings</span></code></pre></div>
 <hr />
 <h1 id="css-parallax-explanation">Css Parallax Explanation</h1>
@@ -253,35 +253,48 @@ to create an widget with Hamlet and Cacius</p>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> globalBgSpeed         ::</span> <span class="dt">SpeedType</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> mbSkirtClasses        ::</span> <span class="dt">Maybe</span> <span class="dt">CssClassesType</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> parallaxGroups        ::</span> [<span class="dt">CssParallaxGroup</span> site]</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> mbFooterContent       ::</span> <span class="dt">Maybe</span> (<span class="dt">WidgetFor</span> site ())</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">-- | each group can have different background and parallax speed.</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">CssParallaxGroup</span> site <span class="ot">=</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">CssParallaxGroup</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  {<span class="ot"> groupId               ::</span> <span class="dt">ParallaxGroupId</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- ^ used for unique css class name</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> customCssClasses      ::</span> <span class="dt">CssClassesType</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- ^ this is custom css classes for styling</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> parallaxClasses       ::</span> <span class="dt">CssClassesType</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- ^ about parllax object specific styling</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> mbBgSpeed             ::</span> <span class="dt">Maybe</span> <span class="dt">SpeedType</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> bgStaticRoute         ::</span> <span class="dt">StaticRoute</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> titleContainerClasses ::</span> <span class="dt">CssClassesType</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> titleContent          ::</span> <span class="dt">WidgetFor</span> site ()</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> moreContents          ::</span> [<span class="dt">WidgetFor</span> site()]</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> absParallaxItems      ::</span> [<span class="dt">AbsCssParallaxItem</span> site]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> mbFooterContent       ::</span> <span class="dt">Maybe</span> (<span class="dt">WidgetFor</span> site ())</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">-- | each group can have different background and parallax speed.</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">CssParallaxGroup</span> site <span class="ot">=</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">CssParallaxGroup</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  {<span class="ot"> groupId                     ::</span> <span class="dt">ParallaxGroupId</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- ^ used for unique css class name</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> grpCustomCssClasses         ::</span> <span class="dt">CssClassesType</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- ^ this is custom css classes for styling</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> grpParallaxClasses          ::</span> <span class="dt">CssClassesType</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- ^ about parallax object specific styling</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> mbGrpBgSpeed                ::</span> <span class="dt">Maybe</span> <span class="dt">SpeedType</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> grpBgStaticRoute            ::</span> <span class="dt">StaticRoute</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> grpTitleContainerClasses    ::</span> <span class="dt">CssClassesType</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> grpTitleContent             ::</span> <span class="dt">WidgetFor</span> site ()</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> grpMoreContents             ::</span> [<span class="dt">WidgetFor</span> site()]</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">-- | Some parallax items can has 'absolute' position and moving at different</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">--   speed. (normally used for faster-moving elements)</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">AbsCssParallaxItem</span> site <span class="ot">=</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="dt">AbsCssParallaxItem</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  {<span class="ot"> itemId                ::</span> <span class="dt">ParallaxItemId</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> customItemCssClasses  ::</span> <span class="dt">CssClassesType</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> itemSpeed             ::</span> <span class="dt">SpeedType</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> itemContent           ::</span> <span class="dt">WidgetFor</span> site ()</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 <h2 id="make-some-type-alias-for-more-readable-form-of-declaration">Make some type alias for more readable form of declaration</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- | alias for group id</span></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- | alias for parallax group or item Id</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">ParallaxGroupId</span> <span class="ot">=</span> <span class="dt">Text</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">newtype</span> <span class="dt">CssClassesType</span> <span class="ot">=</span> <span class="dt">CssClasses</span> {<span class="ot"> getCssClasses ::</span> [<span class="dt">Text</span>] }</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- |  join all the classes with &quot; &quot; to use inside tag &lt; .. class=&quot;&lt;Here&gt;&quot; &gt;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">CssClassesType</span> <span class="kw">where</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show</span> (<span class="dt">CssClasses</span> ts) <span class="ot">=</span> (<span class="fu">show</span> <span class="op">.</span> T.unwords) ts</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">ToCss</span> <span class="dt">CssClassesType</span> <span class="kw">where</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  toCss (<span class="dt">CssClasses</span> ccs) <span class="ot">=</span> toCss <span class="op">.</span> T.unwords <span class="op">$</span> ccs</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">ToMarkup</span> <span class="dt">CssClassesType</span> <span class="kw">where</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  toMarkup (<span class="dt">CssClasses</span> ccs) <span class="ot">=</span> toMarkup <span class="op">.</span> T.unwords <span class="op">$</span> ccs</span></code></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">ParallaxItemId</span>  <span class="ot">=</span> <span class="dt">Text</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">newtype</span> <span class="dt">CssClassesType</span> <span class="ot">=</span> <span class="dt">CssClasses</span> {<span class="ot"> getCssClasses ::</span> [<span class="dt">Text</span>] }</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- |  join all the classes with &quot; &quot; to use inside tag &lt; .. class=&quot;&lt;Here&gt;&quot; &gt;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">CssClassesType</span> <span class="kw">where</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show</span> (<span class="dt">CssClasses</span> ts) <span class="ot">=</span> (<span class="fu">show</span> <span class="op">.</span> T.unwords) ts</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">ToCss</span> <span class="dt">CssClassesType</span> <span class="kw">where</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  toCss (<span class="dt">CssClasses</span> ccs) <span class="ot">=</span> toCss <span class="op">.</span> T.unwords <span class="op">$</span> ccs</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">ToMarkup</span> <span class="dt">CssClassesType</span> <span class="kw">where</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  toMarkup (<span class="dt">CssClasses</span> ccs) <span class="ot">=</span> toMarkup <span class="op">.</span> T.unwords <span class="op">$</span> ccs</span></code></pre></div>
 <p>However, the below code got complained:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">SpeedType</span> <span class="ot">=</span> <span class="dt">Rational</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">Scaletype</span> <span class="ot">=</span> <span class="dt">Rational</span></span>
@@ -410,9 +423,8 @@ empty space (especially we have more contents after last background)
 And lastly, if you need any footer for your web page, footer should be
 inside of toplevel because toplevel handles overflow here.</p>
 <p>However, groups could be more than one, we are unable to specify the
-grid row names and we will use special mixin for skirt and footer.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>      gridUseSkirtRowMixin <span class="ot">=</span> [luciusMixin|grid-row: -2 / -1;|]</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>      gridUseFooterRowMixin <span class="ot">=</span> [luciusMixin|grid-row-start: -1;|]</span></code></pre></div>
+grid row names, so you might need to specify only how many rows it will consume</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode haskell"><code class="sourceCode haskell"></code></pre></div>
 <p>Each group contains:</p>
 <ol type="1">
 <li>a parallax object (background image)
@@ -481,48 +493,52 @@ Css, which is appened by “px” string.</p>
 <span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>.css-parallax-layer-#{classSurfix}.as-base-extra {</span>
 <span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>    ^{gridUseAllRowsNamedMixin &quot;bs-extra&quot;}</span>
 <span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>.css-parallax-toplevel-#{classSurfix} &gt; .css-parallax-background-skirt-#{classSurfix} {</span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    ^{gridUseAllColumnsMixin}</span>
-<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>/*    ^{gridUseSkirtRowMixin}*/</span>
-<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>.css-parallax-toplevel-footer-#{classSurfix} {</span>
-<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    ^{gridUseAllColumnsMixin}</span>
-<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>/*    ^{gridUseFooterRowMixin}*/</span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>.css-parallax-item-#{classSurfix} {</span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    position: absolute;</span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>.css-parallax-toplevel-#{classSurfix} &gt; .css-parallax-background-skirt-#{classSurfix} {</span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>    ^{gridUseAllColumnsMixin}</span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    grid-row: span 1;</span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>/*    ^{gridUseSkirtRowMixin}*/</span>
 <span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>.css-parallax-toplevel-#{classSurfix} + div {</span>
-<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>    /* credit: The Safari and iOS Caveat on https://orangeable.com/css/parallax-scroll */</span>
-<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>    /* jeongoon: haven't tested. no iPad or Macbook :-/ */</span>
-<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>    /* Safari / iOS issue with `overflow: hidden` is not working</span>
-<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>     * in the `css-parallax-toplevel` */</span>
-<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>    ^{fixiOSCaveatMixin}</span>
-<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>@supports ((perspective: 1px) and (not (-webkit-overflow-scrolling: touch))) {</span>
-<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>    body {</span>
-<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>        transform: translateZ(0px);</span>
-<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>        /* ^ Fix paint issues in Edge &amp; Safari H/W accel */</span>
-<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>    .css-parallax-toplevel-#{classSurfix} {</span>
-<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>        perspective: #{perspective};</span>
-<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a>       /* v fix wrong calculation visual size(height) of background</span>
-<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a>        *   on webkit based browsers.</span>
-<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a>        */</span>
-<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a>       perspective-origin: center bottom;</span>
-<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a>    .css-parallax-toplevel-#{classSurfix} &gt; *</span>
-<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a>    , .css-parallax-layer-#{classSurfix}.as-base</span>
-<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a>    , .css-parallax-layer-#{classSurfix}.as-base-extra {</span>
-<span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a>        z-index: 1;</span>
-<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a>        /* prevents the browser flattening the `css-parallax-layer` elements */</span>
-<span id="cb26-69"><a href="#cb26-69" aria-hidden="true" tabindex="-1"></a>        transform-style: preserve-3d;</span>
-<span id="cb26-70"><a href="#cb26-70" aria-hidden="true" tabindex="-1"></a>        /* v ensure Safari H/W acceleration */</span>
-<span id="cb26-71"><a href="#cb26-71" aria-hidden="true" tabindex="-1"></a>        ^{transformForFixingSafariHWAccelMixin}</span>
-<span id="cb26-72"><a href="#cb26-72" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb26-73"><a href="#cb26-73" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-74"><a href="#cb26-74" aria-hidden="true" tabindex="-1"></a>|]</span>
-<span id="cb26-75"><a href="#cb26-75" aria-hidden="true" tabindex="-1"></a>  applyAllGroupsParallaxSetup</span></code></pre></div>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>.css-parallax-toplevel-footer-#{classSurfix} {</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>    ^{gridUseAllColumnsMixin}</span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>    grid-row: span 1;</span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>.css-parallax-toplevel-#{classSurfix} + div {</span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>    /* credit: The Safari and iOS Caveat on https://orangeable.com/css/parallax-scroll */</span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>    /* jeongoon: haven't tested. no iPad or Macbook :-/ */</span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>    /* Safari / iOS issue with `overflow: hidden` is not working</span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>     * in the `css-parallax-toplevel` */</span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>    ^{fixiOSCaveatMixin}</span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>@supports ((perspective: 1px) and (not (-webkit-overflow-scrolling: touch))) {</span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>    body {</span>
+<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>        transform: translateZ(0px);</span>
+<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>        /* ^ Fix paint issues in Edge &amp; Safari H/W accel */</span>
+<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a>    .css-parallax-toplevel-#{classSurfix} {</span>
+<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a>        perspective: #{perspective};</span>
+<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a>       /* v fix wrong calculation visual size(height) of background</span>
+<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a>        *   on webkit based browsers.</span>
+<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a>        */</span>
+<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a>       perspective-origin: center bottom;</span>
+<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a>    .css-parallax-toplevel-#{classSurfix} &gt; *</span>
+<span id="cb26-69"><a href="#cb26-69" aria-hidden="true" tabindex="-1"></a>    , .css-parallax-layer-#{classSurfix}.as-base</span>
+<span id="cb26-70"><a href="#cb26-70" aria-hidden="true" tabindex="-1"></a>    , .css-parallax-layer-#{classSurfix}.as-base-extra {</span>
+<span id="cb26-71"><a href="#cb26-71" aria-hidden="true" tabindex="-1"></a>        z-index: 1;</span>
+<span id="cb26-72"><a href="#cb26-72" aria-hidden="true" tabindex="-1"></a>        /* prevents the browser flattening the `css-parallax-layer` elements */</span>
+<span id="cb26-73"><a href="#cb26-73" aria-hidden="true" tabindex="-1"></a>        transform-style: preserve-3d;</span>
+<span id="cb26-74"><a href="#cb26-74" aria-hidden="true" tabindex="-1"></a>        /* v ensure Safari H/W acceleration */</span>
+<span id="cb26-75"><a href="#cb26-75" aria-hidden="true" tabindex="-1"></a>        ^{transformForFixingSafariHWAccelMixin}</span>
+<span id="cb26-76"><a href="#cb26-76" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb26-77"><a href="#cb26-77" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-78"><a href="#cb26-78" aria-hidden="true" tabindex="-1"></a>|]</span>
+<span id="cb26-79"><a href="#cb26-79" aria-hidden="true" tabindex="-1"></a>  applyAllGroupsParallaxSetup</span></code></pre></div>
 <h2 id="html-hamlet">Html (Hamlet)</h2>
 <p>And finally this is Html part for actual displaying layout.
 Please have a look <code>gridTemplateToplevelMixin</code> and <code>gridTemplateGroupMixin</code>
@@ -534,20 +550,23 @@ for the structure.</p>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>      No parallaxGroups: Please Check you parallaxGroups</span>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">$else</span></span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">$forall</span> pg <span class="ot">&lt;-</span> parallaxGroups</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;div </span><span class="er">id=&quot;#{groupId</span><span class="kw"> </span><span class="er">pg}&quot;</span><span class="kw"> </span><span class="er">class=&quot;css-parallax-group-#{classSurfix}#{appendCssClasses</span><span class="kw"> </span><span class="er">(customCssClasses</span><span class="kw"> </span><span class="er">pg)}&quot;</span><span class="kw">&gt;</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-layer-#{classSurfix}</span><span class="kw"> </span><span class="er">as-parallax#{appendCssClasses</span><span class="kw"> </span><span class="er">(parallaxClasses</span><span class="kw"> </span><span class="er">pg)}&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;div </span><span class="er">id=&quot;#{groupId</span><span class="kw"> </span><span class="er">pg}&quot;</span><span class="kw"> </span><span class="er">class=&quot;css-parallax-group-#{classSurfix}#{appendCssClasses</span><span class="kw"> </span><span class="er">(grpCustomCssClasses</span><span class="kw"> </span><span class="er">pg)}&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-layer-#{classSurfix}</span><span class="kw"> </span><span class="er">as-parallax#{appendCssClasses</span><span class="kw"> </span><span class="er">(grpParallaxClasses</span><span class="kw"> </span><span class="er">pg)}&quot;</span><span class="kw">&gt;</span></span>
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-layer-#{classSurfix}</span><span class="kw"> </span><span class="er">as-base#{appendCssClasses</span><span class="kw"> </span><span class="er">(titleContainerClasses</span><span class="kw"> </span><span class="er">pg)}&quot;</span><span class="kw">&gt;</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>          <span class="kw">^{</span>titleContent pg<span class="kw">}</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-layer-#{classSurfix}</span><span class="kw"> </span><span class="er">as-base#{appendCssClasses</span><span class="kw"> </span><span class="er">(grpTitleContainerClasses</span><span class="kw"> </span><span class="er">pg)}&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>          <span class="kw">^{</span>grpTitleContent pg<span class="kw">}</span></span>
 <span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-layer-#{classSurfix}</span><span class="kw"> </span><span class="er">as-base-extra&quot;</span><span class="kw">&gt;</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">$forall</span> moreContent <span class="ot">&lt;-</span> (moreContents pg)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">$forall</span> moreContent <span class="ot">&lt;-</span> (grpMoreContents pg)</span>
 <span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>              <span class="kw">^{</span>moreContent<span class="kw">}</span></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">$maybe</span> skirtClasses <span class="ot">&lt;-</span> mbSkirtClasses</span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-background-skirt-#{classSurfix}#{appendCssClasses</span><span class="kw"> </span><span class="er">skirtClasses</span><span class="kw"> </span><span class="er">}&quot;</span><span class="kw">&gt;</span></span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">$maybe</span> footerContent <span class="ot">&lt;-</span> mbFooterContent</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-toplevel-footer-#{classSurfix}&quot;</span><span class="kw">&gt;</span></span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">^{</span>footerContent<span class="kw">}</span></span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>|]</span></code></pre></div>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">$forall</span> <span class="fu">pi</span> <span class="ot">&lt;-</span> absParallaxItems</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;div </span><span class="er">id=&quot;#{itemId</span><span class="kw"> </span><span class="er">pi}&quot;</span><span class="kw"> </span><span class="er">class=&quot;css-parallax-item-#{classSurfix}#{appendCssClasses</span><span class="kw"> </span><span class="er">(customItemCssClasses</span><span class="kw"> </span><span class="er">pi)}&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>          <span class="kw">^{</span>itemContent <span class="fu">pi</span><span class="kw">}</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">$maybe</span> skirtClasses <span class="ot">&lt;-</span> mbSkirtClasses</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-background-skirt-#{classSurfix}#{appendCssClasses</span><span class="kw"> </span><span class="er">skirtClasses</span><span class="kw"> </span><span class="er">}&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">$maybe</span> footerContent <span class="ot">&lt;-</span> mbFooterContent</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;div </span><span class="er">class=&quot;css-parallax-toplevel-footer-#{classSurfix}&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">^{</span>footerContent<span class="kw">}</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>|]</span></code></pre></div>
 <h2 id="about-my-literate-haskell-usage">About My Literate Haskell Usage</h2>
 <p>When ghc is compling literate haskell file and if something goes wrong,
 it doesn’t suggest what to do next. And if there is one line ghc cannot
@@ -563,7 +582,9 @@ understand it will just spit out the error messages like below.</p>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> <span class="kw">|</span>  <span class="ex">This</span> module applys css parallax on Yesod by creating Yesod widget</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">^</span></span></code></pre></div>
-<p>for the first time I met those error, I had totally no idea what to do next.</p>
+<p>For the first time I met those error, I totally had no idea what to do next.</p>
+<h1 id="todo">TODO</h1>
+<p>add support individual parallax item</p>
 
     </div>
 
