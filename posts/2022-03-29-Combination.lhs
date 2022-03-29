@@ -10,12 +10,14 @@ Copyright (c) 2020 JEON Myoungjin <jeongoon@g... >
 Another Combination Module from me
 ==================================
 
-This module was creaeted when I solve [The Perl Weekly Challange #083](https://perlweeklychallenge.org/blog/perl-weekly-challenge-083/#TASK2).
+This module was created when I solve [The Perl Weekly Challange #083](https://perlweeklychallenge.org/blog/perl-weekly-challenge-083/#TASK2).
 
 I made another implementation for imperative method long time ago, which results
-in satisfying enough in pure perl code. However, It was impossible to achieve
-the same result in haskell because it is not natural for haskell to approach
-the similar (imperataive) way.
+in satisfying speed for general ussage in pure perl code.
+
+However it was impossible to achieve the same result in haskell because
+it is not natural for haskell to approach the similar (imperataive) way.
+
 But *I'm not saying this is the best combination solution*, I'd rather it looks
 a bit tricky and ugly. In comparison in solution in
 [99 Questions](https://wiki.haskell.org/99_questions/Solutions/26),
@@ -163,7 +165,7 @@ mList = [1,2,3,4,5]
 ]
 ```
 
-And finally generalized form of the function is below.
+And finally extend idea I had above and made a generalized form of the function.
 
 \begin{code}
     _  -> [ let leaders = map fst tups

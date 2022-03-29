@@ -52,12 +52,12 @@
 
 <p>Copyright (c) 2020 JEON Myoungjin &lt;jeongoon@g… &gt;</p>
 <h1 id="another-combination-module-from-me">Another Combination Module from me</h1>
-<p>This module was creaeted when I solve <a href="https://perlweeklychallenge.org/blog/perl-weekly-challenge-083/#TASK2">The Perl Weekly Challange #083</a>.</p>
+<p>This module was created when I solve <a href="https://perlweeklychallenge.org/blog/perl-weekly-challenge-083/#TASK2">The Perl Weekly Challange #083</a>.</p>
 <p>I made another implementation for imperative method long time ago, which results
-in satisfying enough in pure perl code. However, It was impossible to achieve
-the same result in haskell because it is not natural for haskell to approach
-the similar (imperataive) way.
-But <em>I’m not saying this is the best combination solution</em>, I’d rather it looks
+in satisfying speed for general ussage in pure perl code.</p>
+<p>However it was impossible to achieve the same result in haskell because
+it is not natural for haskell to approach the similar (imperataive) way.</p>
+<p>But <em>I’m not saying this is the best combination solution</em>, I’d rather it looks
 a bit tricky and ugly. In comparison in solution in
 <a href="https://wiki.haskell.org/99_questions/Solutions/26">99 Questions</a>,
 this module shows relatively faster result.</p>
@@ -145,7 +145,7 @@ mList = [1,2,3,4,5]
   [4],                     ...
   [5],
 ]</code></pre>
-<p>And finally generalized form of the function is below.</p>
+<p>And finally extend idea I had above and made a generalized form of the function.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>    _  <span class="ot">-&gt;</span> [ <span class="kw">let</span> leaders <span class="ot">=</span> <span class="fu">map</span> <span class="fu">fst</span> tups</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>            <span class="kw">in</span>  leaders <span class="op">++</span> followers <span class="op">|</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>            tups <span class="ot">&lt;-</span> combinations (<span class="fu">zip</span> mList [<span class="dv">0</span> <span class="op">..</span> room])  n',</span>
