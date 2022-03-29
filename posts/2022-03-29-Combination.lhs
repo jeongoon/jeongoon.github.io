@@ -231,3 +231,5 @@ Ok, one module loaded.
 Documentation is important. and "literate haskell" helps me a lot to do it.
 
 Okay. that's all for today! 
+
+If you want to look at the raw file format: [see this](https://github.com/jeongoon/jeongoon.github.io/blob/main/posts/2022-03-29-Combination.lhs)
