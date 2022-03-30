@@ -63,18 +63,19 @@ a bit tricky and ugly. In comparison in solution in
 this module shows relatively faster result.</p>
 <h1 id="documentation-is-always-good-idea">Documentation Is Always Good Idea</h1>
 <p>However, I didn’t write down any comments on it. Now the person who is
-suffurring to understand what the code exacatly does is myself. 😂
+sufferring to understand what the code exacatly does is myself. 😂
 And no commentary or documentation always makes Haskell
 striving for getting popularity, IMHO.
-<br><br>
-So I changed the format into literate haskell and try to blog about it.
+<br><br></p>
+<p>So I changed the format into literate haskell and try to blog about it.
 At the same time, I could get another chance to write a blog in literate
 haskell to find some missing-feature and workaround.</p>
 <p>This is a simple module and not a academic module either.
 However I found something is useful or similar to another language.</p>
 <h1 id="module-starts">Module Starts</h1>
 <p>First of all, we need to declare what is the module name and
-write down the which function or data type we will export.</p>
+write down the which function or data type we will export.
+My humble module has only one function named <code>combinations</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Combinations</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  ( combinations</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">where</span></span></code></pre></div>
@@ -83,9 +84,9 @@ under the same function name. But overall code should satisfy the
 type annotation and cover all the cases it could happen.</p>
 <p>So type annotation will give us the hint of look and feel of function. 🤔</p>
 <p><strong>Note:</strong> the order of argument is opposite from the <a href="https://wiki.haskell.org/99_questions/Solutions/26">99 questions on haskell.org.</a>
-which is actually good order for <a href="http://learnyouahaskell.com/higher-order-functions#curried-functions">partial application</a>.
+which is actually better order for <a href="http://learnyouahaskell.com/higher-order-functions#curried-functions">partial application</a>.
 However, other language – let’s say python – normally has the order of
-what I put, which was easier for me during solving the PWC #083 Task#2.</p>
+as I put, which was easier for me to write the same order during solving the PWC #083 Task#2.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">combinations ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [[a]]</span></code></pre></div>
 <p>First thing we could imagine is that if there is nothing to select.</p>
 <h2 id="empty-candidates---empty-results">Empty candidates -&gt; Empty results</h2>
@@ -94,12 +95,14 @@ what I put, which was easier for me during solving the PWC #083 Task#2.</p>
 <p>How about if we have at least one candidate and choose one from them?</p>
 <p>There are so many ways to do it. but below code will serve enough.</p>
 <h2 id="only-one-choice">Only One Choice</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">1</span> <span class="ot">=</span> [m] <span class="op">:</span> (combinations ms <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>combinations ms <span class="dv">1</span> <span class="ot">=</span> [ [m] <span class="op">|</span> m <span class="ot">&lt;-</span> ms ]</span></code></pre></div>
 <p>last (combinations ms 1) will results in [[a]], so entire result
 also has tye same type as [[a]].</p>
 <p><em>BTW, Another variation might be like below.</em></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>combinations ms <span class="dv">1</span> <span class="ot">=</span> [ [m] <span class="op">|</span> m <span class="ot">&lt;-</span> ms ]</span></code></pre></div>
-<p><em>which I think more human-friendly syntax.</em></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">1</span> <span class="ot">=</span> [m] <span class="op">:</span> (combinations ms <span class="dv">1</span>)</span></code></pre></div>
+<p>Which was actually my previous code. but I found that this code evaluated
+lazily and too many unnecessary function call required.
+(I could get 17% performace increased after replace the code)</p>
 <h2 id="select-two-out-of-many">Select Two Out of Many</h2>
 <p>I add some pattern matching for better performance.
 which is <code>select 2 out of the choices</code>.</p>
@@ -176,7 +179,7 @@ mList = [1,2,3,4,5]
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ot">combinations ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [[a]]</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>combinations []     _  <span class="ot">=</span> []</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">1</span> <span class="ot">=</span> [m] <span class="op">:</span> (combinations ms <span class="dv">1</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>combinations ms     <span class="dv">1</span>  <span class="ot">=</span> [ [m] <span class="op">|</span> m <span class="ot">&lt;-</span> ms ]</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>combinations [_]    <span class="dv">2</span> <span class="ot">=</span> []</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>combinations [e,f]  <span class="dv">2</span> <span class="ot">=</span> [[e,f]]</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">2</span> <span class="ot">=</span> <span class="fu">sequence</span> [[m], ms] <span class="op">++</span> (combinations ms <span class="dv">2</span>)</span>
