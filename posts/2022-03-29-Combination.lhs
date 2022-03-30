@@ -113,18 +113,19 @@ I used it.
 combinations (m:ms) 2 = sequence [[m], ms] ++ (combinations ms 2)
 \end{code}
 
-Pattern matching in Raku
-------------------------
+Pattern matching in Another Language - Raku
+-------------------------------------------
 
+This is what I found the similarity in pattern matching.
 Pattern matching in [Raku](www.raku.org) also has similar structure.
 ~~I guess this idea came from haskell or C++~~
 
 ```perl
  # combinations []     _  = []
- sub combinations( [] , Any ) { [] }
+ multi combinations( [] , Any ) { [] }
 
  # combinations (m:ms) 1 = [m] : (combinations ms 1)
- sub combinations( Array $ms is copy, 1 ) {
+ multi combinations( Array $ms is copy, 1 ) {
      my $m = $ms.shift;
      [ [$m] ]
          .append( [samewith( $ms, 1 ) ]
@@ -134,7 +135,8 @@ Pattern matching in [Raku](www.raku.org) also has similar structure.
 
 Haskell code looks tidy and clean here. because it is designed to use
 pattern matching a lot!
-BTW, raku has its own combination function for user. handy!
+BTW, raku has its own [combinations](https://docs.raku.org/routine/combinations)
+function for user. handy!
 <br><br>
 
 Next! Next! and General
