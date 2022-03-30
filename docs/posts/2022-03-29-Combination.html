@@ -17,8 +17,8 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
-    <link rel="stylesheet" type="text/css" href="../css/29Mar2022.css" />
-    <link rel="stylesheet" type="text/css" href="../css/29Mar2022.code.css" />
+    <link rel="stylesheet" type="text/css" href="../css/30Mar2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/30Mar2022.code.css" />
   </head>
   <body class="surface-color">
     <header id="main-header">
@@ -108,14 +108,15 @@ which is <code>select 2 out of the choices</code>.</p>
 And <code>sequence</code> function shows good performance on this as well.
 I used it.
 <div class="sourceCode" id="cb7"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>combinations (m<span class="op">:</span>ms) <span class="dv">2</span> <span class="ot">=</span> <span class="fu">sequence</span> [[m], ms] <span class="op">++</span> (combinations ms <span class="dv">2</span>)</span></code></pre></div>
-<h2 id="pattern-matching-in-raku">Pattern matching in Raku</h2>
-<p>Pattern matching in <a href="www.raku.org">Raku</a> also has similar structure.
+<h2 id="pattern-matching-in-another-language---raku">Pattern matching in Another Language - Raku</h2>
+<p>This is what I found the similarity in pattern matching.
+Pattern matching in <a href="www.raku.org">Raku</a> also has similar structure.
 <del>I guess this idea came from haskell or C++</del></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># combinations []     _  = []</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">sub </span><span class="fu">combinations</span>( [] , Any ) { [] }</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a> multi combinations( [] , Any ) { [] }</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># combinations (m:ms) 1 = [m] : (combinations ms 1)</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a> <span class="kw">sub </span><span class="fu">combinations</span>( Array <span class="dt">$ms</span> is copy, <span class="dv">1</span> ) {</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a> multi combinations( Array <span class="dt">$ms</span> is copy, <span class="dv">1</span> ) {</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>     <span class="kw">my</span> <span class="dt">$m</span> = <span class="dt">$ms</span>.<span class="fu">shift</span>;</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>     [ [<span class="dt">$m</span>] ]</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>         .append( [samewith( <span class="dt">$ms</span>, <span class="dv">1</span> ) ]</span>
@@ -123,7 +124,8 @@ I used it.
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a> }</span></code></pre></div>
 <p>Haskell code looks tidy and clean here. because it is designed to use
 pattern matching a lot!
-BTW, raku has its own combination function for user. handy!
+BTW, raku has its own <a href="https://docs.raku.org/routine/combinations">combinations</a>
+function for user. handy!
 <br><br></p>
 <h2 id="next-next-and-general">Next! Next! and General</h2>
 Lastly, I wrote for the other general cases.
@@ -195,7 +197,7 @@ mList = [1,2,3,4,5]
 this no-comment-code. It’s not very clear what I was trying to say.</p>
 <p>Because I’m a novice haskeller and so does other haskellers.
 Why don’t you use literate format if you can?</p>
-<h1 id="and-about-usage">And About Usage</h1>
+<h1 id="about-usage-사용법에-대해">About Usage 사용법에 대해</h1>
 <p>It would be more than happy if I find how I could actually use them
 on documentation, wouldn’t it?</p>
 <p>Probably <code>ghci</code> is the best for quick testing!</p>

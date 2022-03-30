@@ -234,8 +234,8 @@ Because I'm a novice haskeller and so does other haskellers.
 Why don't you use literate format if you can?
 
 
-And About Usage
-===============
+About Usage  사용법에 대해
+==========================
 
 It would be more than happy if I find how I could actually use them
 on documentation, wouldn't it?
