@@ -68,7 +68,7 @@ And no commentary or documentation always makes Haskell
 striving for getting popularity, IMHO.
 <br><br>
 So I changed the format into literate haskell and try to blog about it.
-at the same time, I could get another chance to writing a blog in literate
+At the same time, I could get another chance to write a blog in literate
 haskell to find some missing-feature and workaround.</p>
 <p>This is a simple module and not a academic module either.
 However I found something is useful or similar to another language.</p>
@@ -121,8 +121,9 @@ I used it.
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>         .append( [samewith( <span class="dt">$ms</span>, <span class="dv">1</span> ) ]</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>     );</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a> }</span></code></pre></div>
-<p>BTW0, haskell code sometime look really tidy and clear.</p>
-<p>BTW1, raku has its own combination function for user. handy!
+<p>Haskell code looks tidy and clean here. because it is designed to use
+pattern matching a lot!
+BTW, raku has its own combination function for user. handy!
 <br><br></p>
 <h2 id="next-next-and-general">Next! Next! and General</h2>
 Lastly, I wrote for the other general cases.
@@ -156,7 +157,7 @@ mList = [1,2,3,4,5]
   [4],                     ...
   [5],
 ]</code></pre>
-<p>And finally extend idea I had above and made a generalized form of the function.</p>
+<p>And finally extend the idea I had above and made a generalized form of the function.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>    _  <span class="ot">-&gt;</span> [ <span class="kw">let</span> leaders <span class="ot">=</span> <span class="fu">map</span> <span class="fu">fst</span> tups</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>            <span class="kw">in</span>  leaders <span class="op">++</span> followers <span class="op">|</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>            tups <span class="ot">&lt;-</span> combinations (<span class="fu">zip</span> mList [<span class="dv">0</span> <span class="op">..</span> room])  n',</span>

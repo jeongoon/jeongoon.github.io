@@ -32,7 +32,7 @@ And no commentary or documentation always makes Haskell
 striving for getting popularity, IMHO.
 <br><br>
 So I changed the format into literate haskell and try to blog about it.
-at the same time, I could get another chance to writing a blog in literate
+At the same time, I could get another chance to write a blog in literate
 haskell to find some missing-feature and workaround.
 
 This is a simple module and not a academic module either.
@@ -132,9 +132,9 @@ Pattern matching in [Raku](www.raku.org) also has similar structure.
  }
 ```
 
-BTW0, haskell code sometime look really tidy and clear.
-
-BTW1, raku has its own combination function for user. handy!
+Haskell code looks tidy and clean here. because it is designed to use
+pattern matching a lot!
+BTW, raku has its own combination function for user. handy!
 <br><br>
 
 Next! Next! and General
@@ -182,7 +182,7 @@ mList = [1,2,3,4,5]
 ]
 ```
 
-And finally extend idea I had above and made a generalized form of the function.
+And finally extend the idea I had above and made a generalized form of the function.
 
 \begin{code}
     _  -> [ let leaders = map fst tups
