@@ -227,8 +227,9 @@ combinations mList  n =
 
 ```
 
-Maybe you could guess what is going on now. but if you starting from
-this no-comment-code. It's not very clear what I was trying to say.
+Maybe you could guess what is going on now. but if you started read
+the no-comment-code from the begignning, It might be not very clear
+what I was trying to say.
 
 Because I'm a novice haskeller and so does other haskellers.
 Why don't you use literate format if you can?
@@ -242,10 +243,12 @@ on documentation, wouldn't it?
 
 Probably `ghci` is the best for quick testing!
 
+save [this my blog code](https://raw.githubusercontent.com/jeongoon/jeongoon.github.io/main/posts/2022-03-29-Combination.lhs) as `Combinations.lhs` and ...
+
 ```sh
 sh> ghci
-λ> :l Combinations.hs
-[1 of 1] Compiling Combinations     ( Combinations.hs, interpreted )
+λ> :l Combinations.lhs
+[1 of 1] Compiling Combinations     ( Combinations.lhs, interpreted )
 Ok, one module loaded.
 λ> combinations [1,2,3,4,5] 3
 [[1,2,3],[1,2,4],[1,2,5],[1,3,4],[1,3,5],[1,4,5],[2,3,4],[2,3,5],[2,4,5],[3,4,5]]
@@ -253,6 +256,8 @@ Ok, one module loaded.
 
 Documentation is important. and "literate haskell" helps me a lot to do it.
 
-Okay. that's all for today!
-
 If you want to look at the raw file format: [see this](https://github.com/jeongoon/jeongoon.github.io/blob/main/posts/2022-03-29-Combination.lhs)
+
+You could get basic idea how to write down literate haskell and blog about it.
+
+Okay. that's all for today!
