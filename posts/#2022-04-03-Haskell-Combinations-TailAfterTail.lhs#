@@ -1,5 +1,5 @@
 ---
-title: Combinations in haskell (called `Leaders and Followers`)
+title: Combinations in haskell (called `Tail After Tail`)
 description: solving 99 question on haskell.org and #083 Task2 in perlweeklychallenge.org
 keywords: haskell, combinations, raku, documentation
 author: Myoungjin Jeon
@@ -10,43 +10,9 @@ LICENSE: Open Software License 3.0
 
 = Another Combination Module from me
 
-This module was created when I solve [The Perl Weekly Challange #083](https://perlweeklychallenge.org/blog/perl-weekly-challenge-083/#TASK2).
-
-I made another implementation for imperative method long time ago, which results
-in satisfying speed for general ussage in pure perl code. However it was
-impossible to achieve the same result in haskell due to nature of the language.
-(recursive is the basic step for haskell)
-
-But *I'm not saying this is the best combination solution*, I'd rather it looks
-a bit tricky and ugly. In comparison in solution in
-[99 Questions](https://wiki.haskell.org/99_questions/Solutions/26),
-this module shows relatively faster result.
-
-
-= Documentation Is Always Good Idea
-
-
-However, I didn't write down any comments on it. Now the person who is
-sufferring to understand what the code exacatly does is myself. 😂
-And no commentary or documentation always makes Haskell
-striving for getting popularity, IMHO.
-<br><br>
-
-So I changed the format into literate haskell and try to blog about it.
-At the same time, I could get another chance to write a blog in literate
-haskell to find some missing-feature and workaround.
-
-This is a simple module and not a academic module either.
-However I found something is useful or similar to another language.
-
-= Module Starts
-
-First of all, we need to declare what is the module name and
-write down the which function or data type we will export.
-My humble module has only one function named `combinations`.
 
 \begin{code}
-module Combinations
+module LeadersAndFollwers -- method name
   ( combinations
   ) where
 \end{code}
@@ -249,7 +215,7 @@ save [this my blog code](https://raw.githubusercontent.com/jeongoon/jeongoon.git
 
 ```sh
 sh> ghci
-λ> :l Combinations.lhs
+λ> :l LeadersAndFollowers.lhs
 [1 of 1] Compiling Combinations     ( Combinations.lhs, interpreted )
 Ok, one module loaded.
 λ> combinations [1,2,3,4,5] 3

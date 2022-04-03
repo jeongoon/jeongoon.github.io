@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="another haskell combination module (TailAfterTail.lhs)">
+
+
+    <meta name="keywords" content="haskell, combinations, raku">
+
+
+    <title>MJ's kind weird Code - Combinations in haskell (called Tail After Tail)</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/31Mar2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/31Mar2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Combinations in haskell (called Tail After Tail)
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on April  3, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'haskell'." href="../tags/haskell.html">haskell</a>, <a title="All pages tagged 'combinations'." href="../tags/combinations.html">combinations</a>, <a title="All pages tagged 'raku'." href="../tags/raku.html">raku</a>
+  
+</div>
+
+<p>Copyright (c) 2022 JEON Myoungjin &lt;jeongoon@g… &gt;
+LICENSE: Open Software License 3.0</p>
+<h1 id="yet-another-combinations">Yet Another Combinations</h1>
+<p>I was trying to make a new type of combinations after making a combinations
+method in golang which is fast as expected as usual. It’s impressive how go lang
+is fast even though I didn’t tweak the code much.</p>
+<p>And my first haskell <code>resursive</code> version of combinations (LeadersAndFollowers)
+isn’t quite fast enough and most of all concept behind the code is unique,
+but it is not a single, natural flow of generating a list.
+So I wrote down the pattern and found something I could apply.</p>
+<h1 id="tail-after-tail">Tail After Tail?</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">TailAfterTail</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  ( <span class="co">--combinations</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">--  , allCombinations</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">where</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.List</span> (inits, tails)</span></code></pre></div>
+<p>Let’s say given selection list is [1,2,3,4,5]</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> members <span class="ot">=</span> [<span class="dv">1</span><span class="op">..</span><span class="dv">5</span>]</span></code></pre></div>
+<p>And we will select some from the <code>members</code>.</p>
+<h2 id="when-n-1">When N = 1</h2>
+<p><strong>Note:</strong> <code>N</code> stands for number of selection.</p>
+<p>This is too easy case. it will look like by <code>list comprehension</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>combinations1 ms <span class="ot">=</span> [ [m] <span class="op">|</span> m <span class="ot">&lt;-</span> ms ]</span></code></pre></div>
+<p>Or by using <code>map</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>combinations1 ms <span class="ot">=</span> <span class="fu">map</span> (\m <span class="ot">-&gt;</span> [m]) ms</span></code></pre></div>
+<p>More pointer free way which I don’t highly recommend.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>combinations1 <span class="ot">=</span> <span class="fu">map</span> (<span class="op">:</span>[])</span></code></pre></div>
+<p>I found that list comprehension is best readable form here, so I will use
+it more often.</p>
+<h2 id="when-n-2">When N = 2</h2>
+<p>I’m going to start from left always and <code>1</code> will be fist <em>part</em> of combinations</p>
+<p>Let’s remind <em>N=1 case</em> as following</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">λ</span><span class="op">&gt;</span> members = [1..5]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">λ</span><span class="op">&gt;</span> combinations1 members</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[[1],[2],[3],[4],[5]]</span></span></code></pre></div>
+<h3 id="part1-n2-p1">Part1 (N=2, P=1)</h3>
+<p>Let’s have a look into first part of <em>(N=2) case</em></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> combinations2part1 [ <span class="dv">1</span> <span class="op">:</span> [m] <span class="op">|</span> m <span class="ot">&lt;-</span> [<span class="dv">2</span><span class="op">..</span><span class="dv">5</span>] ]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- or</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> combinations2part1 ms <span class="ot">=</span> [<span class="dv">1</span> <span class="op">:</span> [m] <span class="op">|</span> m <span class="ot">&lt;-</span> (<span class="fu">tail</span> [<span class="dv">1</span><span class="op">..</span><span class="dv">5</span>]) ]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- which is</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> combinations2part1 ms <span class="ot">=</span> [<span class="dv">1</span> <span class="op">:</span> [m] <span class="op">|</span> m <span class="ot">&lt;-</span> (<span class="fu">tail</span> <span class="op">$</span> combinations1 ms) ]</span></code></pre></div>
+<p>How about Part2?</p>
+<h3 id="part2-n2-p2">Part2 (N=2, P=2)</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> combinations2part2 ms <span class="ot">=</span> [<span class="dv">2</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> [<span class="dv">3</span><span class="op">..</span><span class="dv">5</span>] ]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="co">-- or</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> combinations2part2 ms <span class="ot">=</span> [<span class="dv">2</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> (<span class="fu">tail</span> <span class="op">.</span> <span class="fu">tail</span> <span class="op">$</span> combinations1 ms)]</span></code></pre></div>
+<p>As we are going to next part (1 -&gt; 2 -&gt; 3..), rest of cases (<em>[m]</em>) are reducing
+by <code>tail</code> of original <em>members</em>.</p>
+<p>Let’s summarise what we found:</p>
+<p><code>P</code> stands for partition of generating.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">1</span> }</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  [[<span class="dv">1</span>],[<span class="dv">2</span>],[<span class="dv">3</span>],[<span class="dv">4</span>],[<span class="dv">5</span>]]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>       <span class="op">^^^^^^^^^^^^^^^</span> <span class="ot">-&gt;</span> tailN1_1</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>           <span class="op">^^^^^^^^^^^</span> <span class="ot">-&gt;</span> tailN1_2</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>               <span class="op">^^^^^^^</span> <span class="ot">-&gt;</span> tailN1_3</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">1</span>, <span class="dt">Part</span> <span class="ot">=</span> <span class="dv">2</span> } <span class="op">:</span> <span class="dt">N</span><span class="op">/</span><span class="dt">A</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">----------------------------------------------------------------</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">1</span> }</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">1</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> tailN1_1 ] <span class="ot">=&gt;</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">5</span>]]</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">2</span> }</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">2</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> tailN1_2 ] <span class="ot">=&gt;</span> [[<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">2</span>,<span class="dv">4</span>],[<span class="dv">2</span>,<span class="dv">5</span>]]</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">3</span> }</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">3</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> tailN1_3 ] <span class="ot">=&gt;</span> [[<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">3</span>,<span class="dv">5</span>]]</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">4</span> }</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">4</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> tailN1_4 ] <span class="ot">=&gt;</span> [[<span class="dv">4</span>,<span class="dv">5</span>]]</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">5</span> }</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">N</span><span class="op">/</span><span class="dt">A</span> as tailN1P1_5 <span class="op">==</span> []</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="dt">In</span> total, accumlated results are below<span class="op">.</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span> } <span class="co">-- without flattening</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  [[[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">5</span>]],[[<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">2</span>,<span class="dv">4</span>],[<span class="dv">2</span>,<span class="dv">5</span>]],[[<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">3</span>,<span class="dv">5</span>]],[[<span class="dv">4</span>,<span class="dv">5</span>]]]</span></code></pre></div>
+<p>**Note:* we need to flatten the partial results by calling <code>concat</code> later
+when we need to do it.</p>
+<p>And in next step I found more similarity in generating the combinations
+with subtle difference.</p>
+<h2 id="when-n-3">When N = 3</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- again __without__ flattening</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span> }</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>   vvvvvvvvvvvvvvvvvvvvvvvvv <span class="ot">-&gt;</span> <span class="fu">not</span> useful for next</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  [[[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">5</span>]],[[<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">2</span>,<span class="dv">4</span>],[<span class="dv">2</span>,<span class="dv">5</span>]],[[<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">3</span>,<span class="dv">5</span>]],[[<span class="dv">4</span>,<span class="dv">5</span>]]]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                             <span class="op">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-&gt;</span>tailN2_1</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                                                 <span class="op">^^^^^^^^^^^^^^^^^^^^^-&gt;</span>tailN2_2</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- but we need to flatten the list before combining.</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">3</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">1</span> }</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">1</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> (<span class="fu">concat</span> tailN2_1) ]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="ot">=&gt;</span> [[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>],[<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">4</span>] <span class="op">..</span> ]</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">3</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">2</span> }</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">2</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> (<span class="fu">concat</span> tailN2_2) ]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="ot">=&gt;</span> [[<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>],[<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">5</span>]]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">..</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">3</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">4</span> }</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">N</span><span class="op">/</span><span class="dt">A</span> as tailN2_4 is empty (<span class="op">==</span> [])</span></code></pre></div>
+<p>And final (N=3) will forms like below:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">3</span> } <span class="co">-- without flattening</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>[[[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>],[<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>],[<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">5</span>]],</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a> [[<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>],[<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">5</span>],</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a> [[<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div>
+<p>To make the same function for creating list of the part, we need to
+redefine {N=1} cases.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">1</span> }                                   { <span class="dt">N</span><span class="ot">=</span><span class="dv">1</span> }</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  [[<span class="dv">1</span>],[<span class="dv">2</span>],[<span class="dv">3</span>],[<span class="dv">4</span>],[<span class="dv">5</span>]]                   [[[<span class="dv">1</span>]],[[<span class="dv">2</span>]],[[<span class="dv">3</span>]],[[<span class="dv">4</span>]],[[<span class="dv">5</span>]]]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>       <span class="op">^^^^^^^^^^^^^^^</span> <span class="ot">-&gt;</span> tailN1_1  <span class="ot">=&gt;</span>           <span class="op">^^^^^^^^^^^^^^^^^^^^^^^^</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>           <span class="op">^^^^^^^^^^^</span> <span class="ot">-&gt;</span> tailN1_2                     <span class="op">^^^^^^^^^^^^^^^^^^</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>               <span class="op">^^^^^^^</span> <span class="ot">-&gt;</span> tailN1_3                            <span class="op">^^^^^^^^^^^</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">1</span>, <span class="dt">Part</span> <span class="ot">=</span> <span class="dv">2</span> } <span class="op">:</span> <span class="dt">N</span><span class="op">/</span><span class="dt">A</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">----------------------------------------------------------------</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">1</span> }</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">1</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> <span class="fu">concat</span> tailN1_1 ] <span class="ot">=&gt;</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">5</span>]]</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">2</span> }</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">2</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> <span class="fu">concat</span> tailN1_2 ] <span class="ot">=&gt;</span> [[<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">2</span>,<span class="dv">4</span>],[<span class="dv">2</span>,<span class="dv">5</span>]]</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">3</span> }</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">3</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> <span class="fu">concat</span> tailN1_3 ] <span class="ot">=&gt;</span> [[<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">3</span>,<span class="dv">5</span>]]</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">4</span> }</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  [ <span class="dv">4</span> <span class="op">:</span> [t] <span class="op">|</span> t <span class="ot">&lt;-</span> <span class="fu">concat</span> tailN1_4 ] <span class="ot">=&gt;</span> [[<span class="dv">4</span>,<span class="dv">5</span>]]</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">N</span><span class="ot">=</span><span class="dv">2</span>, <span class="dt">P</span><span class="ot">=</span><span class="dv">5</span> }</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">N</span><span class="op">/</span><span class="dt">A</span> as tailN1P1_5 <span class="op">==</span> []</span></code></pre></div>
+<code>combinations1'</code> is also required to modified.
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ot">combinations1' ::</span> [a] <span class="ot">-&gt;</span> [[[a]]]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>combinations1' ms <span class="ot">=</span> [ [[m]] <span class="op">|</span> m <span class="ot">&lt;-</span> ms ]</span></code></pre></div>
+<p>and <code>combinations1</code> is equivalent to previous implementation but
+,in another word, it means that flattened version of <code>combinations1'</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ot">combinations1 ::</span> [a] <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>combinations1 <span class="ot">=</span> <span class="fu">concat</span> <span class="op">.</span> combinations1'</span></code></pre></div>
+<h2 id="tail-after-tail-1">Tail After Tail !!</h2>
+<p>As you can see, as we are making combinations by selecting number of <em>N</em>,
+we are actually preparing for next one. This is why I call the method
+<em>Tail After Tail</em>.</p>
+<p><del>Substainable life is most important thing thesedays, isn’t it?</del></p>
+<h2 id="about-accumulation">About Accumulation</h2>
+<p>And I found <code>scanl</code> is doing
+something simliar jobs. if we want to use <code>scanr</code> for whatever reason,
+we need to change our order of list a little bit. but for now. I’d like to
+keep use <code>scanl</code>.</p>
+<h1 id="how-to-make-each-partital-result">How To Make Each Partital Result</h1>
+<p>So when you make {N=2} partial results, we need <strong>total</strong> result of {N=1},
+which depends on the <code>members</code>. which can be made from <code>combinations'</code></p>
+<p>So when we are making {N=2} cases, we will omit first one
+(which is <code>[[1],...,[5]]</code>) and map over the <code>members</code>.
+we are going to make function we can call for each part.</p>
+<h2 id="genpart">genPart</h2>
+<p><code>genPart</code> makes each partial result.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ot">genPart ::</span> <span class="dt">Foldable</span> t <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> t [[a]] <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>genPart leader followers <span class="ot">=</span> [ leader <span class="op">:</span> fl <span class="op">|</span> fl <span class="ot">&lt;-</span> (<span class="fu">concat</span> <span class="op">$</span> followers) ]</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> currentLeaderNum <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> followers <span class="ot">=</span> ((combinations' members) <span class="op">!!</span> <span class="dv">1</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>genPart currentLeaderNum followers</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">5</span>]]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> currentLeaderNum <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> followers <span class="ot">=</span> ((combinations' members) <span class="op">!!</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>As we can see leader are increasing and followers <em>index</em> are also increasing.
+which make us require some function to make parallel association.</p>
+<p>We are going to use <code>zipWith</code> in this case.</p>
+<h2 id="genstep">genStep</h2>
+<p><code>genStep</code> : makes all partial results along with leader and followers.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ot">usefulTails ::</span> [a] <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>usefulTails <span class="ot">=</span> <span class="fu">init</span> <span class="op">.</span> tails</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="ot">genStep ::</span> [[[a]]] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [[[a]]]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>genStep prevTails members' <span class="ot">=</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zipWith</span> genPart members' (usefulTails prevTails')</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    prevTails' <span class="ot">=</span> <span class="fu">tail</span> prevTails <span class="co">-- head is not useful</span></span></code></pre></div>
+<p>So, <code>zipWith</code> will call <code>genPart</code> with each member of <code>members</code> and each member
+of (tail prevTails) in parallel.</p>
+<p>So with result of {N=1}, we could get {N=2}</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> combinationsN1 <span class="ot">=</span> combinations' members</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">mapM_</span> <span class="fu">print</span> <span class="op">$</span> genStep combinationsN1 members</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">5</span>]]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">2</span>,<span class="dv">4</span>],[<span class="dv">2</span>,<span class="dv">5</span>]]</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">3</span>,<span class="dv">5</span>]]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">4</span>,<span class="dv">5</span>]]</span></code></pre></div>
+<p>Please, note that the result is not flattened yet as we need to use tail of
+the list later. Once flattened, we can hardly get the list we want.</p>
+<p>Now it’s time to accumlate them.</p>
+<h2 id="scanl">scanl</h2>
+<p>Let’s see the type first.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="op">:</span>t <span class="fu">scanl</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">scanl</span><span class="ot"> ::</span> (b <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span></span></code></pre></div>
+<p><del>IMHO, <code>scanl</code> is a bit confusing function for the firs time.</del></p>
+<p>One thing obvious is that genstep will be the <code>(b -&gt; a -&gt; b)</code>.</p>
+<p>and we have <code>seed</code> status from <code>(combinations' members)</code>.</p>
+<p>But how about last arugment: <code>[a]</code>??</p>
+<h2 id="memberstails">membersTails</h2>
+<p><code>membersTails</code> will make a list of leader group for each calling of <code>genStep</code>.</p>
+<p>As step is growing up from number of one, the list will be reduced from the
+tail. and <code>inits</code> will do the job and actually we need to reverse after all.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>membersTails <span class="ot">=</span> <span class="fu">reverse</span> <span class="op">.</span> <span class="fu">tail</span> <span class="op">.</span> inits <span class="co">-- tail is used to skip empty list.</span></span></code></pre></div>
+<h2 id="allcombinations">allCombinations’’</h2>
+<p>allCombinations’’ will produce <strong>un-flattened</strong> combinations for each step.
+allCombinations’’ will use <code>scanl</code> and let’s check the value before going further.</p>
+<h3 id="foldable-group-for-scanl">foldable group for scanl</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">mapM_</span> <span class="fu">print</span> <span class="op">$</span> membersTails members</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]</span></code></pre></div>
+<p>After wire up those elements:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ot">allCombinations'' ::</span> [a] <span class="ot">-&gt;</span> [[[[a]]]]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>allCombinations'' ms <span class="ot">=</span> <span class="fu">scanl</span> genStep (combinations1' ms) (membersTails ms)</span></code></pre></div>
+<p><em>Looks quite simple, doesn’t it?</em></p>
+<h2 id="allcombinations-1">allCombinations</h2>
+<p>allCombinations will produce flattened combinations which is we really want.
+which look a bit tricky. but let’s see our {N=2} result.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>[ [ [<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">3</span>],[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">1</span>,<span class="dv">5</span>] ]   <span class="co">-- &gt; group 1</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>, [ [<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">2</span>,<span class="dv">4</span>],[<span class="dv">2</span>,<span class="dv">5</span>] ]         <span class="co">-- &gt; group 2</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>, [ [<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">3</span>,<span class="dv">5</span>] ]               <span class="co">-- &gt; group 3</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>, [ [<span class="dv">4</span>,<span class="dv">5</span>] ]                     <span class="co">-- &gt; group 4</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div>
+<p>I re-indent them for better reading. so we need flatten each group.</p>
+<p>And those will be inside one more block of total combinations.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>[ <span class="op">...</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  [ group1, group2, group3, group4 ] <span class="co">-- &gt; N2</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div>
+<p>What we need first is <code>group1 &lt;&gt; group2 &lt;&gt; group3 &lt;&gt; group4</code>.</p>
+<p>and next one is <code>N1 &lt;&gt; N2 &lt;&gt; N3 &lt;&gt; N4 &lt;&gt; N5</code>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>allCombinations' <span class="ot">=</span> <span class="fu">map</span> <span class="fu">concat</span> <span class="op">.</span> allCombinations''</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>allCombinations  <span class="ot">=</span> <span class="fu">concat</span> <span class="op">.</span> allCombinations'</span></code></pre></div>
+<p><em>Note:</em> <code>allCombinations'</code> will be used later.</p>
+<h1 id="subsequences">subsequences</h1>
+<p>Data.List module has a functino called <code>subsequences</code>, which makes
+all possilbe combinations from given list.</p>
+<p>However, personally I don’t like its combination order.
+What I prefer is the same as what <code>raku</code> language does.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a> &gt; [<span class="dv">1</span>..<span class="dv">5</span>].combinations</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a> (()</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span>) (<span class="dv">2</span>) (<span class="dv">3</span>) (<span class="dv">4</span>) (<span class="dv">5</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span> <span class="dv">2</span>) (<span class="dv">1</span> <span class="dv">3</span>) (<span class="dv">1</span> <span class="dv">4</span>) (<span class="dv">1</span> <span class="dv">5</span>) (<span class="dv">2</span> <span class="dv">3</span>) (<span class="dv">2</span> <span class="dv">4</span>) (<span class="dv">2</span> <span class="dv">5</span>) (<span class="dv">3</span> <span class="dv">4</span>) (<span class="dv">3</span> <span class="dv">5</span>) (<span class="dv">4</span> <span class="dv">5</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span>) (<span class="dv">1</span> <span class="dv">2</span> <span class="dv">4</span>) (<span class="dv">1</span> <span class="dv">2</span> <span class="dv">5</span>) (<span class="dv">1</span> <span class="dv">3</span> <span class="dv">4</span>) (<span class="dv">1</span> <span class="dv">3</span> <span class="dv">5</span>) (<span class="dv">1</span> <span class="dv">4</span> <span class="dv">5</span>) (<span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span>) (<span class="dv">2</span> <span class="dv">3</span> <span class="dv">5</span>) (<span class="dv">2</span> <span class="dv">4</span> <span class="dv">5</span>) (<span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span>) (<span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">5</span>) (<span class="dv">1</span> <span class="dv">2</span> <span class="dv">4</span> <span class="dv">5</span>) (<span class="dv">1</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>) (<span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a> )</span></code></pre></div>
+<p>Preceding order makes more sense for me. Nevertheless, if you need quick
+all combinations, you can try for <code>subsequences</code>. because it comes with haskell.</p>
+<h1 id="combination-of-k">Combination of K</h1>
+<p>So now how to make exact combinations of K, not just all possible combinations?</p>
+<p>i.e how to select three elements from a list of [ ‘A’, ‘B’, ‘C’, ‘D’, ‘E’ ]?</p>
+<h2 id="laziness">laziness</h2>
+<div class="sourceCode" id="cb27"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">take</span> <span class="dv">0</span> [<span class="dv">1</span><span class="op">..</span>]  []</span></code></pre></div>
+<p>The preceding code works immediately because we don’t need to know whole list
+to get nothing from it. So we could get benefit from this laziness here again!</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ot">combinations ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>combinations ms n1<span class="op">@</span>selectFrom n2<span class="op">@</span>selectTo <span class="ot">=</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    ( isFlipped, n1', n2' ) <span class="ot">=</span> <span class="co">-- smaller value first</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>      <span class="kw">if</span> n1 <span class="op">&lt;</span> n2 <span class="kw">then</span> ( <span class="dt">False</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                      , <span class="fu">max</span> n1 <span class="dv">0</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                      , <span class="fu">max</span> n2 <span class="dv">0</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">else</span>            ( <span class="dt">True</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                      , <span class="fu">max</span> n2 <span class="dv">0</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>                      , <span class="fu">max</span> n1 <span class="dv">0</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>      <span class="co">-- and ensure all range value are zero or positive by usig `max`</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    rangeLength <span class="ot">=</span> n2' <span class="op">-</span> n1' <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">in</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- note: read from the bottom</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">concat</span>                      <span class="co">-- 3. final flattening</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">take</span> rangeLength          <span class="co">-- 2. takes only intrested lists</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">drop</span> (n1' <span class="op">-</span> <span class="dv">1</span>)           <span class="co">-- 1. ignore some</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">$</span> allCombinations' ms</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- </span><span class="al">FIXME</span><span class="co">: USE IS FLIPPED</span></span></code></pre></div>
+<p>Okay. This is it. I like this implentation because we are keep creating
+new list based on the previous result. I hope this will result in good
+performance as well.</p>
+<p>I’ll post if the performance also nice!</p>
+<p>Thank you for reading!!</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->

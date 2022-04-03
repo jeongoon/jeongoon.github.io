@@ -13,7 +13,7 @@
     <meta name="keywords" content="haskell, combinations, raku, documentation">
 
 
-    <title>MJ's kind weird Code - Combinations in haskell (called `Leaders and Followers`)</title>
+    <title>MJ's kind weird Code - Combinations in haskell (called `Tail After Tail`)</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
@@ -26,7 +26,7 @@
         <a href="../">MJ's Kind Weird Code</a>
       </div>
       <div id="page-title">
-        <p> 📰 Combinations in haskell (called `Leaders and Followers`)
+        <p> 📰 Combinations in haskell (called `Tail After Tail`)
         </p>
       </div>
       <nav id="main-nav" class="font-menu-title">
@@ -39,7 +39,7 @@
 
     <div id="content" class="font-friendly">
             <div class="info">
-    Posted on March 29, 2022
+    Posted on April  3, 2022
     
         by Myoungjin Jeon
     
@@ -77,7 +77,7 @@ However I found something is useful or similar to another language.</p>
 <p>First of all, we need to declare what is the module name and
 write down the which function or data type we will export.
 My humble module has only one function named <code>combinations</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Combinations</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">LeadersAndFollwers</span> <span class="co">-- method name</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  ( combinations</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">where</span></span></code></pre></div>
 <p>This module makes serveral implementation with <code>pattern matching</code>
@@ -208,7 +208,7 @@ on documentation, wouldn’t it?</p>
 <p>Probably <code>ghci</code> is the best for quick testing!</p>
 <p>save <a href="https://raw.githubusercontent.com/jeongoon/jeongoon.github.io/main/posts/2022-03-29-Combination.lhs">this my blog code</a> as <code>Combinations.lhs</code> and …</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> ghci</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">λ</span><span class="op">&gt;</span> :l Combinations.lhs</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">λ</span><span class="op">&gt;</span> :l LeadersAndFollowers.lhs</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[1</span> of 1] Compiling Combinations     <span class="er">(</span> <span class="ex">Combinations.lhs,</span> interpreted <span class="kw">)</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Ok,</span> one module loaded.</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">λ</span><span class="op">&gt;</span> combinations [1,2,3,4,5] 3</span>
