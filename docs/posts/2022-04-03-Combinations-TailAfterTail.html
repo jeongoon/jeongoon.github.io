@@ -321,9 +321,9 @@ to get nothing from it. So we could get benefit from this laziness here again!</
 <span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">in</span></span>
 <span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- note: read from the bottom</span></span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">concat</span>                      <span class="co">-- 3. final flattening</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">concat</span>                     <span class="co">-- 3. final flattening</span></span>
 <span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">take</span> rangeLength          <span class="co">-- 2. takes only intrested lists</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">drop</span> (n1' <span class="op">-</span> <span class="dv">1</span>)           <span class="co">-- 1. ignore some</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">drop</span> (<span class="fu">pred</span> n1')           <span class="co">-- 1. ignore some</span></span>
 <span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">$</span> allCombinations' ms</span>
 <span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- </span><span class="al">FIXME</span><span class="co">: USE IS FLIPPED</span></span></code></pre></div>

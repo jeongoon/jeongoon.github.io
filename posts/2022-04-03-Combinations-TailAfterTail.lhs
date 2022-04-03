@@ -430,9 +430,9 @@ combinations ms n1@selectFrom n2@selectTo =
 
   in
     -- note: read from the bottom
-    concat                      -- 3. final flattening
+    concat                     -- 3. final flattening
     . take rangeLength          -- 2. takes only intrested lists
-    . drop (n1' - 1)           -- 1. ignore some
+    . drop (pred n1')           -- 1. ignore some
     $ allCombinations' ms
 
     -- FIXME: USE IS FLIPPED
