@@ -17,8 +17,8 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
-    <link rel="stylesheet" type="text/css" href="../css/04Apr2022.css" />
-    <link rel="stylesheet" type="text/css" href="../css/31Mar2022.code.css" />
+    <link rel="stylesheet" type="text/css" href="../css/07Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/07Apr2022.code.css" />
   </head>
   <body class="surface-color">
     <header id="main-header">
@@ -54,8 +54,8 @@
 <p>LICENSE: <a href="https://opensource.org/licenses/OSL-3.0">Open Software License 3.0</a></p>
 <h1 id="yet-another-combinations">Yet Another Combinations</h1>
 <p>I was trying to make a new type of combinations after making a combinations
-method in <code>golang</code>, which is fast as expected as usual. It’s impressive how golang
-show splend performance even though I didn’t tweak the code much.</p>
+method in <code>golang</code>, which is fast as expected as usual. It’s impressive how
+golang shows splend performance even though I didn’t tweak the code much.</p>
 <p>And my first haskell <code>resursive</code> version of combinations (<a href="../posts/2022-03-29-Combination.html">LeadersAndFollowers</a>)
 isn’t quite fast enough even though most of all concept behind the code is
 creative, but it is not a single, natural flow of generating a list.
@@ -264,7 +264,7 @@ allCombinations’’ will use <code>scanl</code> and let’s check the value be
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>]</span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]</span></code></pre></div>
-<p>After wire up those elements:</p>
+<p>After wiring those up:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ot">allCombinations'' ::</span> [a] <span class="ot">-&gt;</span> [[[[a]]]]</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>allCombinations'' ms <span class="ot">=</span> <span class="fu">scanl</span> genStep (combinations1' ms) (membersTails ms)</span></code></pre></div>
 <p><em>Looks quite simple, doesn’t it?</em></p>
@@ -283,9 +283,9 @@ which look a bit tricky. but let’s see our {N=2} result.</p>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div>
 <p>What we need first is</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>group1 <span class="op">&lt;&gt;</span> group2 <span class="op">&lt;&gt;</span> group3 <span class="op">&lt;&gt;</span> group4<span class="ot">`</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>group1 <span class="op">&lt;&gt;</span> group2 <span class="op">&lt;&gt;</span> group3 <span class="op">&lt;&gt;</span> group4</span></code></pre></div>
 <p>And next one is</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ot">`N1 &lt;&gt; N2 &lt;&gt; N3 &lt;&gt; N4 &lt;&gt; N5`</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dt">N1</span> <span class="op">&lt;&gt;</span> <span class="dt">N2</span> <span class="op">&lt;&gt;</span> <span class="dt">N3</span> <span class="op">&lt;&gt;</span> <span class="dt">N4</span> <span class="op">&lt;&gt;</span> <span class="dt">N5</span></span></code></pre></div>
 <div class="sourceCode" id="cb27"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>allCombinations' <span class="ot">=</span> <span class="fu">map</span> <span class="fu">concat</span> <span class="op">.</span> allCombinations''</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>allCombinations  <span class="ot">=</span> <span class="fu">concat</span> <span class="op">.</span> allCombinations'</span></code></pre></div>
 <p><em>Note:</em> <code>allCombinations'</code> will be used later.</p>
@@ -347,7 +347,7 @@ by using <code>let</code> or <code>where</code> clause.</p>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">concat</span> <span class="op">.</span> <span class="fu">map</span> <span class="fu">concat</span> <span class="op">.</span> allCombinations''</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    allCombinations'' ms <span class="ot">=</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scanl</span> genStep [ [[m]] <span class="op">|</span> m <span class="ot">&lt;-</span> ms] (<span class="fu">reverse</span> <span class="op">.</span> <span class="fu">tail</span> <span class="op">.</span> inits <span class="op">$</span> ms)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scanl</span> genStep [ [[m]] <span class="op">|</span> m <span class="ot">&lt;-</span> ms ] (<span class="fu">reverse</span> <span class="op">.</span> <span class="fu">tail</span> <span class="op">.</span> inits <span class="op">$</span> ms)</span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>      <span class="kw">where</span></span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        genPart x tss <span class="ot">=</span> [ x <span class="op">:</span> ts <span class="op">|</span> ts <span class="ot">&lt;-</span> <span class="fu">concat</span> tss ]</span>
 <span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        genStep pt ms <span class="ot">=</span> <span class="fu">zipWith</span> genPart ms (<span class="fu">init</span> <span class="op">.</span> tails <span class="op">.</span> <span class="fu">tail</span> <span class="op">$</span> pt)</span></code></pre></div>

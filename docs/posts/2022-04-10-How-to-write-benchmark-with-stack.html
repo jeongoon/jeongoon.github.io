@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="writing benchmark code in haskell with stack and package.yaml (hpack)">
+
+
+    <meta name="keywords" content="stack, haskell, benchmark, hpack, criterion, package.yaml">
+
+
+    <title>MJ's kind weird Code - How To Write Benchmark in Haskell With Criterion (WIP)</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/07Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/07Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 How To Write Benchmark in Haskell With Criterion (WIP)
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on April 10, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: 
+  
+</div>
+
+<h2 id="criterion">Criterion</h2>
+<p><a href="https://github.com/haskell/criterion"><strong>criterion</strong></a> is a haskell package to create benchmarks to test speed of your codes.</p>
+<p>And I’m going to how to write down the criterion with <strong>stack</strong> - a haskell project managing programme</p>
+<h2 id="stack">stack</h2>
+<p><strong>stack</strong> helps create your package.</p>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack new bench-test</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Downloading</span> template <span class="st">&quot;new-template&quot;</span> to create project <span class="st">&quot;bench-test&quot;</span> in bench-test/ ...</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> snip ...</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Selecting</span> the best among 21 snapshots...                                        </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> Matches https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Selected</span> resolver: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Initialising</span> configuration using resolver: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> number of user packages considered: 1                                     </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> configuration to file: bench-test/stack.yaml                            </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">All</span> done.                                                                       </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/myoungjin/.stack/templates/new-template.hsfiles:</span>    6.06 KiB downloaded...</span></code></pre></div>
+<p>stack download some list of latest recommended packages based on a ghc (haskell compiler).</p>
+<p>I’m going to use older ghc version because when ghc version is changed you need to build a lot
+of package if run for the first time.</p>
+<p>In my case I’m going to stick with lts-16.27. and following file is <strong>stack.yaml</strong> under your
+project directory.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I found the line something like below and commented out</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#resolver:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/2.yaml</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and add below line</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">resolver</span><span class="kw">:</span><span class="at"> lts-16.27</span></span></code></pre></div>
+<p>In this way, you can keep using your any packages compiled and installed previously.
+But <em>you don’t have to do if you want to use latest ghc version.</em></p>
+<h2 id="do-not-touch-your-project.cabal">Do Not Touch Your project.cabal</h2>
+<p>And you will see <em>bench-test.cabal</em> in your directory. <strong>stack</strong> seems to use <strong>cabal</strong> to compile the
+programme or library. However, it is not good idea to edit this file directly because
+<strong>stack</strong> will read <em>package.yaml</em> file and automatically update this <em>bench-test.cabal</em> file.
+So any change you made will be over-written by <strong>stack</strong>.</p>
+<h2 id="package.yaml">package.yaml</h2>
+<p>Instead, you will need to have a look <em>package.yaml</em> file to make any changes.
+And you will see the some simliar contents between <em>package.yaml</em> and <em>bench-test.cabal</em>.</p>
+<p>(… to be continued)</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->

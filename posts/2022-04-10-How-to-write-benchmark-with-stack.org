@@ -1,0 +1,69 @@
+---
+title: How To Write Benchmark in Haskell With Criterion (WIP)
+description: writing benchmark code in haskell with stack and package.yaml (hpack)
+keywords: stack, haskell, benchmark, hpack, criterion, package.yaml
+author: Myoungjin Jeon
+tag: stack, haskell, benchmark, hpack, criterion, package.yaml
+
+---
+#+STARTUP: inlineimages
+
+** Criterion
+
+ [[https://github.com/haskell/criterion][*criterion*]] is a haskell package to create benchmarks to test speed of your codes.
+
+ And I'm going to how to write down the criterion with *stack* - a haskell project managing programme
+ 
+** stack
+
+ *stack* helps create your package.
+
+#+BEGIN_SRC sh
+  sh> stack new bench-test
+  Downloading template "new-template" to create project "bench-test" in bench-test/ ...
+  ... snip ...
+
+  Selecting the best among 21 snapshots...                                        
+
+  * Matches https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml
+
+  Selected resolver: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml
+  Initialising configuration using resolver: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml
+  Total number of user packages considered: 1                                     
+  Writing configuration to file: bench-test/stack.yaml                            
+  All done.                                                                       
+  /home/myoungjin/.stack/templates/new-template.hsfiles:    6.06 KiB downloaded...
+#+END_SRC
+
+  stack download some list of latest recommended packages based on a ghc (haskell compiler).
+
+  I'm going to use older ghc version because when ghc version is changed you need to build a lot
+  of package if run for the first time.
+
+  In my case I'm going to stick with lts-16.27. and following file is *stack.yaml* under your
+  project directory.
+
+#+BEGIN_SRC yaml
+# I found the line something like below and commented out
+#resolver:
+#  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/2.yaml
+# and add below line
+resolver: lts-16.27
+#+END_SRC
+
+  In this way, you can keep using your any packages compiled and installed previously.
+  But /you don't have to do if you want to use latest ghc version./
+  
+** Do Not Touch Your project.cabal
+
+ And you will see /bench-test.cabal/ in your directory. *stack* seems to use *cabal* to compile the
+ programme or library. However, it is not good idea to edit this file directly because
+ *stack* will read /package.yaml/ file and automatically update this /bench-test.cabal/ file.
+ So any change you made will be over-written by *stack*.
+
+** package.yaml
+
+ Instead, you will need to have a look /package.yaml/ file to make any changes.
+ And you will see the some simliar contents between /package.yaml/ and /bench-test.cabal/.
+
+ (... to be continued)

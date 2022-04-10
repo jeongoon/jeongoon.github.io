@@ -12,8 +12,8 @@ LICENSE: [Open Software License 3.0](https://opensource.org/licenses/OSL-3.0)
 = Yet Another Combinations
 
 I was trying to make a new type of combinations after making a combinations
-method in `golang`, which is fast as expected as usual. It's impressive how golang
-show splend performance even though I didn't tweak the code much.
+method in `golang`, which is fast as expected as usual. It's impressive how
+golang shows splend performance even though I didn't tweak the code much.
 
 And my first haskell `resursive` version of combinations ([LeadersAndFollowers](/posts/2022-03-29-Combination.html))
 isn't quite fast enough even though most of all concept behind the code is
@@ -338,7 +338,7 @@ allCombinations'' will use `scanl` and let's check the value before going furthe
 [1]
 ```
 
-After wire up those elements:
+After wiring those up:
 
 \begin{code}
 allCombinations'' :: [a] -> [[[[a]]]]
@@ -373,13 +373,13 @@ In short:
 What we need first is
 
 ```haskell
-group1 <> group2 <> group3 <> group4`
+group1 <> group2 <> group3 <> group4
 ```
 
 And next one is
 
 ```haskell
-`N1 <> N2 <> N3 <> N4 <> N5`
+N1 <> N2 <> N3 <> N4 <> N5
 ```
 
 \begin{code}
@@ -462,7 +462,7 @@ result to make new one. (What a sustainable choice! 🌎)
 
 I hope performance is also nice. (less time -> less electricity?)
 
-= About Compact Code _ 압축된 코드에 관해 
+= About Compact Code _ 압축된 코드에 관해
 
 For curiosity, I wrote down the full code of `allCombinations`
 by using `let` or `where` clause.
@@ -472,7 +472,7 @@ allCombinations =
   concat . map concat . allCombinations''
   where
     allCombinations'' ms =
-      scanl genStep [ [[m]] | m <- ms] (reverse . tail . inits $ ms)
+      scanl genStep [ [[m]] | m <- ms ] (reverse . tail . inits $ ms)
       where
         genPart x tss = [ x : ts | ts <- concat tss ]
         genStep pt ms = zipWith genPart ms (init . tails . tail $ pt)
