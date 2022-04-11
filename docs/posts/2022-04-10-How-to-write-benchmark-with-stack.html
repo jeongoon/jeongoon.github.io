@@ -10,7 +10,7 @@
     <meta name="description" content="writing benchmark code in haskell with stack and package.yaml (hpack)">
 
 
-    <meta name="keywords" content="stack, haskell, benchmark, hpack, criterion, package.yaml">
+    <meta name="keywords" content="stack, haskell, benchmark, hpack, criterion, package_yaml">
 
 
     <title>MJ's kind weird Code - How To Write Benchmark in Haskell With Criterion</title>
@@ -18,7 +18,7 @@
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
     <link rel="stylesheet" type="text/css" href="../css/07Apr2022.css" />
-    <link rel="stylesheet" type="text/css" href="../css/07Apr2022.code.css" />
+    <link rel="stylesheet" type="text/css" href="../css/11Apr2022.code.css" />
   </head>
   <body class="surface-color">
     <header id="main-header">
@@ -46,7 +46,7 @@
 </div>
 <div class="info">
   
-  Tags: 
+  Tags: <a title="All pages tagged 'stack'." href="../tags/stack.html">stack</a>, <a title="All pages tagged 'haskell'." href="../tags/haskell.html">haskell</a>, <a title="All pages tagged 'benchmark'." href="../tags/benchmark.html">benchmark</a>, <a title="All pages tagged 'hpack'." href="../tags/hpack.html">hpack</a>, <a title="All pages tagged 'criterion'." href="../tags/criterion.html">criterion</a>, <a title="All pages tagged 'package.yaml'." href="../tags/package.yaml.html">package.yaml</a>
   
 </div>
 
@@ -54,7 +54,7 @@
 <p><a href="https://github.com/haskell/criterion"><strong>criterion</strong></a> is a haskell package to create benchmarks to test speed of your codes.</p>
 <p>And I’m going to how to write down the criterion with <strong>stack</strong> - a haskell project managing programme</p>
 <h2 id="stack">stack</h2>
-<p><strong>stack</strong> helps create your package. More documents can be found <a href="https://docs.haskellstack.org/en/stable/README/">here</a>.</p>
+<p><strong>stack</strong> helps you to create your haskell package. More documents can be found <a href="https://docs.haskellstack.org/en/stable/README/">here</a>.</p>
 <div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack new bench-example</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Downloading</span> template <span class="st">&quot;new-template&quot;</span> to create project <span class="st">&quot;bench-example&quot;</span> in bench-example/ ...</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> snip ...</span>
@@ -69,7 +69,7 @@
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> configuration to file: bench-example/stack.yaml                            </span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">All</span> done.                                                                       </span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/myoungjin/.stack/templates/new-template.hsfiles:</span>    6.06 KiB downloaded...</span></code></pre></div>
-<p>stack download some list of latest recommended packages based on a ghc (haskell compiler).</p>
+<p><em>stack</em> downloads some list of latest recommended packages based on a ghc (haskell compiler).</p>
 <p>I’m going to use older ghc version because when ghc version is changed you need to build a lot
 of package if run for the first time.</p>
 <p>In my case I’m going to stick with lts-16.27. and following file is <strong>stack.yaml</strong> under your
@@ -87,12 +87,11 @@ programme or library. However, it is not good idea to edit this file directly be
 <strong>stack</strong> will read <em>package.yaml</em> file and automatically update this <em>bench-example.cabal</em> file.
 So any change you made will be over-written by <strong>stack</strong>.</p>
 <p>You can actually see the message from <em>bench-example.cabal</em> like below.</p>
-<pre><code>cabal-version: 1.12
-
--- This file has been generated from package.yaml by hpack version 0.34.4.
---  
--- see: https://github.com/sol/hpack
-</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cabal<span class="op">-</span>version<span class="op">:</span> <span class="fl">1.12</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- This file has been generated from package.yaml by hpack version 0.34.4.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">--  </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- see: https://github.com/sol/hpack</span></span></code></pre></div>
 <h2 id="package.yaml">package.yaml</h2>
 <p>Instead, you will need to have a look <em>package.yaml</em> file to apply any changes.</p>
 <p>When you open <em>*.cabal</em> file, you will see the some simliar contents with <em>package.yaml</em>
@@ -181,14 +180,19 @@ separately. so /“Different Main/ in <em>Different source directory"</em></p>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span>                                 # ^ benchmakr name <span class="er">(</span><span class="ex">identifier</span><span class="kw">)</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack exec bench-example-benchmark-exe <span class="at">--</span> <span class="at">-o</span> <span class="st">&quot;report.html&quot;</span></span></code></pre></div>
 <h2 id="why-a-benchmark-programme-is-important">Why A Benchmark Programme is important?</h2>
-<p>I used to exam the time by using shell (fish shell for me), and it is quite time consuming,
-if I wanted to change some parameters because I need to wait in front of my notebook and
-hit the enter button so many times.</p>
-<p><em>Criterion</em> will give us reasonable results based on your preset parameters. one by one.</p>
-<p>It does give even nice html report as if you pass <em>-o some.html</em> option.</p>
+<p>If <em>tests</em> are to prove that your implementation is <em>right</em>.</p>
+<p>Benchmarks are <strong><em>journey</em></strong> to find the faster way to your destination.</p>
+<p>It could take very long time to reach the destination.</p>
+<p><em>Faster</em> doesn’t really need to obey <em>all</em> the rules in theory. So, IMHO, It is more like
+<em><strong>engineering than</strong></em> science.</p>
+<p>That’s why <strong>we need objective proof</strong> that measure A saves more time to get the
+same result. (or less power to get the same thesedays)</p>
+<p><em>Criterion</em> will guide us reasonable results based on your preset parameters one by one.
+and one of best thing about criterion is that it tries to give as accurate as possible.
+And also It does give even nice html report as if you pass <em>-o some.html</em> option.</p>
 <h2 id="any-issues">Any Issues?</h2>
-<p>On my laptop, the results are diffenent from time to time, I vaguely guess that is because I’m using
-Desktop-dedicated linux kernel. (something … <em>-zen</em> kernel)</p>
+<p>On my laptop, the results are diffenent from time to time, I vaguely guess that is
+because I’m using a linux kernel to dedicated to GUI. (something … <em>-zen</em> kernel)</p>
 <p>So, I need to keep my laptop status steady during the test. or I needed to change the order
 of benchmarks to see any affects on the order of executing.</p>
 <p>Thank you always. I’ll post about how to write down a example of benchmark code in <em>Go</em> langauge

@@ -1,10 +1,9 @@
 ---
 title: How To Write Benchmark in Haskell With Criterion
 description: writing benchmark code in haskell with stack and package.yaml (hpack)
-keywords: stack, haskell, benchmark, hpack, criterion, package.yaml
+keywords: stack, haskell, benchmark, hpack, criterion, package_yaml
 author: Myoungjin Jeon
-tag: stack, haskell, benchmark, hpack, criterion, package.yaml
-
+tags: stack, haskell, benchmark, hpack, criterion, package.yaml
 ---
 #+STARTUP: inlineimages
 
@@ -16,7 +15,7 @@ tag: stack, haskell, benchmark, hpack, criterion, package.yaml
  
 ** stack
 
- *stack* helps create your package. More documents can be found [[https://docs.haskellstack.org/en/stable/README/][here]].
+ *stack* helps you to create your haskell package. More documents can be found [[https://docs.haskellstack.org/en/stable/README/][here]].
 
 #+BEGIN_SRC sh
   sh> stack new bench-example
@@ -35,7 +34,7 @@ tag: stack, haskell, benchmark, hpack, criterion, package.yaml
   /home/myoungjin/.stack/templates/new-template.hsfiles:    6.06 KiB downloaded...
 #+END_SRC
 
-  stack download some list of latest recommended packages based on a ghc (haskell compiler).
+  /stack/ downloads some list of latest recommended packages based on a ghc (haskell compiler).
 
   I'm going to use older ghc version because when ghc version is changed you need to build a lot
   of package if run for the first time.
@@ -63,7 +62,7 @@ resolver: lts-16.27
 
  You can actually see the message from /bench-example.cabal/ like below.
 
-#+BEGIN_SRC
+#+BEGIN_SRC haskell
 cabal-version: 1.12
 
 -- This file has been generated from package.yaml by hpack version 0.34.4.
@@ -183,21 +182,29 @@ executables:
 
 ** Why A Benchmark Programme is important?
 
-   I used to exam the time by using shell (fish shell for me), and it is quite time consuming,
-   if I wanted to change some parameters because I need to wait in front of my notebook and
-   hit the enter button so many times.
+   If /tests/ are to prove that your implementation is /right/.
 
-   /Criterion/ will give us reasonable results based on your preset parameters. one by one.
+   Benchmarks are */journey/* to find the faster way to your destination.
 
-   It does give even nice html report as if you pass /-o some.html/ option.
+   It could take very long time to reach the destination.
+
+   /Faster/ doesn't really need to obey /all/ the rules in theory. So, IMHO, It is more like
+   /*engineering than*/  science.
+
+   That's why *we need objective proof* that measure A saves more time to get the
+   same result. (or less power to get the same thesedays)
+   
+   /Criterion/ will guide us reasonable results based on your preset parameters one by one.
+   and one of best thing about criterion is that it tries to give as accurate as possible.
+   And also It does give even nice html report as if you pass /-o some.html/ option.
 
 ** Any Issues?
 
-   On my laptop, the results are diffenent from time to time, I vaguely guess that is because I'm using
-   Desktop-dedicated linux kernel. (something ... /-zen/ kernel)
+   On my laptop, the results are diffenent from time to time, I vaguely guess that is
+   because I'm using a linux kernel to dedicated to GUI. (something ... /-zen/ kernel)
 
    So, I need to keep my laptop status steady during the test. or I needed to change the order
-   of benchmarks to see any affects on the order of executing.
+  of benchmarks to see any affects on the order of executing.
 
 
 Thank you always. I'll post about how to write down a example of benchmark code in /Go/ langauge
