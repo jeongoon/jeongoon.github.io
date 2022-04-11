@@ -136,8 +136,7 @@ benchmarks:
     ]
 #+END_SRC
 
-    the prior example is only pseudo code and I'm going to explain in another blog
-
+    the prior example is only pseudo code and I'm going to explain in [another article](https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-criterion.html).
     - finally test on command line. the following code will generate benchmark results.
 
 #+BEGIN_SRC sh
