@@ -191,7 +191,7 @@ executables:
    /Faster/ doesn't really need to obey /all/ the rules in theory. So, IMHO, It is more like
    /*engineering than*/  science.
 
-   That's why *we need objective proof* that measure A saves more time to get the
+   That's why *we need objective proof* that measure /"A" solution/ saves more time to get the
    same result. (or less power to get the same thesedays)
    
    /Criterion/ will guide us reasonable results based on your preset parameters one by one.
