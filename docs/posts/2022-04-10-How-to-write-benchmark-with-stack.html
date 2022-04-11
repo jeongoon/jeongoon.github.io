@@ -54,9 +54,9 @@
 <p><a href="https://github.com/haskell/criterion"><strong>criterion</strong></a> is a haskell package to create benchmarks to test speed of your codes.</p>
 <p>And I’m going to how to write down the criterion with <strong>stack</strong> - a haskell project managing programme</p>
 <h2 id="stack">stack</h2>
-<p><strong>stack</strong> helps create your package.</p>
-<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack new bench-test</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Downloading</span> template <span class="st">&quot;new-template&quot;</span> to create project <span class="st">&quot;bench-test&quot;</span> in bench-test/ ...</span>
+<p><strong>stack</strong> helps create your package. More documents can be found <a href="https://docs.haskellstack.org/en/stable/README/">here</a>.</p>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack new bench-example</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Downloading</span> template <span class="st">&quot;new-template&quot;</span> to create project <span class="st">&quot;bench-example&quot;</span> in bench-example/ ...</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> snip ...</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Selecting</span> the best among 21 snapshots...                                        </span>
@@ -66,7 +66,7 @@
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Selected</span> resolver: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Initialising</span> configuration using resolver: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> number of user packages considered: 1                                     </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> configuration to file: bench-test/stack.yaml                            </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> configuration to file: bench-example/stack.yaml                            </span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">All</span> done.                                                                       </span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/myoungjin/.stack/templates/new-template.hsfiles:</span>    6.06 KiB downloaded...</span></code></pre></div>
 <p>stack download some list of latest recommended packages based on a ghc (haskell compiler).</p>
@@ -82,14 +82,117 @@ project directory.</p>
 <p>In this way, you can keep using your any packages compiled and installed previously.
 But <em>you don’t have to do if you want to use latest ghc version.</em></p>
 <h2 id="do-not-touch-your-project.cabal">Do Not Touch Your project.cabal</h2>
-<p>And you will see <em>bench-test.cabal</em> in your directory. <strong>stack</strong> seems to use <strong>cabal</strong> to compile the
+<p>And you will see <em>bench-example.cabal</em> in your directory. <strong>stack</strong> seems to use <strong>cabal</strong> to compile the
 programme or library. However, it is not good idea to edit this file directly because
-<strong>stack</strong> will read <em>package.yaml</em> file and automatically update this <em>bench-test.cabal</em> file.
+<strong>stack</strong> will read <em>package.yaml</em> file and automatically update this <em>bench-example.cabal</em> file.
 So any change you made will be over-written by <strong>stack</strong>.</p>
+<p>You can actually see the message from <em>bench-example.cabal</em> like below.</p>
+<pre><code>cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--  
+-- see: https://github.com/sol/hpack
+</code></pre>
 <h2 id="package.yaml">package.yaml</h2>
-<p>Instead, you will need to have a look <em>package.yaml</em> file to make any changes.
-And you will see the some simliar contents between <em>package.yaml</em> and <em>bench-test.cabal</em>.</p>
-<p>(… to be continued)</p>
+<p>Instead, you will need to have a look <em>package.yaml</em> file to apply any changes.</p>
+<p>When you open <em>*.cabal</em> file, you will see the some simliar contents with <em>package.yaml</em>
+So, <em>package.yaml</em> is the file you need to handle.</p>
+<p>To make only benchmark programme or just wanted to benchmark on the fly,
+You need to add a clause called <em>benchmarks:</em></p>
+<h3 id="when-benchmark-only">When Benchmark only</h3>
+<ul>
+<li>Firstly, find the <em>tests:</em> clause and copy&amp;paste.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tests</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bench-example-test</span><span class="kw">:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">main</span><span class="kw">:</span><span class="at">                Spec.hs</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">source-dirs</span><span class="kw">:</span><span class="at">         test</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ghc-options</span><span class="kw">:</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> -threaded</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> -rtsopts</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> -with-rtsopts=-N</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> haskell-combinations</span></span></code></pre></div>
+<p>and copy and paste and modify, please read commments on the right-hand side.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">benchmarks</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">bench-example-benchmark</span><span class="kw">:</span><span class="co">           # any name you would like to use.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">main</span><span class="kw">:</span><span class="at">               Bench.hs</span><span class="co">     # this is the file where you write the benchmark code</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">source-dirs</span><span class="kw">:</span><span class="at">        benchmark</span><span class="co">    # specify directory for benchmark</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ghc-options</span><span class="kw">:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> -O2</span><span class="co">                            # I added optimization</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> -threaded</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> -rtsopts</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> -with-rtsopts=-N</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> haskell-combinations</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> criterion</span><span class="co">                      # criterion is the package for benchmark</span></span></code></pre></div>
+<p>one more thing I’d like to mention is that the <em>source-dirs:</em> cannot be shared other
+<em>app</em> or <em>test</em> or <em>benchmark</em>. because sources-dirs have to have <strong>only one</strong> <em>Main.hs</em> whose
+module name is <em>Main</em>.</p>
+<ul>
+<li>and make some example benchmark codes in <em>benchmark</em> directory.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- file: benchmark/Bench.hs</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Main</span> <span class="kw">where</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Criterion</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Criterion.Main</span> (defaultMain)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  defaultMain</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  [ bgroup <span class="st">&quot;Some benchmark Group&quot;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    [ bench <span class="st">&quot;Test1&quot;</span> <span class="op">$</span> nf yourCodeToBenchmark args</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  ]</span></code></pre></div>
+<p>the prior example is only pseudo code and I’m going to explain in another blog</p>
+<ul>
+<li>finally test on command line. the following code will generate benchmark results.</li>
+</ul>
+<div class="sourceCode" id="cb7" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack build bench-example:bench:bench-example-benchmark</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span>            # ^ package name</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span>                          # ^ in benchmarks</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span>                                 # ^ benchmakr name <span class="er">(</span><span class="ex">identifier</span><span class="kw">)</span></span></code></pre></div>
+<h3 id="creating-benchmark-executable">Creating Benchmark Executable</h3>
+<ul>
+<li>This is similar to making a ‘app’ which goes under <em>executables:</em> clause.
+Basically, we are using same <em>Bench.hs</em> as a <em>Main</em>.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">executables</span><span class="kw">:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">bench-example-benchmark-exe</span><span class="kw">:</span><span class="co">          # the actual executable name</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">main</span><span class="kw">:</span><span class="at">               Bench.ls</span><span class="co">        # modulde must be 'Main'</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">source-dirs</span><span class="kw">:</span><span class="at">        benchmark</span><span class="co">       # we can make executable from prior source file</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ghc-options</span><span class="kw">:</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> -threaded</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> -rtsopts</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> -with-rtsopts=-N</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> haskell-combinations</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> criterion</span><span class="co">                         # don't forget the main package.</span></span></code></pre></div>
+<p>But please remember you might need to use separate directory for each benchmark
+if you want to make another type of benchmark is different which desired to execute
+separately. so /“Different Main/ in <em>Different source directory"</em></p>
+<ul>
+<li>and emerge it from the command line.</li>
+</ul>
+<div class="sourceCode" id="cb9" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack build bench-example:exe:bench-example-benchmark-exe</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span>            # ^ it is under the same package</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span>                          # ^ now in __executables__</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span>                                 # ^ benchmakr name <span class="er">(</span><span class="ex">identifier</span><span class="kw">)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack exec bench-example-benchmark-exe <span class="at">--</span> <span class="at">-o</span> <span class="st">&quot;report.html&quot;</span></span></code></pre></div>
+<h2 id="why-a-benchmark-programme-is-important">Why A Benchmark Programme is important?</h2>
+<p>I used to exam the time by using shell (fish shell for me), and it is quite time consuming,
+if I wanted to change some parameters because I need to wait in front of my notebook and
+hit the enter button so many times.</p>
+<p><em>Criterion</em> will give us reasonable results based on your preset parameters. one by one.</p>
+<p>It does give even nice html report as if you pass <em>-o some.html</em> option.</p>
+<h2 id="any-issues">Any Issues?</h2>
+<p>On my laptop, the results are diffenent from time to time, I vaguely guess that is because I’m using
+Desktop-dedicated linux kernel. (something … <em>-zen</em> kernel)</p>
+<p>So, I need to keep my laptop status steady during the test. or I needed to change the order
+of benchmarks to see any affects on the order of executing.</p>
+<p>Thank you always. I’ll post about how to write down a example of benchmark code in <em>Go</em> langauge
+any time soon.</p>
 
     </div>
 

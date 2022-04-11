@@ -16,11 +16,11 @@ tag: stack, haskell, benchmark, hpack, criterion, package.yaml
  
 ** stack
 
- *stack* helps create your package.
+ *stack* helps create your package. More documents can be found [[https://docs.haskellstack.org/en/stable/README/][here]].
 
 #+BEGIN_SRC sh
-  sh> stack new bench-test
-  Downloading template "new-template" to create project "bench-test" in bench-test/ ...
+  sh> stack new bench-example
+  Downloading template "new-template" to create project "bench-example" in bench-example/ ...
   ... snip ...
 
   Selecting the best among 21 snapshots...                                        
@@ -30,7 +30,7 @@ tag: stack, haskell, benchmark, hpack, criterion, package.yaml
   Selected resolver: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml
   Initialising configuration using resolver: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/3.yaml
   Total number of user packages considered: 1                                     
-  Writing configuration to file: bench-test/stack.yaml                            
+  Writing configuration to file: bench-example/stack.yaml                            
   All done.                                                                       
   /home/myoungjin/.stack/templates/new-template.hsfiles:    6.06 KiB downloaded...
 #+END_SRC
@@ -56,14 +56,149 @@ resolver: lts-16.27
   
 ** Do Not Touch Your project.cabal
 
- And you will see /bench-test.cabal/ in your directory. *stack* seems to use *cabal* to compile the
+ And you will see /bench-example.cabal/ in your directory. *stack* seems to use *cabal* to compile the
  programme or library. However, it is not good idea to edit this file directly because
- *stack* will read /package.yaml/ file and automatically update this /bench-test.cabal/ file.
+ *stack* will read /package.yaml/ file and automatically update this /bench-example.cabal/ file.
  So any change you made will be over-written by *stack*.
+
+ You can actually see the message from /bench-example.cabal/ like below.
+
+#+BEGIN_SRC
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--  
+-- see: https://github.com/sol/hpack
+#+END_SRC
 
 ** package.yaml
 
- Instead, you will need to have a look /package.yaml/ file to make any changes.
- And you will see the some simliar contents between /package.yaml/ and /bench-test.cabal/.
+ Instead, you will need to have a look /package.yaml/ file to apply any changes.
 
- (... to be continued)
+ When you open /*.cabal/ file, you will see the some simliar contents with /package.yaml/
+ So, /package.yaml/ is the file you need to handle.
+
+ To make only benchmark programme or just wanted to benchmark on the fly,
+ You need to add a clause called /benchmarks:/
+
+***  When Benchmark only
+    - Firstly, find the /tests:/ clause and copy&paste.
+
+#+BEGIN_SRC yaml
+  tests:
+  bench-example-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - haskell-combinations
+#+END_SRC
+
+      and copy and paste and modify, please read commments on the right-hand side.
+ 
+#+BEGIN_SRC yaml
+benchmarks:
+  bench-example-benchmark:           # any name you would like to use.
+    main:               Bench.hs     # this is the file where you write the benchmark code
+    source-dirs:        benchmark    # specify directory for benchmark
+    ghc-options:
+    - -O2                            # I added optimization
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - haskell-combinations
+    - criterion                      # criterion is the package for benchmark
+#+END_SRC
+
+      one more thing I'd like to mention is that the /source-dirs:/ cannot be shared other
+      /app/ or /test/ or /benchmark/. because sources-dirs have to have *only one* /Main.hs/ whose
+      module name is /Main/.
+     
+    - and make some example benchmark codes in /benchmark/ directory.
+
+
+#+BEGIN_SRC haskell
+  -- file: benchmark/Bench.hs
+  module Main where
+
+  import Criterion
+  import Criterion.Main (defaultMain)
+
+  main :: IO ()
+  main = do
+    defaultMain
+    [ bgroup "Some benchmark Group"
+      [ bench "Test1" $ nf yourCodeToBenchmark args
+      ]
+    ]
+#+END_SRC
+
+    the prior example is only pseudo code and I'm going to explain in another blog
+
+    - finally test on command line. the following code will generate benchmark results.
+
+#+BEGIN_SRC sh
+  sh> stack build bench-example:bench:bench-example-benchmark
+  sh>            # ^ package name
+  sh>                          # ^ in benchmarks
+  sh>                                 # ^ benchmakr name (identifier)
+#+END_SRC
+
+***  Creating Benchmark Executable
+
+     - This is similar to making a 'app' which goes under /executables:/ clause.
+       Basically, we are using same /Bench.hs/ as a /Main/.
+
+#+BEGIN_SRC yaml
+executables:
+  bench-example-benchmark-exe:          # the actual executable name
+    main:               Bench.ls        # modulde must be 'Main'
+    source-dirs:        benchmark       # we can make executable from prior source file
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - haskell-combinations
+    - criterion                         # don't forget the main package.
+#+END_SRC
+
+     But please remember you might need to use separate directory for each benchmark
+     if you want to make another type of benchmark is different which desired to execute
+     separately. so  /"Different Main/ in /Different source directory"/
+
+     - and emerge it from the command line.
+
+#+BEGIN_SRC sh
+  sh> stack build bench-example:exe:bench-example-benchmark-exe
+  sh>            # ^ it is under the same package
+  sh>                          # ^ now in __executables__
+  sh>                                 # ^ benchmakr name (identifier)
+  sh> stack exec bench-example-benchmark-exe -- -o "report.html"
+#+END_SRC
+
+** Why A Benchmark Programme is important?
+
+   I used to exam the time by using shell (fish shell for me), and it is quite time consuming,
+   if I wanted to change some parameters because I need to wait in front of my notebook and
+   hit the enter button so many times.
+
+   /Criterion/ will give us reasonable results based on your preset parameters. one by one.
+
+   It does give even nice html report as if you pass /-o some.html/ option.
+
+** Any Issues?
+
+   On my laptop, the results are diffenent from time to time, I vaguely guess that is because I'm using
+   Desktop-dedicated linux kernel. (something ... /-zen/ kernel)
+
+   So, I need to keep my laptop status steady during the test. or I needed to change the order
+   of benchmarks to see any affects on the order of executing.
+
+
+Thank you always. I'll post about how to write down a example of benchmark code in /Go/ langauge
+any time soon.
