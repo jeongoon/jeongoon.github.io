@@ -1,5 +1,5 @@
 ---
-title: How To Write Benchmark in Haskell With Criterion (WIP)
+title: How To Write Benchmark in Haskell With Criterion
 description: writing benchmark code in haskell with stack and package.yaml (hpack)
 keywords: stack, haskell, benchmark, hpack, criterion, package.yaml
 author: Myoungjin Jeon
