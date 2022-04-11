@@ -1,5 +1,5 @@
 ---
-title: How To Write Benchmark in Haskell With Criterion
+title: How To Write Benchmark in Haskell With Stack And Criterion
 description: writing benchmark code in haskell with stack and package.yaml (hpack)
 keywords: stack, haskell, benchmark, hpack, criterion, package_yaml
 author: Myoungjin Jeon
@@ -37,7 +37,7 @@ tags: stack, haskell, benchmark, hpack, criterion, package.yaml
   /stack/ downloads some list of latest recommended packages based on a ghc (haskell compiler).
 
   I'm going to use older ghc version because when ghc version is changed you need to build a lot
-  of package if run for the first time.
+  of packages if run it for the first time.
 
   In my case I'm going to stick with lts-16.27. and following file is *stack.yaml* under your
   project directory.
@@ -136,7 +136,7 @@ benchmarks:
     ]
 #+END_SRC
 
-    the prior example is only pseudo code and I'm going to explain in [another article](https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-criterion.html).
+    the prior example is only pseudo code and I'm going to explain in [[https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-criterion.html][another article]].
     - finally test on command line. the following code will generate benchmark results.
 
 #+BEGIN_SRC sh

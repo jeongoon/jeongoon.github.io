@@ -111,14 +111,16 @@ In other words, you should not do:
 ```haskell
 bench "test benchmark message" $ nf const testFunctionWithoutArgument
 ```
-*`const` is sometimes useful function as much as `id` to make another function
-suits in the type in a context*
 
 Rather you should do:
 
 ```haskell
 bench "test benchmark message" $ nf testFunction anArgument
 ```
+
+*`const` is a useful function as much as `id` to mould a function
+to make it suitable in a different *context* like in prior example.
+(a function need one argument -> a function without any)
 
 *nf* stands for `normal form` and another one is `weak head normal form`.
 I skipped this explanation as I don't have enough knowledge to share yet.
