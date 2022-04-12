@@ -261,4 +261,4 @@ and about WHNF (Weak Head Normal Form).
 
 This file is actually working source code written in *literate haskell*
 
-You can access [here](https://github.com/jeongoon/combinations-bench/blob/main/posts/2022-04-11-How-to-wirte-benchmark-with-criterion.lhs)
+You can access [here](https://github.com/jeongoon/jeongoon.github.io/blob/main/posts/2022-04-11-How-to-write-benchmark-with-criterion.lhs)
