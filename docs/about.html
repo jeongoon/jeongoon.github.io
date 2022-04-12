@@ -7,10 +7,20 @@
 
 
    <!-- even though I setup @media to make change all the fixed font size;
-     FF on mobile displays incorrectly scale font size again
-     so I ends up re-insert below meta line again to correct them
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
     -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
 
     <title>MJ's kind weird Code - About</title>
     <style>
