@@ -7,6 +7,10 @@ tags: stack, haskell, benchmark, hpack, criterion, package.yaml
 ---
 #+STARTUP: inlineimages
 
+** Benchamark for Beginner Series
+    1. [Haskell] /Stack Setup with pacakge.yaml/
+    2. [Haskell] [[https:///jeongoon.github.io/posts/2022-04-11-How-to-wirte-benchmark-with-criterion.html][Write Benchmark with /Criterion/]]
+
 ** Criterion
 
  [[https://github.com/haskell/criterion][*criterion*]] is a haskell package to create benchmarks to test speed of your codes.
@@ -181,14 +185,14 @@ executables:
 
 ** Why A Benchmark Programme is important?
 
-   If /tests/ are to prove that your implementation is /right/.
-
+   If /tests/ are to prove that your implementation is /right/. On the other hand,
    Benchmarks are */journey/* to find the faster way to your destination.
 
-   It could take very long time to reach the destination.
+   It could take very long time to reach the destination this is the main reason we need a
+   tool to make it easier.
 
-   /Faster/ doesn't really need to obey /all/ the rules in theory. So, IMHO, It is more like
-   /*engineering than*/  science.
+   And /Faster/ doesn't always need to obey /all/ the rules in theory. So, IMHO, It is more like
+   /*engineering than*/ science.
 
    That's why *we need objective proof* that measure /"A" solution/ saves more time to get the
    same result. (or less power to get the same thesedays)
@@ -204,7 +208,6 @@ executables:
 
    So, I need to keep my laptop status steady during the test. or I needed to change the order
   of benchmarks to see any affects on the order of executing.
-
 
 Thank you always. I'll post about how to write down a example of benchmark code in /Go/ langauge
 any time soon.

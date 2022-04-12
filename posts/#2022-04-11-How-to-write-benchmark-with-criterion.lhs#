@@ -6,7 +6,17 @@ author: Myoungjin Jeon
 tags: haskell, benchmark, hpack, criterion
 ---
 
-**Latest version of this article** will be available [here](https://jeongoon.github.io/posts/2022-04-11-How-to-wirte-benchmark-with-criterion.html).
+**Latest version of this article** will be available [here](https://jeongoon.github.io/posts/2022-04-11-How-to-write-benchmark-with-criterion.html).
+
+
+== Benchamark for Beginner Series
+   1. [Haskell] [Stack Setup with pacakge.yaml](/posts/2022-04-10-How-to-write-benchmark-with-stack.html)
+   2. [Haskell] *Write Benchmark with **Criterion***
+
+== credits
+
+   - I found the criterion information at https://mmhaskell.com/testing/profiling,
+     however example doesn't show how to write down *package.yaml*
 
 ----
 
@@ -190,8 +200,8 @@ I skipped this explanation as I don't have enough knowledge to share yet.
     ]
 \end{code}
 
-It was a bit long and could have written in helper function but I kept changing
-the layout of benchmark so I didn't make one. and copied and paste. 😓
+It was a bit long and could have been written in helper function but I kept
+changing the layout of benchmark so I didn't make one. and copied and paste. 😓
 
 and you could run the test with `stack` in two ways:
 
@@ -251,4 +261,4 @@ and about WHNF (Weak Head Normal Form).
 
 This file is actually working source code written in *literate haskell*
 
-You can access [here](https://github.com/jeongoon/combinations-bench/blob/main/posts/2022-04-11-How-to-wirte-benchmark-with-criterion.lhs")
+You can access [here](https://github.com/jeongoon/jeongoon.github.io/blob/main/posts/2022-04-11-How-to-write-benchmark-with-criterion.lhs)

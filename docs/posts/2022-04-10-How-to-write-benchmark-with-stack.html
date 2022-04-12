@@ -13,12 +13,12 @@
     <meta name="keywords" content="stack, haskell, benchmark, hpack, criterion, package_yaml">
 
 
-    <title>MJ's kind weird Code - How To Write Benchmark in Haskell With Criterion</title>
+    <title>MJ's kind weird Code - How To Write Benchmark in Haskell With Stack And Criterion</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
     <link rel="stylesheet" type="text/css" href="../css/07Apr2022.css" />
-    <link rel="stylesheet" type="text/css" href="../css/11Apr2022.code.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
   </head>
   <body class="surface-color">
     <header id="main-header">
@@ -26,7 +26,7 @@
         <a href="../">MJ's Kind Weird Code</a>
       </div>
       <div id="page-title">
-        <p> 📰 How To Write Benchmark in Haskell With Criterion
+        <p> 📰 How To Write Benchmark in Haskell With Stack And Criterion
         </p>
       </div>
       <nav id="main-nav" class="font-menu-title">
@@ -50,6 +50,11 @@
   
 </div>
 
+<h2 id="benchamark-for-beginner-series">Benchamark for Beginner Series</h2>
+<ol>
+<li>[Haskell] <em>Stack Setup with pacakge.yaml</em></li>
+<li>[Haskell] <a href="https:///jeongoon.github.io/posts/2022-04-11-How-to-wirte-benchmark-with-criterion.html">Write Benchmark with <em>Criterion</em></a></li>
+</ol>
 <h2 id="criterion">Criterion</h2>
 <p><a href="https://github.com/haskell/criterion"><strong>criterion</strong></a> is a haskell package to create benchmarks to test speed of your codes.</p>
 <p>And I’m going to how to write down the criterion with <strong>stack</strong> - a haskell project managing programme</p>
@@ -71,7 +76,7 @@
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/myoungjin/.stack/templates/new-template.hsfiles:</span>    6.06 KiB downloaded...</span></code></pre></div>
 <p><em>stack</em> downloads some list of latest recommended packages based on a ghc (haskell compiler).</p>
 <p>I’m going to use older ghc version because when ghc version is changed you need to build a lot
-of package if run for the first time.</p>
+of packages if run it for the first time.</p>
 <p>In my case I’m going to stick with lts-16.27. and following file is <strong>stack.yaml</strong> under your
 project directory.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I found the line something like below and commented out</span></span>
@@ -144,7 +149,7 @@ module name is <em>Main</em>.</p>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    [ bench <span class="st">&quot;Test1&quot;</span> <span class="op">$</span> nf yourCodeToBenchmark args</span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  ]</span></code></pre></div>
-<p>the prior example is only pseudo code and I’m going to explain in [another article](<a href="https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-criterion.html">https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-criterion.html</a>).</p>
+<p>the prior example is only pseudo code and I’m going to explain in <a href="https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-criterion.html">another article</a>.</p>
 <ul>
 <li>finally test on command line. the following code will generate benchmark results.</li>
 </ul>
@@ -180,10 +185,11 @@ separately. so /“Different Main/ in <em>Different source directory"</em></p>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span>                                 # ^ benchmakr name <span class="er">(</span><span class="ex">identifier</span><span class="kw">)</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack exec bench-example-benchmark-exe <span class="at">--</span> <span class="at">-o</span> <span class="st">&quot;report.html&quot;</span></span></code></pre></div>
 <h2 id="why-a-benchmark-programme-is-important">Why A Benchmark Programme is important?</h2>
-<p>If <em>tests</em> are to prove that your implementation is <em>right</em>.</p>
-<p>Benchmarks are <strong><em>journey</em></strong> to find the faster way to your destination.</p>
-<p>It could take very long time to reach the destination.</p>
-<p><em>Faster</em> doesn’t really need to obey <em>all</em> the rules in theory. So, IMHO, It is more like
+<p>If <em>tests</em> are to prove that your implementation is <em>right</em>. On the other hand,
+Benchmarks are <strong><em>journey</em></strong> to find the faster way to your destination.</p>
+<p>It could take very long time to reach the destination this is the main reason we need a
+tool to make it easier.</p>
+<p>And <em>Faster</em> doesn’t always need to obey <em>all</em> the rules in theory. So, IMHO, It is more like
 <em><strong>engineering than</strong></em> science.</p>
 <p>That’s why <strong>we need objective proof</strong> that measure <em>“A” solution</em> saves more time to get the
 same result. (or less power to get the same thesedays)</p>
