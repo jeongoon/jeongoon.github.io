@@ -15,17 +15,17 @@ tags: go, golang, benchmark, org-mode, hakyll
 
 ** Credit
     - This article is based on the [[https://golangdocs.com/benchmark-functions-in-golang][Official Document]].
-    - org-mode turn off subscript action on /hakyll/ See footnote [[#footnotes]]
+    - org-mode turn off subscript action on /hakyll/ See [[#fn1][the footnote]].
 
 ** Go Builtin Benchmark and Test
 
- As a modern devlopment tool, go language is shipped with builtin benchmark tool(module)!
+ As a modern development tool, go language is shipped with builtin benchmark tool(module)!
  And there are some rules to follow. let's find out.
 
 *** File Name with surfix "_test.go"
-    ~go test~ in the shell (or command) will find any files have the name ends with /_test.go/ to
-    recognize handle it as a test code. For example I'd like make a benchmark code about
-    /combinations/, I need to make a file with *combinations_test.go*
+    ~go test -bench=.~ in the shell (or command) will find any files have the name ends with
+    /_test.go/ to recognize handle it as a test code. For example I'd like make a benchmark code
+    about /combinations/, I need to make a file with *combinations_test.go*
 
 #+begin_src bash
   sh> head -n 6 combinations_test.go
@@ -62,7 +62,7 @@ import "testing"
           // do your benchmark
   }
 #+end_src
-   And also note that the argment it will take is ~b *testing B~.
+   And also note that the argument it will take is ~b *testing B~.
 
    please note that you don't need to put /'_'/  between /Benchmark/ and /something/.
    you only need /Benchmark/ prefix. That's only personal taste matters.
@@ -70,12 +70,14 @@ import "testing"
 ** Issues
   Go language has simple and easy rule to follow. however I found some issues about
   unreliable benchmark time.
-***  WARNING
-     this is not proved but only my opinion. I hope this information will help you
-     get more accurate result out of the benchmark in go language.
+
+#+begin_quote
+*Warning*: This is not proved but only my opinion. I hope this information will help you
+get more accurate result out of the benchmark in go language.
+#+end_quote
 
 ***  warming up code
-     when you are running and compare the performance between two similar function do
+     when you are running and compare the performance between two similar functions do
      the same job. you might need to put some extra codes which wrap around your really
      benchmark code.
 
@@ -105,7 +107,7 @@ import "testing"
 *** code after another
     I used the same function(/aFunc/) in the prior example, however when we are comparing other
     type of code it needs another warming up code will be required to achieve the /even effect/
-    as the proior code.
+    as the prior code.
 #+begin_src go
   func aFunc() {
           // some codes go here
@@ -127,40 +129,41 @@ import "testing"
   func Benchmark_warmingup_bFunc() {
           someTimes := 10
           for j := 0; j < someTimes; j++ {
-                  aFunc()
+                  bFunc()
           }
   }
 
   func Benchmark_actually_bFunc() {
           for j := 0; j < 10000; j++ {
-                  aFunc()
+                  bFunc()
           }
   }
 #+end_src
 
 *** outro code for last test
     and for some unknown reason, last benchmark does not seems to show correct measured time.
-    This is because maybe I have perception already. but if the last code block get affected
+    It looks like last one finished rashly. This is because maybe I have perception already. but if the last code block get affected
     by the position, we will need to re-arrange them to see the changes
 
     Or just put another /outro code/. And it will doesn't harm if there was no effect depending
-    whether it is located on the last or not, either.
+    on whether it is located on the last or not, either.
 
     So, I tried to put another /cFunc/ or just another /aFunc/ after testing /bFunc/ block.
 
 #+begin_src go
   func Benchmark_actually_bFunc() {
           for j := 0; j < 10000; j++ {
-                  aFunc()
+                  bFunc()
           }
   }
   func Benchmark_outro_aFunc() {
           for j := 0; j < 10; j++ {
+                  aFunc()
           }
 #+end_src
 
 
-I hope it will help you find the more trustful benchmark result out of go benchmark.
+Again, I hope it will help you find the more trustful benchmark result out of go benchmark.
 
 If you want to get a example of the benchmark code of mine,
 please visit my [[https://github.com/jeongoon/combinations-bench/tree/main/go-combinations][combinations-bench repository]].
@@ -168,7 +171,7 @@ please visit my [[https://github.com/jeongoon/combinations-bench/tree/main/go-co
 
 ** Org-mode issues
 
-    I wrote this artcile with /org-mode/ in emacs. However if i wrote some word starting
+    I wrote this article with /org-mode/ in emacs. However if i wrote some word starting
     with underscore (i.e: _test.go), org-mode interpret as subscript (smaller font under
     the baseline). ~#+OPTION: ^:{}~ will prevents from this behaviour but if you really need
     subscript you could still use via ~_{some_scubscript_words}~ will give me
