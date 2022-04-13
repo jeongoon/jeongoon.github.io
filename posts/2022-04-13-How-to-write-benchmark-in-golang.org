@@ -1,0 +1,164 @@
+---
+title: Builtin Benchmark with Go
+description: writing the benchmark code in go langauge.
+keywords: go, golang, benchmark
+author: Myoungjin Jeon
+tags: go, golang, benchmark
+---
+#+STARTUP: inlineimages
+
+** Benchamark for Beginner Series
+    1. [Haskell] [[https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-stack.html][Stack Setup with pacakge.yaml]]
+    2. [Haskell] [[https://jeongoon.github.io/posts/2022-04-11-How-to-wirte-benchmark-with-criterion.html][Write Benchmark with /Criterion/]]
+    3. [Go] /Builtin Bechmark with Go/
+
+** Credit
+    This article is based on the [[https://golangdocs.com/benchmark-functions-in-golang][Official Document]].
+
+** Go Builtin Benchmark and Test
+
+ As a modern devlopment tool, go language is shipped with builtin benchmark tool(module)!
+ And there are some rules to follow. let's find out.
+
+*** File Name with surfix "_test.go"
+    ~go test~ in the shell (or command) will find any files have the name ends with /_test.go/ to
+    recognize handle it as a test code. For example I'd like make a benchmark code about
+    /combinations/, I need to make a file with *combinations_test.go*
+
+#+begin_src fish
+  sh> head -n 6 combinations_test.go
+  package main
+
+  import "testing"
+
+  /* my own module for go lang */
+  import jeongoon "github.com/jeongoon/go-combinations"
+#+end_src
+
+***  Package name as "main"
+     as it says:
+#+begin_src go
+package main
+#+end_src
+     otherwise cannot find the module automatically by running /go test/
+#+begin_src fish
+  sh> go test -bench=.
+  can't load package: package .: found packages main (someCode.go) and in /your/path/to/code
+#+end_src
+
+*** Importing "testing" module
+#+begin_src go
+import "testing"
+#+end_src
+    This is the package all we need. simple.
+
+*** Any Function has prefix "Benchmark"
+    In your code, there might be some helper function which does not perform benchmark,
+    On the other hand, your benchmark code should start with /Benchmark/ prefix.
+#+begin_src go
+  func Benchmark_something(b *testing B) {
+          // do your benchmark
+  }
+#+end_src
+   And also note that the argment it will take is ~b *testing B~.
+
+   please note that you don't need to put /'_'/  between /Benchmark/ and /something/.
+   you only need /Benchmark/ prefix. That's only personal taste matters.
+
+** Issues
+  Go language has simple and easy rule to follow. however I found some issues about
+  unreliable benchmark time.
+***  WARNING
+     this is not proved but only my opinion. I hope this information will help you
+     get more accurate result out of the benchmark in go language.
+
+***  warming up code
+     when you are running and compare the performance between two similar function do
+     the same job. you might need to put some extra codes which wrap around your really
+     benchmark code.
+
+     To test /aFunc/, you might need to put a /warming up/ code before doing that.
+
+#+begin_src go
+  func aFunc() {
+          // some codes go here
+  }
+
+  func Benchmark_warmingup_aFunc() {
+          someTimes := 10
+          for j := 0; j < someTimes; j++ {
+                  aFunc()
+          }
+  }
+
+  func Benchmark_actually_aFunc() {
+          for j := 0; j < 10000; j++ {
+                  aFunc()
+          }
+  }
+#+end_src
+
+     otherwise the results looks slower on the first run or vice versa.
+
+*** code after another
+    I used the same function(/aFunc/) in the prior example, however when we are comparing other
+    type of code it needs another warming up code will be required to achieve the /even effect/
+    as the proior code.
+#+begin_src go
+  func aFunc() {
+          // some codes go here
+  }
+
+  func bFunc() {
+          // another implementation goes here
+  }
+
+  // .. snip ..
+
+  func Benchmark_actually_bFunc() {
+          for j := 0; j < 10000; j++ {
+                  aFunc()
+          }
+  }
+
+  // and warming up again
+  func Benchmark_warmingup_bFunc() {
+          someTimes := 10
+          for j := 0; j < someTimes; j++ {
+                  aFunc()
+          }
+  }
+
+  func Benchmark_actually_bFunc() {
+          for j := 0; j < 10000; j++ {
+                  aFunc()
+          }
+  }
+#+end_src
+
+*** outro code for last test
+    and for some unknown reason, last benchmark does not seems to show correct measured time.
+    This is because maybe I have perception already. but if the last code block get affected
+    by the position, we will need to re-arrange them to see the changes
+
+    Or just put another /outro code/. And it will doesn't harm if there was no effect depending
+    whether it is located on the last or not, either.
+
+    So, I tried to put another /cFunc/ or just another /aFunc/ after testing /bFunc/ block.
+
+#+begin_src go
+  func Benchmark_actually_bFunc() {
+          for j := 0; j < 10000; j++ {
+                  aFunc()
+          }
+  }
+  func Benchmark_outro_aFunc() {
+          for j := 0; j < 10; j++ {
+          }
+#+end_src
+
+
+I hope it will help you find the more trustful benchmark result out of go benchmark.
+
+If you want to get a example of the benchmark code of mine,
+please visit my [[https://github.com/jeongoon/combinations-bench/tree/main/go-combinations][combinations-bench repository]].

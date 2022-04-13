@@ -12,6 +12,7 @@ tags: haskell, benchmark, hpack, criterion
 == Benchamark for Beginner Series
    1. [Haskell] [Stack Setup with pacakge.yaml](/posts/2022-04-10-How-to-write-benchmark-with-stack.html)
    2. [Haskell] *Write Benchmark with **Criterion***
+   3. [Go] [Builtin Benchmark with Go](/posts/2022-04-13-How-to-write-benchmark-in-golang.html)
 
 == credits
 

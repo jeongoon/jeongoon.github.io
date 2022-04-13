@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="writing the benchmark code in go langauge.">
+
+
+    <meta name="keywords" content="go, golang, benchmark">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - Builtin Benchmark with Go</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/07Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Builtin Benchmark with Go
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on April 13, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'go'." href="../tags/go.html">go</a>, <a title="All pages tagged 'golang'." href="../tags/golang.html">golang</a>, <a title="All pages tagged 'benchmark'." href="../tags/benchmark.html">benchmark</a>
+  
+</div>
+
+<h2 id="benchamark-for-beginner-series">Benchamark for Beginner Series</h2>
+<ol>
+<li>[Haskell] <a href="https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-stack.html">Stack Setup with pacakge.yaml</a></li>
+<li>[Haskell] <a href="https://jeongoon.github.io/posts/2022-04-11-How-to-wirte-benchmark-with-criterion.html">Write Benchmark with <em>Criterion</em></a></li>
+<li>[Go] <em>Builtin Bechmark with Go</em></li>
+</ol>
+<h2 id="credit">Credit</h2>
+<p>This article is based on the <a href="https://golangdocs.com/benchmark-functions-in-golang">Official Document</a>.</p>
+<h2 id="go-builtin-benchmark-and-test">Go Builtin Benchmark and Test</h2>
+<p>As a modern devlopment tool, go language is shipped with builtin benchmark tool(module)!
+And there are some rules to follow. let’s find out.</p>
+<h3 id="file-name-with-surfix-test.go">File Name with surfix “<sub>test</sub>.go”</h3>
+<p><code>go test</code> in the shell (or command) will find any files have the name ends with <em><sub>test</sub>.go</em> to
+recognize handle it as a test code. For example I’d like make a benchmark code about
+<em>combinations</em>, I need to make a file with <strong>combinations<sub>test</sub>.go</strong></p>
+<pre class="fish"><code>sh&gt; head -n 6 combinations_test.go
+package main
+
+import &quot;testing&quot;
+
+/* my own module for go lang */
+import jeongoon &quot;github.com/jeongoon/go-combinations&quot;
+</code></pre>
+<h3 id="package-name-as-main">Package name as “main”</h3>
+<p>as it says:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> main</span></code></pre></div>
+<p>otherwise cannot find the module automatically by running <em>go test</em></p>
+<pre class="fish"><code>sh&gt; go test -bench=.
+can't load package: package .: found packages main (someCode.go) and in /your/path/to/code
+</code></pre>
+<h3 id="importing-testing-module">Importing “testing” module</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="st">&quot;testing&quot;</span></span></code></pre></div>
+<p>This is the package all we need. simple.</p>
+<h3 id="any-function-has-prefix-benchmark">Any Function has prefix “Benchmark”</h3>
+<p>In your code, there might be some helper function which does not perform benchmark,
+On the other hand, your benchmark code should start with <em>Benchmark</em> prefix.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Benchmark_something<span class="op">(</span>b <span class="op">*</span>testing B<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">// do your benchmark</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>And also note that the argment it will take is <code>b *testing B</code>.</p>
+<p>please note that you don’t need to put <em>‘_’</em> between <em>Benchmark</em> and <em>something</em>.
+you only need <em>Benchmark</em> prefix. That’s only personal taste matters.</p>
+<h2 id="issues">Issues</h2>
+<p>Go language has simple and easy rule to follow. however I found some issues about
+unreliable benchmark time.</p>
+<h3 id="warning">WARNING</h3>
+<p>this is not proved but only my opinion. I hope this information will help you
+get more accurate result out of the benchmark in go language.</p>
+<h3 id="warming-up-code">warming up code</h3>
+<p>when you are running and compare the performance between two similar function do
+the same job. you might need to put some extra codes which wrap around your really
+benchmark code.</p>
+<p>To test <em>aFunc</em>, you might need to put a <em>warming up</em> code before doing that.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> aFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">// some codes go here</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Benchmark_warmingup_aFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        someTimes <span class="op">:=</span> <span class="dv">10</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">for</span> j <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> someTimes<span class="op">;</span> j<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                aFunc<span class="op">()</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Benchmark_actually_aFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">for</span> j <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">10000</span><span class="op">;</span> j<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                aFunc<span class="op">()</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>otherwise the results looks slower on the first run or vice versa.</p>
+<h3 id="code-after-another">code after another</h3>
+<p>I used the same function(<em>aFunc</em>) in the prior example, however when we are comparing other
+type of code it needs another warming up code will be required to achieve the <em>even effect</em>
+as the proior code.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> aFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">// some codes go here</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> bFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// another implementation goes here</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Benchmark_actually_bFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">for</span> j <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">10000</span><span class="op">;</span> j<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                aFunc<span class="op">()</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">// and warming up again</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Benchmark_warmingup_bFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        someTimes <span class="op">:=</span> <span class="dv">10</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">for</span> j <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> someTimes<span class="op">;</span> j<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                aFunc<span class="op">()</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Benchmark_actually_bFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="kw">for</span> j <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">10000</span><span class="op">;</span> j<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>                aFunc<span class="op">()</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="outro-code-for-last-test">outro code for last test</h3>
+<p>and for some unknown reason, last benchmark does not seems to show correct measured time.
+This is because maybe I have perception already. but if the last code block get affected
+by the position, we will need to re-arrange them to see the changes</p>
+<p>Or just put another <em>outro code</em>. And it will doesn’t harm if there was no effect depending
+whether it is located on the last or not, either.</p>
+<p>So, I tried to put another <em>cFunc</em> or just another <em>aFunc</em> after testing <em>bFunc</em> block.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Benchmark_actually_bFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">for</span> j <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">10000</span><span class="op">;</span> j<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                aFunc<span class="op">()</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Benchmark_outro_aFunc<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">for</span> j <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">10</span><span class="op">;</span> j<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span></code></pre></div>
+<p>I hope it will help you find the more trustful benchmark result out of go benchmark.</p>
+<p>If you want to get a example of the benchmark code of mine,
+please visit my <a href="https://github.com/jeongoon/combinations-bench/tree/main/go-combinations">combinations-bench repository</a>.</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->
