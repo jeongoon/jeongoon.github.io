@@ -145,7 +145,7 @@ get more accurate result out of the benchmark in go language.
     It looks like last one finished rashly. This is because maybe I have perception already. but if the last code block get affected
     by the position, we will need to re-arrange them to see the changes
 
-    Or just put another /outro code/. And it will doesn't harm if there was no effect depending
+    Or just put another /outro code/. And it will not harm if there was no effect depending
     on whether it is located on the last or not, either.
 
     So, I tried to put another /cFunc/ or just another /aFunc/ after testing /bFunc/ block.
