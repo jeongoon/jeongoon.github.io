@@ -1,11 +1,12 @@
 ---
 title: Builtin Benchmark with Go
 description: writing the benchmark code in go langauge.
-keywords: go, golang, benchmark
+keywords: go, golang, benchmark, org-mode, hakyll
 author: Myoungjin Jeon
-tags: go, golang, benchmark
+tags: go, golang, benchmark, org-mode, hakyll
 ---
 #+STARTUP: inlineimages
+#+OPTIONS: ^:{}
 
 ** Benchamark for Beginner Series
     1. [Haskell] [[https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-stack.html][Stack Setup with pacakge.yaml]]
@@ -13,7 +14,8 @@ tags: go, golang, benchmark
     3. [Go] /Builtin Bechmark with Go/
 
 ** Credit
-    This article is based on the [[https://golangdocs.com/benchmark-functions-in-golang][Official Document]].
+    - This article is based on the [[https://golangdocs.com/benchmark-functions-in-golang][Official Document]].
+    - org-mode turn off subscript action on /hakyll/ See footnote [[#footnotes]]
 
 ** Go Builtin Benchmark and Test
 
@@ -25,7 +27,7 @@ tags: go, golang, benchmark
     recognize handle it as a test code. For example I'd like make a benchmark code about
     /combinations/, I need to make a file with *combinations_test.go*
 
-#+begin_src fish
+#+begin_src bash
   sh> head -n 6 combinations_test.go
   package main
 
@@ -41,7 +43,7 @@ tags: go, golang, benchmark
 package main
 #+end_src
      otherwise cannot find the module automatically by running /go test/
-#+begin_src fish
+#+begin_src bash
   sh> go test -bench=.
   can't load package: package .: found packages main (someCode.go) and in /your/path/to/code
 #+end_src
@@ -162,3 +164,16 @@ I hope it will help you find the more trustful benchmark result out of go benchm
 
 If you want to get a example of the benchmark code of mine,
 please visit my [[https://github.com/jeongoon/combinations-bench/tree/main/go-combinations][combinations-bench repository]].
+
+
+** Org-mode issues
+
+    I wrote this artcile with /org-mode/ in emacs. However if i wrote some word starting
+    with underscore (i.e: _test.go), org-mode interpret as subscript (smaller font under
+    the baseline). ~#+OPTION: ^:{}~ will prevents from this behaviour but if you really need
+    subscript you could still use via ~_{some_scubscript_words}~ will give me
+    _{some_scubscript_words}, cool. I found this solution[fn:1] on stackoverflow.com
+
+** Footnotes
+
+[fn:1] Disabling underscore-to-subscript ... https://stackoverflow.com/questions/698562/disabling-underscore-to-subscript-in-emacs-org-mode-export

@@ -10,7 +10,7 @@
     <meta name="description" content="writing the benchmark code in go langauge.">
 
 
-    <meta name="keywords" content="go, golang, benchmark">
+    <meta name="keywords" content="go, golang, benchmark, org-mode, hakyll">
 
    <!-- even though I setup @media to make change all the fixed font size;
         FF on mobile -- incorrectly -- scales font size again.
@@ -61,7 +61,7 @@
 </div>
 <div class="info">
   
-  Tags: <a title="All pages tagged 'go'." href="../tags/go.html">go</a>, <a title="All pages tagged 'golang'." href="../tags/golang.html">golang</a>, <a title="All pages tagged 'benchmark'." href="../tags/benchmark.html">benchmark</a>
+  Tags: <a title="All pages tagged 'go'." href="../tags/go.html">go</a>, <a title="All pages tagged 'golang'." href="../tags/golang.html">golang</a>, <a title="All pages tagged 'benchmark'." href="../tags/benchmark.html">benchmark</a>, <a title="All pages tagged 'org-mode'." href="../tags/org-mode.html">org-mode</a>, <a title="All pages tagged 'hakyll'." href="../tags/hakyll.html">hakyll</a>
   
 </div>
 
@@ -72,29 +72,30 @@
 <li>[Go] <em>Builtin Bechmark with Go</em></li>
 </ol>
 <h2 id="credit">Credit</h2>
-<p>This article is based on the <a href="https://golangdocs.com/benchmark-functions-in-golang">Official Document</a>.</p>
+<ul>
+<li>This article is based on the <a href="https://golangdocs.com/benchmark-functions-in-golang">Official Document</a>.</li>
+<li>org-mode turn off subscript action on <em>hakyll</em> See footnote <a href="#footnotes">#footnotes</a></li>
+</ul>
 <h2 id="go-builtin-benchmark-and-test">Go Builtin Benchmark and Test</h2>
 <p>As a modern devlopment tool, go language is shipped with builtin benchmark tool(module)!
 And there are some rules to follow. let’s find out.</p>
-<h3 id="file-name-with-surfix-test.go">File Name with surfix “<sub>test</sub>.go”</h3>
-<p><code>go test</code> in the shell (or command) will find any files have the name ends with <em><sub>test</sub>.go</em> to
+<h3 id="file-name-with-surfix-_test.go">File Name with surfix “_test.go”</h3>
+<p><code>go test</code> in the shell (or command) will find any files have the name ends with <em>_test.go</em> to
 recognize handle it as a test code. For example I’d like make a benchmark code about
-<em>combinations</em>, I need to make a file with <strong>combinations<sub>test</sub>.go</strong></p>
-<pre class="fish"><code>sh&gt; head -n 6 combinations_test.go
-package main
-
-import &quot;testing&quot;
-
-/* my own module for go lang */
-import jeongoon &quot;github.com/jeongoon/go-combinations&quot;
-</code></pre>
+<em>combinations</em>, I need to make a file with <strong>combinations_test.go</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> head <span class="at">-n</span> 6 combinations_test.go</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">package</span> main</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">import</span> <span class="st">&quot;testing&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/*</span> my own module for go lang <span class="pp">*</span>/</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">import</span> jeongoon <span class="st">&quot;github.com/jeongoon/go-combinations&quot;</span></span></code></pre></div>
 <h3 id="package-name-as-main">Package name as “main”</h3>
 <p>as it says:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> main</span></code></pre></div>
 <p>otherwise cannot find the module automatically by running <em>go test</em></p>
-<pre class="fish"><code>sh&gt; go test -bench=.
-can't load package: package .: found packages main (someCode.go) and in /your/path/to/code
-</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> go test <span class="at">-bench</span><span class="op">=</span>.</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">can</span><span class="st">'t load package: package .: found packages main (someCode.go) and in /your/path/to/code</span></span></code></pre></div>
 <h3 id="importing-testing-module">Importing “testing” module</h3>
 <div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="st">&quot;testing&quot;</span></span></code></pre></div>
 <p>This is the package all we need. simple.</p>
@@ -186,6 +187,19 @@ whether it is located on the last or not, either.</p>
 <p>I hope it will help you find the more trustful benchmark result out of go benchmark.</p>
 <p>If you want to get a example of the benchmark code of mine,
 please visit my <a href="https://github.com/jeongoon/combinations-bench/tree/main/go-combinations">combinations-bench repository</a>.</p>
+<h2 id="org-mode-issues">Org-mode issues</h2>
+<p>I wrote this artcile with <em>org-mode</em> in emacs. However if i wrote some word starting
+with underscore (i.e: _test.go), org-mode interpret as subscript (smaller font under
+the baseline). <code>#+OPTION: ^:{}</code> will prevents from this behaviour but if you really need
+subscript you could still use via <code>_{some_scubscript_words}</code> will give me
+<sub>some_scubscript_words</sub>, cool. I found this solution<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> on stackoverflow.com</p>
+<h2 id="footnotes">Footnotes</h2>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Disabling underscore-to-subscript … <a href="https://stackoverflow.com/questions/698562/disabling-underscore-to-subscript-in-emacs-org-mode-export">https://stackoverflow.com/questions/698562/disabling-underscore-to-subscript-in-emacs-org-mode-export</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
     </div>
 
