@@ -9,7 +9,7 @@ tags: stack, haskell, benchmark, hpack, criterion, package.yaml
 
 ** Benchamark for Beginner Series
     1. [Haskell] /Stack Setup with pacakge.yaml/
-    2. [Haskell] [[https:///jeongoon.github.io/posts/2022-04-11-How-to-wirte-benchmark-with-criterion.html][Write Benchmark with /Criterion/]]
+    2. [Haskell] [[https:///jeongoon.github.io/posts/2022-04-11-How-to-write-benchmark-with-criterion.html][Write Benchmark with /Criterion/]]
     3. [Go] [[https://jeongoon.github.io/posts/2022-04-13-How-to-write-benchmark-in-golang.html][Builtin Benchmark with Go]]
 
 ** Criterion

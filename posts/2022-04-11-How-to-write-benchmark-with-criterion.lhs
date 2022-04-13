@@ -6,9 +6,6 @@ author: Myoungjin Jeon
 tags: haskell, benchmark, hpack, criterion
 ---
 
-**Latest version of this article** will be available [here](https://jeongoon.github.io/posts/2022-04-11-How-to-write-benchmark-with-criterion.html).
-
-
 == Benchamark for Beginner Series
    1. [Haskell] [Stack Setup with pacakge.yaml](/posts/2022-04-10-How-to-write-benchmark-with-stack.html)
    2. [Haskell] *Write Benchmark with **Criterion***
@@ -16,10 +13,8 @@ tags: haskell, benchmark, hpack, criterion
 
 == credits
 
-   - I found the criterion information at https://mmhaskell.com/testing/profiling,
+   - I found the criterion information at [https://mmhaskell.com/testing/profiling]
      however example doesn't show how to write down *package.yaml*
-
-----
 
 I wrote about [how to create benchmark programme with stack](https://jeongoon.github.io/posts/2022-04-10-How-to-write-benchmark-with-stack.html) package tool.
 
