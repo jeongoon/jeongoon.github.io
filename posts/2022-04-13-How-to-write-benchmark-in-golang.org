@@ -15,7 +15,9 @@ tags: go, golang, benchmark, org-mode, hakyll
 
 ** Credit
     - This article is based on the [[https://golangdocs.com/benchmark-functions-in-golang][Official Document]].
-    - org-mode turn off subscript action on /hakyll/ See [[#fn1][the footnote]].
+    - [org-mode] turn off underscore to subscript action on /hakyll./
+
+      Please See [[#fn1][the footnote]].
 
 ** Go Builtin Benchmark and Test
 
@@ -78,7 +80,7 @@ get more accurate result out of the benchmark in go language.
 
 ***  warming up code
      when you are running and compare the performance between two similar functions do
-     the same job. you might need to put some extra codes which wrap around your really
+     the same job. you might need to put some extra codes which wrap around your real
      benchmark code.
 
      To test /aFunc/, you might need to put a /warming up/ code before doing that.
@@ -106,7 +108,7 @@ get more accurate result out of the benchmark in go language.
 
 *** code after another
     I used the same function(/aFunc/) in the prior example, however when we are comparing other
-    type of code it needs another warming up code will be required to achieve the /even effect/
+    type of codes it needs another warming up code will be required to achieve the /even effect/
     as the prior code.
 #+begin_src go
   func aFunc() {
@@ -141,9 +143,9 @@ get more accurate result out of the benchmark in go language.
 #+end_src
 
 *** outro code for last test
-    and for some unknown reason, last benchmark does not seems to show correct measured time.
+    and for some unknown reason, last benchmark does not seems to show correctly measured time.
     It looks like last one finished rashly. This is because maybe I have perception already. but if the last code block get affected
-    by the position, we will need to re-arrange them to see the changes
+    by the position, we will need to re-arrange them to see the changes.
 
     Or just put another /outro code/. And it will not harm if there was no effect depending
     on whether it is located on the last or not, either.

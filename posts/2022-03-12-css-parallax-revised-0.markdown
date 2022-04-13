@@ -228,7 +228,8 @@ a bug report is required.)
 
 This bug prevents for user to see content at the bottom which is,
 in my opinion, serious problem.
-but there is no working around, I think bug report required.
+but there is no working around. and
+there is a [related bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1764498).
 
 ## Bug with `meta viewport ... initial-scale=1`
 

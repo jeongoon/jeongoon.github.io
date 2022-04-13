@@ -73,8 +73,9 @@
 </ol>
 <h2 id="credit">Credit</h2>
 <ul>
-<li>This article is based on the <a href="https://golangdocs.com/benchmark-functions-in-golang">Official Document</a>.</li>
-<li>org-mode turn off subscript action on <em>hakyll</em> See <a href="#fn1">the footnote</a>.</li>
+<li><p>This article is based on the <a href="https://golangdocs.com/benchmark-functions-in-golang">Official Document</a>.</p></li>
+<li><p>[org-mode] turn off underscore to subscript action on <em>hakyll.</em></p>
+<p>Please See <a href="#fn1">the footnote</a>.</p></li>
 </ul>
 <h2 id="go-builtin-benchmark-and-test">Go Builtin Benchmark and Test</h2>
 <p>As a modern development tool, go language is shipped with builtin benchmark tool(module)!
@@ -117,7 +118,7 @@ get more accurate result out of the benchmark in go language.</p>
 </blockquote>
 <h3 id="warming-up-code">warming up code</h3>
 <p>when you are running and compare the performance between two similar functions do
-the same job. you might need to put some extra codes which wrap around your really
+the same job. you might need to put some extra codes which wrap around your real
 benchmark code.</p>
 <p>To test <em>aFunc</em>, you might need to put a <em>warming up</em> code before doing that.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> aFunc<span class="op">()</span> <span class="op">{</span></span>
@@ -139,7 +140,7 @@ benchmark code.</p>
 <p>otherwise the results looks slower on the first run or vice versa.</p>
 <h3 id="code-after-another">code after another</h3>
 <p>I used the same function(<em>aFunc</em>) in the prior example, however when we are comparing other
-type of code it needs another warming up code will be required to achieve the <em>even effect</em>
+type of codes it needs another warming up code will be required to achieve the <em>even effect</em>
 as the prior code.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> aFunc<span class="op">()</span> <span class="op">{</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">// some codes go here</span></span>
@@ -171,9 +172,9 @@ as the prior code.</p>
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="outro-code-for-last-test">outro code for last test</h3>
-<p>and for some unknown reason, last benchmark does not seems to show correct measured time.
+<p>and for some unknown reason, last benchmark does not seems to show correctly measured time.
 It looks like last one finished rashly. This is because maybe I have perception already. but if the last code block get affected
-by the position, we will need to re-arrange them to see the changes</p>
+by the position, we will need to re-arrange them to see the changes.</p>
 <p>Or just put another <em>outro code</em>. And it will not harm if there was no effect depending
 on whether it is located on the last or not, either.</p>
 <p>So, I tried to put another <em>cFunc</em> or just another <em>aFunc</em> after testing <em>bFunc</em> block.</p>
