@@ -486,6 +486,6 @@ allCombinations =
 Yeah... haskell code naturally can be pretty compact.
 But I believe that more documentation and best practice will haskell greater!
 
-You can see this article in raw format at [here](https://github.com/jeongoon/jeongoon.github.io/blob/main/posts/2022-04-03-Combinations-TailAfterTail.lhs)
+You can see this article in raw format at [here](https://github.com/jeongoon/jeongoon.github.io/blob/main/posts/2022-04-03-Combinations-TailAfterTail.lhs).
 
 Thank you for reading!

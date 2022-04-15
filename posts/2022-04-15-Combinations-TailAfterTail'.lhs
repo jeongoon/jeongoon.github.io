@@ -20,7 +20,7 @@ LICENSE: [Open Software License 3.0](https://opensource.org/licenses/OSL-3.0)
 = Same Theory; Different Implementation
 
 In programming world, the pseudo code or theory will trigger your programming
-implementation in many ways. Those kind of diversion makes programming
+implementation in many ways. This kind of diversion makes programming
 interesting as well.
 
 Previously I made [TailAfterTail.lhs][orig-tat]
@@ -30,8 +30,8 @@ or [`tails`](https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.ht
 isn't quite neccessary if I don't rely on `scanl` or [`zipWith`](https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:zipWith).
 
 It is probably generally accepted that some different kind of implementation,
-which consist of even small amount of coode, but which are used at very high
-frequency, will eventually show in huge gap in performance after many
+which consist of even small amount of codes, but which run at very high
+frequency, will eventually show huge gaps in performance after many
 iterations of execution.
 
 So, this is about what I found during implemenation of *Tail After Tail*
@@ -61,23 +61,24 @@ import Data.List (tails, inits, scanl') -- only required for **WithScanl
 
 Please Find out more information [HERE][orig-tat].
 
-However, `combinations1'`, `flatten_allCombinationsGrouped` will be common
-helper functions.
+However, `combinations1'`, `flatten_allCombinationsGrouped` and
+`genPart` will be common helper functions.
 
 \begin{code}
 combinations1' :: [a] -> [[[a]]]
 combinations1' ms = [ [[m]] | m <- ms ]
 
 flatten_allCombinationsGrouped allComboFunc = map concat . allComboFunc
+
+genPart :: Foldable t => a -> t [[a]] -> [[a]]
+genPart leader followerGroups = [ leader : followers
+                                  | followers <- concat followerGroups ]
+
 \end{code}
 
 And I define some helper functions.
 
 \begin{code}
-genPart :: Foldable t => a -> t [[a]] -> [[a]]
-genPart leader followerGroups = [ leader : followers
-                                  | followers <- concat followerGroups ]
-
 usefulTails :: [a] -> [[a]]
 usefulTails = init . tails
 
@@ -123,7 +124,7 @@ unsafe_allCombinationsWithSingleStep members =
         genStep (m:ms) (_:cs:[]) = [ [ m : c | c <- cs ] ]
         genStep (m:ms) (_:cs) =
           -- note       ^ : we don't use first element
-          [ m : c | c <- concat cs ] : genStep ms cs
+          genPart m cs : genStep ms cs
       in
          cases : helper (genStep members cases)
   in
@@ -178,7 +179,7 @@ allCombinationsWithSingleStep members =
 == With Two Steps
 
 This is another version of without `scanl`. the Main improvement is that
-this function separate the jobs into two operations:
+this function separates the jobs into two operations:
 
 - create **first cases** from the previous **tails**.
 - create **rest of cases** and start next next case based on the result.
@@ -186,17 +187,16 @@ this function separate the jobs into two operations:
 \begin{code}
 allCombinationsWithTwoSteps' :: [a] -> [[[[a]]]]
 allCombinationsWithTwoSteps'
-  members@(fm:rms) = -- ^ fm : first member; rms: rest memebers
+  members@(fm:rms) = -- ^ fm : first member; rms: rest members
   let
     initFirstCase = [[fm]]
     initRestCases = combinations1' rms
 
-    mapLeader l {-prevTail-} = map (l:) . concat {-prevTail-}
-    genFirstCases = mapLeader fm
+    genFirstCases = genPart fm
 
     genRestCases _ [] = []
     genRestCases (m:ms) rcs@(_:rcs') = -- ^ rcs : rest of cases
-      (mapLeader m $ rcs) : (genRestCases ms rcs')
+      (genPart m $ rcs) : (genRestCases ms rcs')
 
 \end{code}
 

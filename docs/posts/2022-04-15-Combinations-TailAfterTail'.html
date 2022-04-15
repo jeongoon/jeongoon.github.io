@@ -74,15 +74,15 @@
 </ol>
 <h1 id="same-theory-different-implementation">Same Theory; Different Implementation</h1>
 <p>In programming world, the pseudo code or theory will trigger your programming
-implementation in many ways. Those kind of diversion makes programming
+implementation in many ways. This kind of diversion makes programming
 interesting as well.</p>
 <p>Previously I made <a href="https://jeongoon.github.io/posts/2022-04-03-Combinations-TailAfterTail.html">TailAfterTail.lhs</a></p>
 <p>And I found that <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:inits"><code>inits</code></a>
 or <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:tails"><code>tails</code></a>
 isn’t quite neccessary if I don’t rely on <code>scanl</code> or <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:zipWith"><code>zipWith</code></a>.</p>
 <p>It is probably generally accepted that some different kind of implementation,
-which consist of even small amount of coode, but which are used at very high
-frequency, will eventually show in huge gap in performance after many
+which consist of even small amount of codes, but which run at very high
+frequency, will eventually show huge gaps in performance after many
 iterations of execution.</p>
 <p>So, this is about what I found during implemenation of <em>Tail After Tail</em>
 combinations.</p>
@@ -104,27 +104,27 @@ Firstly, I going to write down the all function will be exposed.
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.List</span> (tails, inits, scanl') <span class="co">-- only required for **WithScanl</span></span></code></pre></div>
 <h2 id="original-version-scanl">Original Version (scanl)</h2>
 <p>Please Find out more information <a href="https://jeongoon.github.io/posts/2022-04-03-Combinations-TailAfterTail.html">HERE</a>.</p>
-<p>However, <code>combinations1'</code>, <code>flatten_allCombinationsGrouped</code> will be common
-helper functions.</p>
+<p>However, <code>combinations1'</code>, <code>flatten_allCombinationsGrouped</code> and
+<code>genPart</code> will be common helper functions.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">combinations1' ::</span> [a] <span class="ot">-&gt;</span> [[[a]]]</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>combinations1' ms <span class="ot">=</span> [ [[m]] <span class="op">|</span> m <span class="ot">&lt;-</span> ms ]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>flatten_allCombinationsGrouped allComboFunc <span class="ot">=</span> <span class="fu">map</span> <span class="fu">concat</span> <span class="op">.</span> allComboFunc</span></code></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>flatten_allCombinationsGrouped allComboFunc <span class="ot">=</span> <span class="fu">map</span> <span class="fu">concat</span> <span class="op">.</span> allComboFunc</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ot">genPart ::</span> <span class="dt">Foldable</span> t <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> t [[a]] <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>genPart leader followerGroups <span class="ot">=</span> [ leader <span class="op">:</span> followers</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                                  <span class="op">|</span> followers <span class="ot">&lt;-</span> <span class="fu">concat</span> followerGroups ]</span></code></pre></div>
 <p>And I define some helper functions.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ot">genPart ::</span> <span class="dt">Foldable</span> t <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> t [[a]] <span class="ot">-&gt;</span> [[a]]</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>genPart leader followerGroups <span class="ot">=</span> [ leader <span class="op">:</span> followers</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="op">|</span> followers <span class="ot">&lt;-</span> <span class="fu">concat</span> followerGroups ]</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ot">usefulTails ::</span> [a] <span class="ot">-&gt;</span> [[a]]</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>usefulTails <span class="ot">=</span> <span class="fu">init</span> <span class="op">.</span> tails</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ot">genStep ::</span> [[[a]]] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [[[a]]]</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>genStep prevTails members' <span class="ot">=</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zipWith</span> genPart members' (usefulTails prevTails')</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    prevTails' <span class="ot">=</span> <span class="fu">tail</span> prevTails <span class="co">-- head is not useful</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>membersTails <span class="ot">=</span> <span class="fu">reverse</span> <span class="op">.</span> <span class="fu">tail</span> <span class="op">.</span> inits <span class="co">-- tail is used to skip empty list.</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ot">usefulTails ::</span> [a] <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>usefulTails <span class="ot">=</span> <span class="fu">init</span> <span class="op">.</span> tails</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ot">genStep ::</span> [[[a]]] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [[[a]]]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>genStep prevTails members' <span class="ot">=</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zipWith</span> genPart members' (usefulTails prevTails')</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    prevTails' <span class="ot">=</span> <span class="fu">tail</span> prevTails <span class="co">-- head is not useful</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>membersTails <span class="ot">=</span> <span class="fu">reverse</span> <span class="op">.</span> <span class="fu">tail</span> <span class="op">.</span> inits <span class="co">-- tail is used to skip empty list.</span></span></code></pre></div>
 <p>and finally <code>combinationsWithScanl</code> family goes below.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ot">allCombinationsWithScanl' ::</span> [a] <span class="ot">-&gt;</span> [[[[a]]]]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>allCombinationsWithScanl' ms <span class="ot">=</span></span>
@@ -149,7 +149,7 @@ But IMHO, it helps to reduce lazieness and use less stack.</p>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        genStep (m<span class="op">:</span>ms) (_<span class="op">:</span>cs<span class="op">:</span>[]) <span class="ot">=</span> [ [ m <span class="op">:</span> c <span class="op">|</span> c <span class="ot">&lt;-</span> cs ] ]</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        genStep (m<span class="op">:</span>ms) (_<span class="op">:</span>cs) <span class="ot">=</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>          <span class="co">-- note       ^ : we don't use first element</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>          [ m <span class="op">:</span> c <span class="op">|</span> c <span class="ot">&lt;-</span> <span class="fu">concat</span> cs ] <span class="op">:</span> genStep ms cs</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>          genPart m cs <span class="op">:</span> genStep ms cs</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">in</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>         cases <span class="op">:</span> helper (genStep members cases)</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">in</span></span>
@@ -184,24 +184,23 @@ grouped by selection size, this is still <em>unsafe</em> but <a href="#combinati
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">$</span> members</span></code></pre></div>
 <h2 id="with-two-steps">With Two Steps</h2>
 <p>This is another version of without <code>scanl</code>. the Main improvement is that
-this function separate the jobs into two operations:</p>
+this function separates the jobs into two operations:</p>
 <ul>
 <li>create <strong>first cases</strong> from the previous <strong>tails</strong>.</li>
 <li>create <strong>rest of cases</strong> and start next next case based on the result.</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ot">allCombinationsWithTwoSteps' ::</span> [a] <span class="ot">-&gt;</span> [[[[a]]]]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>allCombinationsWithTwoSteps'</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  members<span class="op">@</span>(fm<span class="op">:</span>rms) <span class="ot">=</span> <span class="co">-- ^ fm : first member; rms: rest memebers</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  members<span class="op">@</span>(fm<span class="op">:</span>rms) <span class="ot">=</span> <span class="co">-- ^ fm : first member; rms: rest members</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    initFirstCase <span class="ot">=</span> [[fm]]</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    initRestCases <span class="ot">=</span> combinations1' rms</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    mapLeader l <span class="co">{-prevTail-}</span> <span class="ot">=</span> <span class="fu">map</span> (l<span class="op">:</span>) <span class="op">.</span> <span class="fu">concat</span> <span class="co">{-prevTail-}</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    genFirstCases <span class="ot">=</span> mapLeader fm</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    genRestCases _ [] <span class="ot">=</span> []</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    genRestCases (m<span class="op">:</span>ms) rcs<span class="op">@</span>(_<span class="op">:</span>rcs') <span class="ot">=</span> <span class="co">-- ^ rcs : rest of cases</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      (mapLeader m <span class="op">$</span> rcs) <span class="op">:</span> (genRestCases ms rcs')</span></code></pre></div>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    genFirstCases <span class="ot">=</span> genPart fm</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    genRestCases _ [] <span class="ot">=</span> []</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    genRestCases (m<span class="op">:</span>ms) rcs<span class="op">@</span>(_<span class="op">:</span>rcs') <span class="ot">=</span> <span class="co">-- ^ rcs : rest of cases</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      (genPart m <span class="op">$</span> rcs) <span class="op">:</span> (genRestCases ms rcs')</span></code></pre></div>
 <p>It looks almost identical when comparing to <code>SingleStep</code> but
 now <code>helper</code> function knows exactly where to start as <code>newTail</code> is
 memorized at the moment. It only saves time to <code>tail</code> by pattern matching
