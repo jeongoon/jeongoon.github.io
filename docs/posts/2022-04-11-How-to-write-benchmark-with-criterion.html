@@ -144,64 +144,49 @@ I skipped this explanation as I don’t have enough knowledge to share yet.</p>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>      [ benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Leaders and Followers&quot;</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> mkAllCombinationsWith Laf.combinations</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> small }</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (scanl)&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail&quot;</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> small }</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (new)&quot;</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations'</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming&quot;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> small }</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming&quot;</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> small }</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      ]</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      , bgroup <span class="st">&quot;Medium Sample Comparison&quot;</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      [ benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Leaders and Followers&quot;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> mkAllCombinationsWith Laf.combinations</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      , bgroup <span class="st">&quot;Medium Sample Comparison&quot;</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      [ benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Leaders and Followers&quot;</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> mkAllCombinationsWith Laf.combinations</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> medium }</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming 1&quot;</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> medium }</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming 1&quot;</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming 2&quot;</span></span>
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> medium }</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming 2&quot;</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail 1&quot;</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> medium }</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (scanl) 1&quot;</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail 2&quot;</span></span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> medium }</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (scanl) 2&quot;</span></span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> medium }</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (new) 1&quot;</span></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> medium }</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (new) 2&quot;</span></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> medium }</span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>      ]</span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>      , bgroup <span class="st">&quot;Large Sample Comparison&quot;</span></span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>      [ benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (scanl) 1&quot;</span></span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>      , bgroup <span class="st">&quot;Large Sample Comparison&quot;</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>      [ benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail 1&quot;</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail 2&quot;</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming 1&quot;</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming 2&quot;</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
 <span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (scanl) 2&quot;</span></span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Leaders and Followers&quot;</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> mkAllCombinationsWith Laf.combinations</span>
 <span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (new) 1&quot;</span></span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations'</span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Tail After Tail (new) 2&quot;</span></span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Tat.allCombinations'</span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming 1&quot;</span></span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
-<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Dynamic Programming 2&quot;</span></span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> Dyn.allCombinations</span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>      , benchAllCombo <span class="dt">TestData</span> { name <span class="ot">=</span> <span class="st">&quot;Leaders and Followers&quot;</span></span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>                               , combiFunction <span class="ot">=</span> mkAllCombinationsWith Laf.combinations</span>
-<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>                               , sample <span class="ot">=</span> large }</span>
-<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>      ]</span>
-<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>    ]</span></code></pre></div>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    ]</span></code></pre></div>
 <p>It was a bit long and could have been written in helper function but I kept
 changing the layout of benchmark so I didn’t make one. and copied and paste. 😓</p>
 <p>and you could run the test with <code>stack</code> in two ways:</p>
@@ -213,36 +198,34 @@ changing the layout of benchmark so I didn’t make one. and copied and paste. �
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> snip ..</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Benchmark</span> haskell-combinations-benchmark: RUNNING...</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">benchmarking</span> Small Sample Comparison/Leaders and Followers</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span>                 3.935 μs   <span class="er">(</span><span class="ex">3.918</span> μs .. 3.963 μs<span class="kw">)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span>                 4.006 μs   <span class="er">(</span><span class="ex">3.987</span> μs .. 4.028 μs<span class="kw">)</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                     <span class="ex">0.999</span> R²   <span class="er">(</span><span class="ex">0.997</span> R² .. 1.000 R²<span class="kw">)</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">mean</span>                 4.013 μs   <span class="er">(</span><span class="ex">3.952</span> μs .. 4.230 μs<span class="kw">)</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">std</span> dev              353.3 ns   <span class="er">(</span><span class="ex">100.6</span> ns .. 721.7 ns<span class="kw">)</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="ex">variance</span> introduced by outliers: 84% <span class="er">(</span><span class="ex">severely</span> inflated<span class="kw">)</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">mean</span>                 4.011 μs   <span class="er">(</span><span class="ex">3.996</span> μs .. 4.039 μs<span class="kw">)</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">std</span> dev              68.39 ns   <span class="er">(</span><span class="ex">42.39</span> ns .. 96.35 ns<span class="kw">)</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="ex">variance</span> introduced by outliers: 16% <span class="er">(</span><span class="ex">moderately</span> inflated<span class="kw">)</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>                                  </span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="ex">benchmarking</span> Small Sample Comparison/Tail After Tail</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span>                 3.758 μs   <span class="er">(</span><span class="ex">3.573</span> μs .. 4.002 μs<span class="kw">)</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                     <span class="ex">0.982</span> R²   <span class="er">(</span><span class="ex">0.972</span> R² .. 0.995 R²<span class="kw">)</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="ex">mean</span>                 3.645 μs   <span class="er">(</span><span class="ex">3.545</span> μs .. 3.785 μs<span class="kw">)</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="ex">std</span> dev              413.5 ns   <span class="er">(</span><span class="ex">300.6</span> ns .. 567.0 ns<span class="kw">)</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="ex">variance</span> introduced by outliers: 90% <span class="er">(</span><span class="ex">severely</span> inflated<span class="kw">)</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span>                 2.556 μs   <span class="er">(</span><span class="ex">2.527</span> μs .. 2.608 μs<span class="kw">)</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                     <span class="ex">0.997</span> R²   <span class="er">(</span><span class="ex">0.993</span> R² .. 1.000 R²<span class="kw">)</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="ex">mean</span>                 2.560 μs   <span class="er">(</span><span class="ex">2.538</span> μs .. 2.619 μs<span class="kw">)</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="ex">std</span> dev              105.5 ns   <span class="er">(</span><span class="ex">57.84</span> ns .. 189.1 ns<span class="kw">)</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="ex">variance</span> introduced by outliers: 55% <span class="er">(</span><span class="ex">severely</span> inflated<span class="kw">)</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                                  </span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="ex">benchmarking</span> Small Sample Comparison/Dynamic Programming</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span>                 3.291 μs   <span class="er">(</span><span class="ex">3.162</span> μs .. 3.492 μs<span class="kw">)</span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>                     <span class="ex">0.966</span> R²   <span class="er">(</span><span class="ex">0.946</span> R² .. 0.982 R²<span class="kw">)</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="ex">mean</span>                 3.603 μs   <span class="er">(</span><span class="ex">3.416</span> μs .. 3.910 μs<span class="kw">)</span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="ex">std</span> dev              795.0 ns   <span class="er">(</span><span class="ex">617.9</span> ns .. 1.153 μs<span class="kw">)</span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="ex">variance</span> introduced by outliers: 97% <span class="er">(</span><span class="ex">severely</span> inflated<span class="kw">)</span></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> snip ..</span></code></pre></div>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span>                 3.061 μs   <span class="er">(</span><span class="ex">3.049</span> μs .. 3.078 μs<span class="kw">)</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>                     <span class="ex">0.999</span> R²   <span class="er">(</span><span class="ex">0.999</span> R² .. 1.000 R²<span class="kw">)</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="ex">mean</span>                 3.115 μs   <span class="er">(</span><span class="ex">3.089</span> μs .. 3.194 μs<span class="kw">)</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="ex">std</span> dev              130.2 ns   <span class="er">(</span><span class="ex">35.74</span> ns .. 258.9 ns<span class="kw">)</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="ex">variance</span> introduced by outliers: 55% <span class="er">(</span><span class="ex">severely</span> inflated<span class="kw">)</span></span></code></pre></div>
 <p><strong>Note:</strong> As you can see <em>criterion</em> try many times to ensure the result is reliable.
 even though it is not perfect only because your system is not always in the
 same condition.</p>
 <h3 id="executable-target">executable target</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="st">'# compile first</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">sh&gt; stack build haskell-combinations:exe:haskell-combinations-benchmark-exe</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">'</span><span class="ex">#</span> execute</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack exec haskell-combinations-benchmark-exe <span class="at">--</span> <span class="at">-o</span> output.html</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">'# and have a look `output.html`</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># compile first</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">sh</span><span class="op">&gt;</span> stack build haskell-combinations:exe:haskell-combinations-benchmark-exe</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># execute</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">sh</span><span class="op">&gt;</span> stack exec haskell-combinations-benchmark-exe <span class="at">--</span> <span class="at">-o</span> output.html</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a> <span class="co"># and have a look `output.html`</span></span></code></pre></div>
 <p><code>output.html</code> will report the result with some helpful graphs.</p>
 <p>Okay. This is it.</p>
 <p>I’ll update if I found if there are more effective way to explain usage.

@@ -136,11 +136,8 @@ I skipped this explanation as I don't have enough knowledge to share yet.
       [ benchAllCombo TestData { name = "Leaders and Followers"
                                , combiFunction = mkAllCombinationsWith Laf.combinations
                                , sample = small }
-      , benchAllCombo TestData { name = "Tail After Tail (scanl)"
+      , benchAllCombo TestData { name = "Tail After Tail"
                                , combiFunction = Tat.allCombinations
-                               , sample = small }
-      , benchAllCombo TestData { name = "Tail After Tail (new)"
-                               , combiFunction = Tat.allCombinations'
                                , sample = small }
       , benchAllCombo TestData { name = "Dynamic Programming"
                                , combiFunction = Dyn.allCombinations
@@ -157,31 +154,19 @@ I skipped this explanation as I don't have enough knowledge to share yet.
       , benchAllCombo TestData { name = "Dynamic Programming 2"
                                , combiFunction = Dyn.allCombinations
                                , sample = medium }
-      , benchAllCombo TestData { name = "Tail After Tail (scanl) 1"
+      , benchAllCombo TestData { name = "Tail After Tail 1"
                                , combiFunction = Tat.allCombinations
                                , sample = medium }
-      , benchAllCombo TestData { name = "Tail After Tail (scanl) 2"
-                               , combiFunction = Tat.allCombinations
-                               , sample = medium }
-      , benchAllCombo TestData { name = "Tail After Tail (new) 1"
-                               , combiFunction = Tat.allCombinations
-                               , sample = medium }
-      , benchAllCombo TestData { name = "Tail After Tail (new) 2"
+      , benchAllCombo TestData { name = "Tail After Tail 2"
                                , combiFunction = Tat.allCombinations
                                , sample = medium }
       ]
       , bgroup "Large Sample Comparison"
-      [ benchAllCombo TestData { name = "Tail After Tail (scanl) 1"
+      [ benchAllCombo TestData { name = "Tail After Tail 1"
                                , combiFunction = Tat.allCombinations
                                , sample = large }
-      , benchAllCombo TestData { name = "Tail After Tail (scanl) 2"
+      , benchAllCombo TestData { name = "Tail After Tail 2"
                                , combiFunction = Tat.allCombinations
-                               , sample = large }
-      , benchAllCombo TestData { name = "Tail After Tail (new) 1"
-                               , combiFunction = Tat.allCombinations'
-                               , sample = large }
-      , benchAllCombo TestData { name = "Tail After Tail (new) 2"
-                               , combiFunction = Tat.allCombinations'
                                , sample = large }
       , benchAllCombo TestData { name = "Dynamic Programming 1"
                                , combiFunction = Dyn.allCombinations
@@ -211,27 +196,25 @@ sh> ... will compile the code print out the benchmarks result
 .. snip ..
 Benchmark haskell-combinations-benchmark: RUNNING...
 benchmarking Small Sample Comparison/Leaders and Followers
-time                 3.935 μs   (3.918 μs .. 3.963 μs)
+time                 4.006 μs   (3.987 μs .. 4.028 μs)
                      0.999 R²   (0.997 R² .. 1.000 R²)
-mean                 4.013 μs   (3.952 μs .. 4.230 μs)
-std dev              353.3 ns   (100.6 ns .. 721.7 ns)
-variance introduced by outliers: 84% (severely inflated)
-
+mean                 4.011 μs   (3.996 μs .. 4.039 μs)
+std dev              68.39 ns   (42.39 ns .. 96.35 ns)
+variance introduced by outliers: 16% (moderately inflated)
+                                  
 benchmarking Small Sample Comparison/Tail After Tail
-time                 3.758 μs   (3.573 μs .. 4.002 μs)
-                     0.982 R²   (0.972 R² .. 0.995 R²)
-mean                 3.645 μs   (3.545 μs .. 3.785 μs)
-std dev              413.5 ns   (300.6 ns .. 567.0 ns)
-variance introduced by outliers: 90% (severely inflated)
-
+time                 2.556 μs   (2.527 μs .. 2.608 μs)
+                     0.997 R²   (0.993 R² .. 1.000 R²)
+mean                 2.560 μs   (2.538 μs .. 2.619 μs)
+std dev              105.5 ns   (57.84 ns .. 189.1 ns)
+variance introduced by outliers: 55% (severely inflated)
+                                  
 benchmarking Small Sample Comparison/Dynamic Programming
-time                 3.291 μs   (3.162 μs .. 3.492 μs)
-                     0.966 R²   (0.946 R² .. 0.982 R²)
-mean                 3.603 μs   (3.416 μs .. 3.910 μs)
-std dev              795.0 ns   (617.9 ns .. 1.153 μs)
-variance introduced by outliers: 97% (severely inflated)
-
-.. snip ..
+time                 3.061 μs   (3.049 μs .. 3.078 μs)
+                     0.999 R²   (0.999 R² .. 1.000 R²)
+mean                 3.115 μs   (3.089 μs .. 3.194 μs)
+std dev              130.2 ns   (35.74 ns .. 258.9 ns)
+variance introduced by outliers: 55% (severely inflated)
 ```
 
 **Note:** As you can see *criterion* try many times to ensure the result is reliable.
@@ -241,11 +224,11 @@ same condition.
 === executable target
 
 ```sh
-'# compile first
-sh> stack build haskell-combinations:exe:haskell-combinations-benchmark-exe
-'# execute
-sh> stack exec haskell-combinations-benchmark-exe -- -o output.html
-'# and have a look `output.html`
+ # compile first
+ sh> stack build haskell-combinations:exe:haskell-combinations-benchmark-exe
+ # execute
+ sh> stack exec haskell-combinations-benchmark-exe -- -o output.html
+ # and have a look `output.html`
 ```
 
 `output.html` will report the result with some helpful graphs.
