@@ -62,7 +62,7 @@ import Data.List (tails, inits, scanl') -- only required for **WithScanl
 Please Find out more information [HERE][orig-tat].
 
 However, `combinations1'`, `flatten_allCombinationsGrouped` will be common
-heler function.
+helper function.
 
 \begin{code}
 combinations1' :: [a] -> [[[a]]]
