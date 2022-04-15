@@ -27,14 +27,14 @@ Previously I made [TailAfterTail.lhs][orig-tat]
 
 And I found that [`inits`](https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:inits)
 or [`tails`](https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:tails)
-isn't quite neccessary if I don't rely on `scanl` or [`zipWith`](https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:zipWith).
+are not quite necessary if I don't rely on `scanl` or [`zipWith`](https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:zipWith).
 
 It is probably generally accepted that some different kind of implementation,
 which consist of even small amount of codes, but which run at very high
 frequency, will eventually show huge gaps in performance after many
 iterations of execution.
 
-So, this is about what I found during implemenation of *Tail After Tail*
+So, this is about what I found during implementation of *Tail After Tail*
 combinations.
 
 == Module Begins
@@ -111,9 +111,9 @@ allCombinationsWithScanl = concat . allCombinationsWithScanlGrouped
 
 The following code is created without scanl or zipWith.
 
-It gains sligtly more performance with (bang pattern: !).
+It gains slightly more performance with (bang pattern: !).
 Which will be covered may be in another article.
-But IMHO, it helps to reduce lazieness and use less stack.
+But IMHO, it helps to reduce laziness and use less stack.
 
 \begin{code}
 unsafe_allCombinationsWithSingleStep :: [a] -> [[[[a]]]]
@@ -135,7 +135,7 @@ unsafe_allCombinationsWithSingleStep members =
 As you can see `helper` function is just an entry level wrapper function
 and make a recursion call.
 
-`genStep` will actually create *next* cases and act as thunk which is evaluted
+`genStep` will actually create *next* cases and act as thunk which is evaluated
 later thanks to laziness in haskell.
 
 I named the function as `unsafe_` on purpose. Because helper function actually
@@ -246,6 +246,8 @@ Now, it's time to make select `K` out of given choice.
 
 And I found that this is a common helper function:
 
+=== combinationsWith
+
 \begin{code}
 combinationsWith :: ([a] -> [[[a]]]) -> [a] -> Int -> Int -> [[a]]
 combinationsWith allComboGroupedFunc ms n1@selectFrom n2@selectTo =
@@ -280,16 +282,18 @@ combinationsWithSingleStep = combinationsWith unsafe_allCombinationsWithSingleSt
 combinationsWithTwoSteps   = combinationsWith allCombinationsWithTwoStepsGrouped
 \end{code}
 
+== Benchmark
+you can find the benchmark *code* on [my github repository][benchmark-tat].
+To save your time, [THIS](https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/result.out)
+is one of my benchmark result.
+
 == Choose Default *allCombinations* and *combinations*
 
 After benchmarking, I found `AllcombinationsWithTwoSteps` shows best result
 in all categories(small, medium, large) among them.
 
-you can find the benchmark *code* on [my github repository][benchmark-tat].
-To save your time, [THIS](https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/result.out)
-is one of my benchmark result.
-
 \begin{code}
 allCombinations = allCombinationsWithTwoSteps
 combinations = combinationsWithTwoSteps
 \end{code}
+

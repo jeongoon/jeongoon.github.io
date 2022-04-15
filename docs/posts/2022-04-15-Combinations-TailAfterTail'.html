@@ -79,12 +79,12 @@ interesting as well.</p>
 <p>Previously I made <a href="https://jeongoon.github.io/posts/2022-04-03-Combinations-TailAfterTail.html">TailAfterTail.lhs</a></p>
 <p>And I found that <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:inits"><code>inits</code></a>
 or <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:tails"><code>tails</code></a>
-isn’t quite neccessary if I don’t rely on <code>scanl</code> or <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:zipWith"><code>zipWith</code></a>.</p>
+are not quite necessary if I don’t rely on <code>scanl</code> or <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-List.html#v:zipWith"><code>zipWith</code></a>.</p>
 <p>It is probably generally accepted that some different kind of implementation,
 which consist of even small amount of codes, but which run at very high
 frequency, will eventually show huge gaps in performance after many
 iterations of execution.</p>
-<p>So, this is about what I found during implemenation of <em>Tail After Tail</em>
+<p>So, this is about what I found during implementation of <em>Tail After Tail</em>
 combinations.</p>
 <h2 id="module-begins">Module Begins</h2>
 Firstly, I going to write down the all function will be exposed.
@@ -138,9 +138,9 @@ Firstly, I going to write down the all function will be exposed.
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>allCombinationsWithScanl <span class="ot">=</span> <span class="fu">concat</span> <span class="op">.</span> allCombinationsWithScanlGrouped</span></code></pre></div>
 <h2 id="pure-implementation-without-scanl-singlestep">Pure Implementation Without Scanl (SingleStep)</h2>
 <p>The following code is created without scanl or zipWith.</p>
-<p>It gains sligtly more performance with (bang pattern: !).
+<p>It gains slightly more performance with (bang pattern: !).
 Which will be covered may be in another article.
-But IMHO, it helps to reduce lazieness and use less stack.</p>
+But IMHO, it helps to reduce laziness and use less stack.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ot">unsafe_allCombinationsWithSingleStep ::</span> [a] <span class="ot">-&gt;</span> [[[[a]]]]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>unsafe_allCombinationsWithSingleStep members <span class="ot">=</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span></span>
@@ -156,7 +156,7 @@ But IMHO, it helps to reduce lazieness and use less stack.</p>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    helper <span class="op">.</span> combinations1' <span class="op">$</span> members</span></code></pre></div>
 <p>As you can see <code>helper</code> function is just an entry level wrapper function
 and make a recursion call.</p>
-<p><code>genStep</code> will actually create <em>next</em> cases and act as thunk which is evaluted
+<p><code>genStep</code> will actually create <em>next</em> cases and act as thunk which is evaluated
 later thanks to laziness in haskell.</p>
 <p>I named the function as <code>unsafe_</code> on purpose. Because helper function actually
 doesn’t know when it will stop, and if you run <code>unsafe_allCombinationsWithSingleStep</code>
@@ -231,6 +231,7 @@ next step is available or not. I don’t need to name it <em>unsafe_</em> any mo
 <h2 id="combinations-variant-from-each-implementation">combinations variant from each implementation</h2>
 <p>Now, it’s time to make select <code>K</code> out of given choice.</p>
 <p>And I found that this is a common helper function:</p>
+<h3 id="combinationswith">combinationsWith</h3>
 <div class="sourceCode" id="cb13"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ot">combinationsWith ::</span> ([a] <span class="ot">-&gt;</span> [[[a]]]) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [[a]]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>combinationsWith allComboGroupedFunc ms n1<span class="op">@</span>selectFrom n2<span class="op">@</span>selectTo <span class="ot">=</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span></span>
@@ -258,12 +259,13 @@ next step is available or not. I don’t need to name it <em>unsafe_</em> any mo
 <div class="sourceCode" id="cb14"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>combinationsWithScanl      <span class="ot">=</span> combinationsWith allCombinationsWithScanlGrouped</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>combinationsWithSingleStep <span class="ot">=</span> combinationsWith unsafe_allCombinationsWithSingleStepGrouped</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>combinationsWithTwoSteps   <span class="ot">=</span> combinationsWith allCombinationsWithTwoStepsGrouped</span></code></pre></div>
-<h2 id="choose-default-allcombinations-and-combinations">Choose Default <em>allCombinations</em> and <em>combinations</em></h2>
-<p>After benchmarking, I found <code>AllcombinationsWithTwoSteps</code> shows best result
-in all categories(small, medium, large) among them.</p>
+<h2 id="benchmark">Benchmark</h2>
 <p>you can find the benchmark <em>code</em> on <a href="https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/BenchTat.lhs">my github repository</a>.
 To save your time, <a href="https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/result.out">THIS</a>
 is one of my benchmark result.</p>
+<h2 id="choose-default-allcombinations-and-combinations">Choose Default <em>allCombinations</em> and <em>combinations</em></h2>
+<p>After benchmarking, I found <code>AllcombinationsWithTwoSteps</code> shows best result
+in all categories(small, medium, large) among them.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>allCombinations <span class="ot">=</span> allCombinationsWithTwoSteps</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>combinations <span class="ot">=</span> combinationsWithTwoSteps</span></code></pre></div>
 
