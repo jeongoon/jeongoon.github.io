@@ -108,7 +108,7 @@ get more accurate result out of the benchmark in go language.
 
 *** code after another
     I used the same function(/aFunc/) in the prior example, however when we are comparing other
-    type of codes it needs another warming up code will be required to achieve the /even effect/
+    types of codes, we need another warming up code will be required to achieve the /even effects/
     as the prior code.
 #+begin_src go
   func aFunc() {
@@ -144,7 +144,7 @@ get more accurate result out of the benchmark in go language.
 
 *** outro code for last test
     and for some unknown reason, last benchmark does not seems to show correctly measured time.
-    It looks like last one finished rashly. This is because maybe I have perception already. but if the last code block get affected
+    Last one looked like finishing rashly. This is because maybe I have perception already. but if the last code block get affected
     by the position, we will need to re-arrange them to see the changes.
 
     Or just put another /outro code/. And it will not harm if there was no effect depending
@@ -167,7 +167,7 @@ get more accurate result out of the benchmark in go language.
 
 Again, I hope it will help you find the more trustful benchmark result out of go benchmark.
 
-If you want to get a example of the benchmark code of mine,
+If you'd like to get an example of the benchmark code of mine,
 please visit my [[https://github.com/jeongoon/combinations-bench/tree/main/go-combinations][combinations-bench repository]].
 
 

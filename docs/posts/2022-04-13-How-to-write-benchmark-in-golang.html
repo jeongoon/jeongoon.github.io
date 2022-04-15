@@ -140,7 +140,7 @@ benchmark code.</p>
 <p>otherwise the results looks slower on the first run or vice versa.</p>
 <h3 id="code-after-another">code after another</h3>
 <p>I used the same function(<em>aFunc</em>) in the prior example, however when we are comparing other
-type of codes it needs another warming up code will be required to achieve the <em>even effect</em>
+types of codes, we need another warming up code will be required to achieve the <em>even effects</em>
 as the prior code.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> aFunc<span class="op">()</span> <span class="op">{</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">// some codes go here</span></span>
@@ -173,7 +173,7 @@ as the prior code.</p>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="outro-code-for-last-test">outro code for last test</h3>
 <p>and for some unknown reason, last benchmark does not seems to show correctly measured time.
-It looks like last one finished rashly. This is because maybe I have perception already. but if the last code block get affected
+Last one looked like finishing rashly. This is because maybe I have perception already. but if the last code block get affected
 by the position, we will need to re-arrange them to see the changes.</p>
 <p>Or just put another <em>outro code</em>. And it will not harm if there was no effect depending
 on whether it is located on the last or not, either.</p>
@@ -188,7 +188,7 @@ on whether it is located on the last or not, either.</p>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                aFunc<span class="op">()</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span></code></pre></div>
 <p>Again, I hope it will help you find the more trustful benchmark result out of go benchmark.</p>
-<p>If you want to get a example of the benchmark code of mine,
+<p>If you’d like to get an example of the benchmark code of mine,
 please visit my <a href="https://github.com/jeongoon/combinations-bench/tree/main/go-combinations">combinations-bench repository</a>.</p>
 <h2 id="org-mode-issues">Org-mode issues</h2>
 <p>I wrote this article with <em>org-mode</em> in emacs. However if i wrote some word starting
