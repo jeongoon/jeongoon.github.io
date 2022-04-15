@@ -249,7 +249,7 @@ And let’s wire them up with initial case and <em>helper</em> function
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- note: read from the bottom</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">concat</span>                      <span class="co">-- 4. final flattening</span></span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> reverseIfNeeded           <span class="co">-- 3. if user put opposite way, reverse it.</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">take</span> rangeLength          <span class="co">-- 2. takes only intrested lists</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">take</span> rangeLength          <span class="co">-- 2. takes only interested lists</span></span>
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">drop</span> (<span class="fu">pred</span> n1')           <span class="co">-- 1. ignore some</span></span>
 <span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">$</span> allComboGroupedFunc ms</span></code></pre></div>
 <p>And all variant combinations* function available as below:</p>

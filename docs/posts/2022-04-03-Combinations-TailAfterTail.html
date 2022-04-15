@@ -28,7 +28,7 @@
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MJ's kind weird Code - Combinations in haskell (called Tail After Tail)</title>
+    <title>MJ's kind weird Code - Combinations In Haskell (called Tail After Tail)</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
@@ -41,7 +41,7 @@
         <a href="../">MJ's Kind Weird Code</a>
       </div>
       <div id="page-title">
-        <p> 📰 Combinations in haskell (called Tail After Tail)
+        <p> 📰 Combinations In Haskell (called Tail After Tail)
         </p>
       </div>
       <nav id="main-nav" class="font-menu-title">
@@ -67,6 +67,11 @@
 
 <p>Copyright (c) 2022 JEON Myoungjin &lt;jeongoon@g… &gt;</p>
 <p>LICENSE: <a href="https://opensource.org/licenses/OSL-3.0">Open Software License 3.0</a></p>
+<h2 id="combinations-in-haskell-series">Combinations in Haskell Series</h2>
+<ol type="1">
+<li><em>Combinations In Haskell (called Tail After Tail)</em></li>
+<li><a href="../posts/2022-04-03-Combinations-TailAfterTail.html">Tail After Tail Story (Combinations In Haskell)</a></li>
+</ol>
 <h1 id="yet-another-combinations">Yet Another Combinations</h1>
 <p>I was trying to make a new type of combinations after making a combinations
 method in <code>golang</code>, which is fast as expected as usual. It’s impressive how
@@ -349,7 +354,7 @@ to get nothing from it. So we could get benefit from this laziness here again!</
 <span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- note: read from the bottom</span></span>
 <span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">concat</span>                      <span class="co">-- 4. final flattening</span></span>
 <span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> reverseIfNeeded           <span class="co">-- 3. if user put opposite way, reverse it.</span></span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">take</span> rangeLength          <span class="co">-- 2. takes only intrested lists</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">take</span> rangeLength          <span class="co">-- 2. takes only interested lists</span></span>
 <span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">drop</span> (<span class="fu">pred</span> n1')           <span class="co">-- 1. ignore some</span></span>
 <span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">$</span> allCombinations' ms</span></code></pre></div>
 <p>Okay. This is it. I like this implementation because we recycle the previous

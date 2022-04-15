@@ -1,5 +1,5 @@
 ---
-title: Combinations in haskell (called Tail After Tail)
+title: Combinations In Haskell (called Tail After Tail)
 description: another haskell combination module (TailAfterTail.lhs)
 keywords: haskell, combinations, raku
 author: Myoungjin Jeon
@@ -8,6 +8,11 @@ tags: haskell, combinations, raku
 Copyright (c) 2022 JEON Myoungjin <jeongoon@g... >
 
 LICENSE: [Open Software License 3.0](https://opensource.org/licenses/OSL-3.0)
+
+== Combinations in Haskell Series
+
+   1. *Combinations In Haskell (called Tail After Tail)*
+   2. [Tail After Tail Story (Combinations In Haskell)](/posts/2022-04-03-Combinations-TailAfterTail.html)
 
 = Yet Another Combinations
 
@@ -452,7 +457,7 @@ combinations ms n1@selectFrom n2@selectTo =
     -- note: read from the bottom
     concat                      -- 4. final flattening
     . reverseIfNeeded           -- 3. if user put opposite way, reverse it.
-    . take rangeLength          -- 2. takes only intrested lists
+    . take rangeLength          -- 2. takes only interested lists
     . drop (pred n1')           -- 1. ignore some
     $ allCombinations' ms
 \end{code}

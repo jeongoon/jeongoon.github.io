@@ -263,7 +263,7 @@ combinationsWith allComboGroupedFunc ms n1@selectFrom n2@selectTo =
     -- note: read from the bottom
     concat                      -- 4. final flattening
     . reverseIfNeeded           -- 3. if user put opposite way, reverse it.
-    . take rangeLength          -- 2. takes only intrested lists
+    . take rangeLength          -- 2. takes only interested lists
     . drop (pred n1')           -- 1. ignore some
     $ allComboGroupedFunc ms
 \end{code}
