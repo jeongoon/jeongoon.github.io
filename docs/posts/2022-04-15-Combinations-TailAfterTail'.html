@@ -194,7 +194,7 @@ this function separate the jobs into two operations:</p>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  members<span class="op">@</span>(fm<span class="op">:</span>rms) <span class="ot">=</span> <span class="co">-- ^ fm : first member; rms: rest memebers</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    initFirstCase <span class="ot">=</span> [[fm]]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    initRestCases <span class="ot">=</span> [ [[m]] <span class="op">|</span> m <span class="ot">&lt;-</span> rms ]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    initRestCases <span class="ot">=</span> combinations1' rms</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    mapLeader l <span class="co">{-prevTail-}</span> <span class="ot">=</span> <span class="fu">map</span> (l<span class="op">:</span>) <span class="op">.</span> <span class="fu">concat</span> <span class="co">{-prevTail-}</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    genFirstCases <span class="ot">=</span> mapLeader fm</span>
@@ -226,6 +226,9 @@ And let’s wire them up with initial case and <em>helper</em> function
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ot">allCombinationsWithTwoSteps ::</span> [a] <span class="ot">-&gt;</span> [[a]]</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>allCombinationsWithTwoSteps members <span class="ot">=</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">concat</span> <span class="op">.</span> allCombinationsWithTwoStepsGrouped <span class="op">$</span> members</span></code></pre></div>
+<p>Another benefit of the <code>TwoSteps</code> implementation is that we can stop
+easily because now <code>newTail</code> is always available and we could know whether
+next step is available or not. I don’t need to name it <em>unsafe_</em> any more.</p>
 <h2 id="combinations-variant-from-each-implementation">combinations variant from each implementation</h2>
 <p>Now, it’s time to make select <code>K</code> out of given choice.</p>
 <p>And I found that this is a common helper function:</p>
@@ -258,11 +261,12 @@ And let’s wire them up with initial case and <em>helper</em> function
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>combinationsWithTwoSteps   <span class="ot">=</span> combinationsWith allCombinationsWithTwoStepsGrouped</span></code></pre></div>
 <h2 id="choose-default-allcombinations-and-combinations">Choose Default <em>allCombinations</em> and <em>combinations</em></h2>
 <p>After benchmarking, I found <code>AllcombinationsWithTwoSteps</code> shows best result
-all categories(small, medium, large) among them</p>
-<p>you can find the benchmark <em>code</em> on <a href="https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/BenchTat.lhs">my github repository</a>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>allCombinations <span class="ot">=</span> allCombinationsWithTwoSteps</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>combinations <span class="ot">=</span> combinationsWithTwoSteps</span></code></pre></div>
+in all categories(small, medium, large) among them.</p>
+<p>you can find the benchmark <em>code</em> on <a href="https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/BenchTat.lhs">my github repository</a>.
+To save your time, <a href="https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/result.out">THIS</a>
+is one of my benchmark result.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>allCombinations <span class="ot">=</span> allCombinationsWithTwoSteps</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>combinations <span class="ot">=</span> combinationsWithTwoSteps</span></code></pre></div>
 
     </div>
 

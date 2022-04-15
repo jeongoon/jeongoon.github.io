@@ -189,7 +189,7 @@ allCombinationsWithTwoSteps'
   members@(fm:rms) = -- ^ fm : first member; rms: rest memebers
   let
     initFirstCase = [[fm]]
-    initRestCases = [ [[m]] | m <- rms ]
+    initRestCases = combinations1' rms
 
     mapLeader l {-prevTail-} = map (l:) . concat {-prevTail-}
     genFirstCases = mapLeader fm
@@ -236,6 +236,10 @@ allCombinationsWithTwoSteps members =
   concat . allCombinationsWithTwoStepsGrouped $ members
 \end{code}
 
+Another benefit of the `TwoSteps` implementation is that we can stop
+easily because now `newTail` is always available and we could know whether
+next step is available or not. I don't need to name it *unsafe_* any more.
+
 == combinations variant from each implementation
 
 Now, it's time to make select `K` out of given choice.
@@ -279,12 +283,13 @@ combinationsWithTwoSteps   = combinationsWith allCombinationsWithTwoStepsGrouped
 == Choose Default *allCombinations* and *combinations*
 
 After benchmarking, I found `AllcombinationsWithTwoSteps` shows best result
-all categories(small, medium, large) among them
+in all categories(small, medium, large) among them.
 
 you can find the benchmark *code* on [my github repository][benchmark-tat].
+To save your time, [THIS](https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/result.out)
+is one of my benchmark result.
 
 \begin{code}
-
 allCombinations = allCombinationsWithTwoSteps
 combinations = combinationsWithTwoSteps
 \end{code}
