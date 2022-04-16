@@ -1,0 +1,126 @@
+---
+title: (WIP) "Good" "So So" "Bad" about fish shell function
+description: create some function to utilize your daily shell (fish)
+keywords: fish, function, util
+author: Myoungjin Jeon
+tags: fish, function, util
+---
+
+** Credit or More Articles
+ -  [[https://nicolas-van.github.io/programming-with-fish-shell][Nicolas Vanhoren's Blog]]
+    Nice introduction to fish shell programming
+ 
+
+* Fish is another shell
+
+I'm too lazy to change my shell. I used to use only bash shell back until 2009?.
+I heard about tcsh and ksh at the time, but bash was kind of a new standard in
+linux world.
+
+Now, maybe zsh rules the shell-world, there is another competitor called fish.
+I didn't research about fish shell.
+
+However, one thing I really like about fish shell is that fish shell has nice
+/default settings/ out of box.
+
+So sometimes, even if I installed new fish shell in a new box. I have no problem
+with using fish shell.
+
+I'm missing some bash history substitution like though:
+#+begin_src bash
+  bash> echo 123
+  bassh> ^123^456
+  echo 456
+  456
+  bash>
+#+end_src
+
+When I found those tricks in a book, I felt like I found some treasure in history.
+there were more (!$, !!) but I have forgotten many 😉. Frankly, I don't miss those
+these days, but I cannot deny it is nostalsic.
+
+** How about script in fish?
+ I heard that fish is not good for making script. but I guess this is too old
+ story as it's been at least 10 years from now on. I hope that this is not true.
+
+** Good
+***  It has a clean syntax
+
+***  well organized directory structure
+    like ~~/.config/fish/functions/
+
+***  builtin powerful functions
+     /math/, /string/
+
+** So So
+***  index starting from 1 not 0
+    this is half funny, half inconveient.
+
+***  command substitution not as powerful as bash
+    There is a traditional way to copy but reserve the file attributes. (access time,
+    creation time, ownership, etc) like below
+
+#+begin_src bash
+  bash> touch a  b c
+  bash> mkdir dest
+  bash> tar cf - a b c | (cd dest; tar xvf -)
+  bash> (cd dest; ls -l)
+  -rw-r--r-- 1 myoungjin users 0 Apr 16 21:41 a
+  -rw-r--r-- 1 myoungjin users 0 Apr 16 21:41 b
+  -rw-r--r-- 1 myoungjin users 0 Apr 16 21:41 c
+  bash> ls -l a b c
+  -rw-r--r-- 1 myoungjin users 0 Apr 16 21:41 a
+  -rw-r--r-- 1 myoungjin users 0 Apr 16 21:41 b
+  -rw-r--r-- 1 myoungjin users 0 Apr 16 21:41 c
+#+end_src
+
+  As you can see above, sometimes grouped command in bash very useful.
+  But, AFAIK, fish cannot do this or prevent this kind of behaviour.
+
+** Bad
+***  Unusual variable scope
+     Actually, this is very powerful concept in fish, however it is not very common,
+     In other words, it is confusing.
+
+     Fish has three different types of variable scopes.
+     - Universal
+     - global
+     - local
+
+
+# May be I put below stuff as a separate article.
+
+** First Few functions
+
+#+begin_quote
+*WARNING:* A function is not an individual programme.
+#+end_quote
+
+ - It is part of your shell
+   - if we are using =exit= in a function, it will actually shut down your current session.
+
+ - we cannot control it as a process.
+   this is not a child process, if we are using =sleep= in a function, it will actually sleep /your current session/.
+
+#+begin_src sh
+  fish> function sleep_10sec; sleep 10; end
+  fish> sleep_10sec &
+  ... paused ...
+  ^C
+  fish: Job 1, 'echo_e &' has ended
+  fish> # note I canceled by pressing Ctrl-C on x86_64 linux
+#+end_src
+
+***  function command
+****  -d option
+**** functions directory for permanent access
+**** still need to source
+
+** function as aliasing
+*** abbr
+*** function
+
+** elm function
+***  what is elem
+*** let's remind UNIX principle
+*** where can I use?
