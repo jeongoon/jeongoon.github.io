@@ -1,9 +1,9 @@
 ---
 title: (WIP) "Good" "So So" "Bad" about fish shell function
 description: create some function to utilize your daily shell (fish)
-keywords: fish, function, util
+keywords: fish, shell, script, function, util
 author: Myoungjin Jeon
-tags: fish, function, util
+tags: fish, shell, script, function, util
 ---
 
 ** Credit or More Articles
@@ -51,6 +51,8 @@ these days, but I cannot deny it is nostalsic.
 
 ***  builtin powerful functions
      /math/, /string/
+***  Unusual variable scope
+     this is good and also bad
 
 ** So So
 ***  index starting from 1 not 0
