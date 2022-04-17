@@ -8,6 +8,12 @@ tags: haskell, combinations, raku, documentation
 Copyright (c) 2020 JEON Myoungjin <jeongoon@g... >
 LICENSE: Open Software License 3.0
 
+== Combinations in Haskell Series
+
+   1. *Combinations In Haskell (called Leaders and Followers)*
+   2. [Combinations In Haskell (called Tail After Tail)](/posts/2022-04-03-Combinations-TailAfterTail.html)
+   3. [Tail After Tail Story (Combinations In Haskell)](/posts/2022-04-03-Combinations-TailAfterTail.html)
+
 = Another Combination Module from me
 
 This module was created when I solve [The Perl Weekly Challange #083](https://perlweeklychallenge.org/blog/perl-weekly-challenge-083/#TASK2).

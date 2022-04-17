@@ -5,14 +5,17 @@ keywords: haskell, combinations, raku
 author: Myoungjin Jeon
 tags: haskell, combinations, raku
 ---
+[leaders-and-followers]: https://jeongoon.github.io/posts/2022-03-29-Combination.lhs
+
 Copyright (c) 2022 JEON Myoungjin <jeongoon@g... >
 
 LICENSE: [Open Software License 3.0](https://opensource.org/licenses/OSL-3.0)
 
 == Combinations in Haskell Series
 
-   1. *Combinations In Haskell (called Tail After Tail)*
-   2. [Tail After Tail Story (Combinations In Haskell)](/posts/2022-04-03-Combinations-TailAfterTail.html)
+   1. [Combinations In Haskell (called Leaders and Followers)][leaders-and-followers]
+   2. *Combinations In Haskell (called Tail After Tail)*
+   3. [Tail After Tail Story (Combinations In Haskell)](/posts/2022-04-03-Combinations-TailAfterTail.html)
 
 = Yet Another Combinations
 

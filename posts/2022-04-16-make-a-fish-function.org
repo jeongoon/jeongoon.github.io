@@ -1,29 +1,34 @@
 ---
-title: (WIP) "Good" "So So" "Bad" about fish shell function
-description: create some function to utilize your daily shell (fish)
-keywords: fish, shell, script, function, util
+title: Good, So So, Bad about Fish Shell
+description: general pros and cons about fish shell
+keywords: fish, shell, script, function, util, bash, fisher
 author: Myoungjin Jeon
-tags: fish, shell, script, function, util
+tags: fish, shell, script, function, util, bash, fisher
 ---
+
+#+STARTUP: inlineimages
 
 ** Credit or More Articles
  -  [[https://nicolas-van.github.io/programming-with-fish-shell][Nicolas Vanhoren's Blog]]
     Nice introduction to fish shell programming
- 
+ - Cover Image
+   https://pixabay.com/photos/seashell-shell-shells-sea-ocean-2821388/
+
+[[../images/shell.jpg]]
 
 * Fish is another shell
 
 I'm too lazy to change my shell. I used to use only bash shell back until 2009?.
-I heard about tcsh and ksh at the time, but bash was kind of a new standard in
+I heard about =tcsh= and =ksh= at that time, but bash was kind of a new standard in
 linux world.
 
-Now, maybe zsh rules the shell-world, there is another competitor called fish.
+Maybe =zsh= rules the shell-world for now, there is another competitor called fish.
 I didn't research about fish shell.
 
 However, one thing I really like about fish shell is that fish shell has nice
 /default settings/ out of box.
 
-So sometimes, even if I installed new fish shell in a new box. I have no problem
+Sometimes, even if I installed new fish shell in a new box. I have no problem
 with using fish shell.
 
 I'm missing some bash history substitution like though:
@@ -37,30 +42,123 @@ I'm missing some bash history substitution like though:
 
 When I found those tricks in a book, I felt like I found some treasure in history.
 there were more (!$, !!) but I have forgotten many 😉. Frankly, I don't miss those
-these days, but I cannot deny it is nostalsic.
+these days, but I can not deny it is nostalsic.
 
-** How about script in fish?
- I heard that fish is not good for making script. but I guess this is too old
- story as it's been at least 10 years from now on. I hope that this is not true.
+** How About Script in fish?
+
+ I heard that fish is not good for making script. But this is not right expression.
+ However, /bash/ or /dash/ is still better choice for more featrues and portability.
+
+ If you think about performance.. I think we need to go for another script
+ languages, IMHO. /Perl/ is the king for portability. But in 2022, python or ruby is
+ available across the unix or linux world, isn't it?
 
 ** Good
 ***  It has a clean syntax
 
-***  well organized directory structure
-    like ~~/.config/fish/functions/
+#+begin_src sh
+  #!/usr/bin/env fish
 
-***  builtin powerful functions
-     /math/, /string/
-***  Unusual variable scope
-     this is good and also bad
+  # find "*.md (or *.markdown)", "*.lhs", "*.org" and print out first 7 lines of
+  # of each file.
+
+  set -l limit_numof_files 5
+  set -l numof_files_printed 0
+  set -l interested_extensions 'md' 'markdown' 'lhs' 'org'
+  set interested_extensions \
+      (for e in $interested_extensions
+          echo ".$e"
+      end)
+
+  set -l extensions_regex '('(string join "|" $interested_extensions)')$'
+
+  for fn in *
+      if test $numof_files_printed -ge $limit_numof_files
+          break;
+      end
+
+      if test -f $fn -a \
+          test (string match -q -r $extensions_regex $fn)
+
+          set numof_files_printed (math "$numof_files_printed + 1")
+
+          echo -e "$numof_files_printed: filename: $fn\n"
+          head -n 7 $fn
+          echo -e "\n"
+
+
+      end
+  end
+#+end_src
+  
+    fish shell try to use plain texts in builtin command and control flow. It looks
+    similar to python or ruby.
+
+*** great default auto-completion
+    I don't really have complains about fish's auto-completion. I couldn't go deep
+    inside. but you can make [[https://fishshell.com/docs/current/completions.html][your own comletions]].
+
+***  powerful builtin functions
+     - /math/, /string/ are used in the prior example code, I found that it is very well
+     documented via /man/ page or website, and also convenient.
+
+     For basic calculation, I normally open a terminal and type like below:
+#+begin_src sh
+  fish> math "500+29*50+12*20+210+21*5"
+#+end_src
+     and this is even written in my fish history!. So, naturally I could recall
+     later. (not forever though.)
+
+     - /string/ even support regular expression. I forgot about /sed,/ /awk/ commands and
+     sometimes use the /perl/ to compare the texts against the regex. But now I could
+     finish in fish shell.
+
+***   remarkable variable scopes
+     This is good feature and also bad feature. It is just because it has different concept.
+     This is where we should read the document very carefully.
+
+     However /UNIVERSAL/ variable scope is unique and convenient some times.
+     when you are using several fish sessions and want to share some variable.
+
+#+begin_quote
+     - set /-U/ or /--universal/ option
+       causes the specified shell variable to be given  a  universal  scope.
+       If this option is supplied, the variable will be shared between all the current
+       user's fish instances on the current  computer, and  will be preserved across
+       restarts of the shell.
+#+end_quote
+
+     But it is easy to make mistake. for example, input =set -U somevar= in
+     your ~~/.config/fish/config.fish~. and ~somevar~ will be duplicated over and over again.
+
+***  well organized directory structure
+     If you have a look into ~~/.config/fish/~ directory. you will notice that
+     there is a ~functions~ directory which consists of functions you can use during
+     the session. It will be automatically loaded when you start a new shell or invoke
+     /that/ function for the first time. (sometimes you need to reload the file by =source=)
+
+     #+begin_quote
+     Those function in ~~/.config/fish/functions/~ are avaiable in you all the sessions.
+     #+end_quote
+
+***  fisher
+     There might be another kind of programme like /fisher/ out there. Nevertheless
+     fisher is a great third-party tool to make your fish socialized into the internet
+     and install useful themes or tools from the /github/ repositories. I believe that
+     this is quite essesntial concept thesedays.
 
 ** So So
 ***  index starting from 1 not 0
-    this is half funny, half inconveient.
+
+    This is a kind of joke 😅, but right now I think this is inconveient for programmer.
+    Because when a /programmer/ is loosing his/her focus and tends to make a mistake
+    when indexing as 0 is very common in programming world.
+
+    This is why I don't think it as /better/ choice, rather I think *this is bold movement*.
 
 ***  command substitution not as powerful as bash
     There is a traditional way to copy but reserve the file attributes. (access time,
-    creation time, ownership, etc) like below
+    creation time, ownership, etc) like below:
 
 #+begin_src bash
   bash> touch a  b c
@@ -82,47 +180,41 @@ these days, but I cannot deny it is nostalsic.
 ** Bad
 ***  Unusual variable scope
      Actually, this is very powerful concept in fish, however it is not very common,
-     In other words, it is confusing.
+     In other words, it is confusing. This confusion occurs highly when you are dealing
+     about local scope variable which is created by =set -l varname=.
 
-     Fish has three different types of variable scopes.
-     - Universal
-     - global
-     - local
+     /local scope/ is very limited scope which is not even propagate into the a local
+     scoped function(declared in your script).
+     So if you want to make a /function/, we need to aware about how we deliver some
+     values from local scoped variables.
 
+     - /function/ has option /-S/ which ...
+        #+begin_quote
+       - allows the function to access the variables of calling functions.
+          Normally, any variables inside the function  that  have
+          the  same  name as variables from the calling function are "shadowed" ...
+        #+end_quote
 
-# May be I put below stuff as a separate article.
+       so basically we cannot get any value from /parent/ local scoped variables.
 
-** First Few functions
+     - function /-V/ option is
+       #+begin_quote
+       - -V or --inherit-variable NAME
+         snapshots the value of the variable NAME and defines a local variable with
+         that same name and value when the function is defined.
+         This is similar to a closure in other  languages like Python but a bit
+         different. Note the word "snapshot" in the first sentence. If you change the
+         value of the variable after defining the function, even if
+         you  do  so  in  the same scope (typically another function) the new value
+         will not be used by the function you just created using this  option.  See
+         the function notify example below for how this might be used.
+       #+end_quote
 
-#+begin_quote
-*WARNING:* A function is not an individual programme.
-#+end_quote
+     Very well.. so you need to /study/ before making a function or script in fish.
 
- - It is part of your shell
-   - if we are using =exit= in a function, it will actually shut down your current session.
+** This is a fantstic alternative shell!
 
- - we cannot control it as a process.
-   this is not a child process, if we are using =sleep= in a function, it will actually sleep /your current session/.
+Nevertheless, fish is a great shell which I love to use everyday. And I lost chance
+to use =zsh=. This is not about mannerism. 😂 Just because of fish shell is enough for me. 
 
-#+begin_src sh
-  fish> function sleep_10sec; sleep 10; end
-  fish> sleep_10sec &
-  ... paused ...
-  ^C
-  fish: Job 1, 'echo_e &' has ended
-  fish> # note I canceled by pressing Ctrl-C on x86_64 linux
-#+end_src
-
-***  function command
-****  -d option
-**** functions directory for permanent access
-**** still need to source
-
-** function as aliasing
-*** abbr
-*** function
-
-** elm function
-***  what is elem
-*** let's remind UNIX principle
-*** where can I use?
+Thank you for reading!

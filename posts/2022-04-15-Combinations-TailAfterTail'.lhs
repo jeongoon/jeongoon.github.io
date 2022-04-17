@@ -5,6 +5,7 @@ keywords: haskell, combinations, benchmark
 author: Myoungjin Jeon
 tags: haskell, combinations, benchmark
 ---
+[leaders-and-followers]: https://jeongoon.github.io/posts/2022-03-29-Combination.lhs
 [orig-tat]: https://jeongoon.github.io/posts/2022-04-03-Combinations-TailAfterTail.html
 [benchmark-tat]: https://github.com/jeongoon/combinations-bench/blob/main/haskell-combinations/benchmarkTat/BenchTat.lhs
 
@@ -14,8 +15,9 @@ LICENSE: [Open Software License 3.0](https://opensource.org/licenses/OSL-3.0)
 
 == Combinations in Haskell Series
 
-   1. [Combinations In Haskell (called Tail After Tail)][orig-tat]
-   2. *Tail After Tail Story (Combinations In Haskell)*
+   1. [Combinations In Haskell (called Leaders and Followers)][leaders-and-followers]
+   2. [Combinations In Haskell (called Tail After Tail)][orig-tat]
+   3. *Tail After Tail Story (Combinations In Haskell)*
 
 = Same Theory; Different Implementation
 
