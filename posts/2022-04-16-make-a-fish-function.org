@@ -54,7 +54,7 @@ these days, but I can not deny it is nostalsic.
  available across the unix or linux world, isn't it?
 
 ** Good
-***  It has a clean syntax
+***  It has a clean syntax (arguably)
 
 #+begin_src sh
   #!/usr/bin/env fish
@@ -212,7 +212,7 @@ these days, but I can not deny it is nostalsic.
 
      Very well.. so you need to /study/ before making a function or script in fish.
 
-** This is a fantstic alternative shell!
+** Oh, This shell makes too lazy (Bad??)
 
 Nevertheless, fish is a great shell which I love to use everyday. And I lost chance
 to use =zsh=. This is not about mannerism. 😂 Just because of fish shell is enough for me. 
