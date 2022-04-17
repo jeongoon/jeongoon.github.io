@@ -94,9 +94,10 @@ there were more (!$, !!) but I have forgotten many 😉. Frankly, I don’t miss
 these days, but I can not deny it is nostalsic.</p>
 <h2 id="how-about-script-in-fish">How About Script in fish?</h2>
 <p>I heard that fish is not good for making script. But this is not right expression.
-However, <em>bash</em> or <em>dash</em> is still better choice for more featrues and portability.</p>
+However, IMHO, <em>bash</em> or <em>dash</em> or <em>zsh?</em> is still better choice for more featrues and portability.</p>
 <p>If you think about performance.. I think we need to go for another script
-languages, IMHO. <em>Perl</em> is the king for portability. But in 2022, python or ruby is
+languages, for example, perl, ruby, python.. or maybe javascript?!?
+<em>Perl</em> is the king for portability, but in 2022, python or ruby is
 available across the unix or linux world, isn’t it?</p>
 <h2 id="good">Good</h2>
 <h3 id="it-has-a-clean-syntax-arguably">It has a clean syntax (arguably)</h3>
@@ -132,11 +133,21 @@ available across the unix or linux world, isn’t it?</p>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">end</span></span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
-<p>fish shell try to use plain texts in builtin command and control flow. It looks
-similar to python or ruby.</p>
+<p>fish shell seems to use plain texts in its syntax, command and control flow. It looks
+similar to python or ruby. This doesn’t mean it look best but I doesn’t look tricky
+or geeky at least.</p>
+<p>But remember..</p>
+<blockquote>
+<p>You Can Write FORTRAN in any Language.</p>
+</blockquote>
+<p>(This kind of trend will change over and over again, IMHO. And one thing I found
+that is One day.. someone says he likes the curly brackets in the javascript,
+which gives him more balanced look. I was suprised because this preference is exactly
+opposite to what most of people think python has cleaner look than <em>perl</em> back in 200x.)</p>
 <h3 id="great-default-auto-completion">great default auto-completion</h3>
-<p>I don’t really have complains about fish’s auto-completion. I couldn’t go deep
-inside. but you can make <a href="https://fishshell.com/docs/current/completions.html">your own comletions</a>.</p>
+<p>I don’t really have complains about fish’s auto-completion and I don’t think most of
+unix user never heard about auto-completion. I wouldn’t go deep inside.
+but you can make <a href="https://fishshell.com/docs/current/completions.html">your own completions</a> if you want.</p>
 <h3 id="powerful-builtin-functions">powerful builtin functions</h3>
 <ul>
 <li><em>math</em>, <em>string</em> are used in the prior example code, I found that it is very well</li>
@@ -152,7 +163,7 @@ later. (not forever though.)</p>
 <p>sometimes use the <em>perl</em> to compare the texts against the regex. But now I could
 finish in fish shell.</p>
 <h3 id="remarkable-variable-scopes">remarkable variable scopes</h3>
-<p>This is good feature and also bad feature. It is just because it has different concept.
+<p>This has pros and cons. It is just because it has different concept.
 This is where we should read the document very carefully.</p>
 <p>However <em>UNIVERSAL</em> variable scope is unique and convenient some times.
 when you are using several fish sessions and want to share some variable.</p>
@@ -220,23 +231,26 @@ Normally, any variables inside the function that have
 the same name as variables from the calling function are “shadowed” …</li>
 </ul>
 </blockquote>
-<p>so basically we cannot get any value from <em>parent</em> local scoped variables.</p></li>
+<p>so basically we cannot get any value from <em>parent</em> local scoped variables without <em>-S</em> option.
+But I agree that it is safer and strict.</p></li>
 <li><p>function <em>-V</em> option is</p>
 <blockquote>
 <ul>
-<li>-V or –inherit-variable NAME
-snapshots the value of the variable NAME and defines a local variable with
+<li><p>-V or –inherit-variable NAME</p>
+<p>snapshots the value of the variable NAME and defines a local variable with
 that same name and value when the function is defined.
 This is similar to a closure in other languages like Python but a bit
 different. Note the word “snapshot” in the first sentence. If you change the
 value of the variable after defining the function, even if
 you do so in the same scope (typically another function) the new value
 will not be used by the function you just created using this option. See
-the function notify example below for how this might be used.</li>
+the function notify example below for how this might be used.</p></li>
 </ul>
 </blockquote></li>
 </ul>
-<p>Very well.. so you need to <em>study</em> before making a function or script in fish.</p>
+<p>Very well.. so you need to <em>study</em> before making a function or script in fish.
+Otherwise you will get headache. because shell script doesn’t consult kindly
+you about your typo or misconcept.</p>
 <h2 id="oh-this-shell-makes-too-lazy-bad">Oh, This shell makes too lazy (Bad??)</h2>
 <p>Nevertheless, fish is a great shell which I love to use everyday. And I lost chance
 to use <code class="verbatim">zsh</code>. This is not about mannerism. 😂 Just because of fish shell is enough for me.</p>

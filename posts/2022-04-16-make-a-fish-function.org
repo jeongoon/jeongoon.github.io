@@ -47,10 +47,11 @@ these days, but I can not deny it is nostalsic.
 ** How About Script in fish?
 
  I heard that fish is not good for making script. But this is not right expression.
- However, /bash/ or /dash/ is still better choice for more featrues and portability.
+ However, IMHO, /bash/ or /dash/ or /zsh?/ is still better choice for more featrues and portability.
 
  If you think about performance.. I think we need to go for another script
- languages, IMHO. /Perl/ is the king for portability. But in 2022, python or ruby is
+ languages, for example, perl, ruby, python.. or maybe javascript?!?
+ /Perl/ is the king for portability, but in 2022, python or ruby is
  available across the unix or linux world, isn't it?
 
 ** Good
@@ -91,12 +92,25 @@ these days, but I can not deny it is nostalsic.
   end
 #+end_src
   
-    fish shell try to use plain texts in builtin command and control flow. It looks
-    similar to python or ruby.
+    fish shell seems to use plain texts in its syntax, command and control flow. It looks
+    similar to python or ruby. This doesn't mean it look best but I doesn't look tricky
+    or geeky at least.
+
+    But remember..
+    #+begin_quote
+    You Can Write FORTRAN in any Language.
+#+end_quote
+
+    (This kind of trend will change over and over again, IMHO. And one thing I found
+    that is One day.. someone says he likes the curly brackets in the javascript,
+    which gives him more balanced look. I was suprised because this preference is exactly
+    opposite to what most of people think python has cleaner look than /perl/ back in 200x.)
 
 *** great default auto-completion
-    I don't really have complains about fish's auto-completion. I couldn't go deep
-    inside. but you can make [[https://fishshell.com/docs/current/completions.html][your own comletions]].
+
+    I don't really have complains about fish's auto-completion and I don't think most of
+    unix user never heard about auto-completion. I wouldn't go deep inside.
+    but you can make [[https://fishshell.com/docs/current/completions.html][your own completions]] if you want.
 
 ***  powerful builtin functions
      - /math/, /string/ are used in the prior example code, I found that it is very well
@@ -114,7 +128,7 @@ these days, but I can not deny it is nostalsic.
      finish in fish shell.
 
 ***   remarkable variable scopes
-     This is good feature and also bad feature. It is just because it has different concept.
+     This has pros and cons. It is just because it has different concept.
      This is where we should read the document very carefully.
 
      However /UNIVERSAL/ variable scope is unique and convenient some times.
@@ -195,11 +209,13 @@ these days, but I can not deny it is nostalsic.
           the  same  name as variables from the calling function are "shadowed" ...
         #+end_quote
 
-       so basically we cannot get any value from /parent/ local scoped variables.
+       so basically we cannot get any value from /parent/ local scoped variables without /-S/ option.
+       But I agree that it is safer and strict.
 
      - function /-V/ option is
        #+begin_quote
        - -V or --inherit-variable NAME
+
          snapshots the value of the variable NAME and defines a local variable with
          that same name and value when the function is defined.
          This is similar to a closure in other  languages like Python but a bit
@@ -211,6 +227,8 @@ these days, but I can not deny it is nostalsic.
        #+end_quote
 
      Very well.. so you need to /study/ before making a function or script in fish.
+     Otherwise you will get headache. because shell script doesn't consult kindly
+     you about your typo or misconcept.
 
 ** Oh, This shell makes too lazy (Bad??)
 
