@@ -3,7 +3,6 @@ title: Benchmark With Criterion
 description: writing benchmark code in haskell with criterion
 keywords: haskell, benchmark, hpack, criterion
 author: Myoungjin Jeon
-tags: haskell, benchmark, hpack, criterion
 ---
 
 == Benchamark for Beginner Series

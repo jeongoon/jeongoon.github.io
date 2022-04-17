@@ -3,7 +3,6 @@ title: Builtin Benchmark with Go
 description: writing the benchmark code in go langauge.
 keywords: go, golang, benchmark, org-mode, hakyll
 author: Myoungjin Jeon
-tags: go, golang, benchmark, org-mode, hakyll
 ---
 #+STARTUP: inlineimages
 #+OPTIONS: ^:{}

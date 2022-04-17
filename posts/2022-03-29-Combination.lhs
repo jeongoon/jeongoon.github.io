@@ -3,7 +3,6 @@ title: Combinations in haskell (called `Leaders and Followers`)
 description: solving 99 question on haskell.org and #083 Task2 in perlweeklychallenge.org
 keywords: haskell, combinations, raku, documentation
 author: Myoungjin Jeon
-tags: haskell, combinations, raku, documentation
 ---
 Copyright (c) 2020 JEON Myoungjin <jeongoon@g... >
 LICENSE: Open Software License 3.0

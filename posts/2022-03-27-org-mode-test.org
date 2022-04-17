@@ -3,7 +3,6 @@ title: Org mode In Hakyll
 description: writing the blog in org-mode is possible in hakyll thanks to pandoc
 keywords: emacs, org-mode, hakyll, pandoc
 author: Myoungjin Jeon
-tags: hakyll, org-mode, emacs, pandoc
 ---
 #+TITLE: How about Another Title -> This is ignored.
 #+STARTUP: inlineimages

@@ -3,7 +3,6 @@ title: Combinations In Haskell (called Tail After Tail)
 description: another haskell combination module (TailAfterTail.lhs)
 keywords: haskell, combinations, raku
 author: Myoungjin Jeon
-tags: haskell, combinations, raku
 ---
 [leaders-and-followers]: https://jeongoon.github.io/posts/2022-03-29-Combination.html
 

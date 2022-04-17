@@ -3,7 +3,6 @@ title: Css Parallax Effect revised with css grid.
 description: show example css parallax applied.
 keywords: css, parallax, grid
 author: Myoungjin Jeon
-tags: css, parallax, grid
 ---
 
 # Css Parallax Series

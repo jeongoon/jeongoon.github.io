@@ -1,9 +1,8 @@
 ---
 title: Good, So So, Bad about Fish Shell
-description: general pros and cons about fish shell
 keywords: fish, shell, script, function, util, bash, fisher
+description: general pros and cons about fish shell
 author: Myoungjin Jeon
-tags: fish, shell, script, function, util, bash, fisher
 ---
 
 #+STARTUP: inlineimages

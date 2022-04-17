@@ -3,7 +3,6 @@ title: Css Parallax Effect revised in 2022
 description: show example css parallax applied.
 keywords: css, parallax
 author: Myoungjin Jeon
-tags: css, parallax
 ---
 
 ## Credit Information

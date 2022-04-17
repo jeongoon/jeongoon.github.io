@@ -3,7 +3,6 @@ title: Tail After Tail Story (Combinations In Haskell)
 description: a haskell combination module (TailAfterTail.lhs)
 keywords: haskell, combinations, benchmark
 author: Myoungjin Jeon
-tags: haskell, combinations, benchmark
 ---
 [leaders-and-followers]: https://jeongoon.github.io/posts/2022-03-29-Combination.html
 [orig-tat]: https://jeongoon.github.io/posts/2022-04-03-Combinations-TailAfterTail.html
