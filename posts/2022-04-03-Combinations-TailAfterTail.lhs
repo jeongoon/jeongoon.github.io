@@ -5,7 +5,7 @@ keywords: haskell, combinations, raku
 author: Myoungjin Jeon
 tags: haskell, combinations, raku
 ---
-[leaders-and-followers]: https://jeongoon.github.io/posts/2022-03-29-Combination.lhs
+[leaders-and-followers]: https://jeongoon.github.io/posts/2022-03-29-Combination.html
 
 Copyright (c) 2022 JEON Myoungjin <jeongoon@g... >
 
