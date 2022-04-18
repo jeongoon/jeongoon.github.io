@@ -300,7 +300,7 @@ html, body {
 
     }
     .css-parallax-toplevel {
-        height: calc(100vh+15px);
+        height: calc(100vh+40px);
     }
 
 }
