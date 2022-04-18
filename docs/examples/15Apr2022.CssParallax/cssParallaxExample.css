@@ -297,7 +297,14 @@ html, body {
        and (max-width: 992px) {
     html, body {
         font-size: 3.5vw;
+
     }
+    .css-parallax-toplevel::after {
+        content: '';
+        height: 1e-12px;
+        background: cyan;
+    }
+
 }
 
 /* but increase slightly on landscape mode on mobile */
@@ -305,6 +312,12 @@ html, body {
        and (max-width: 992px) {
     html, body {
         font-size: 2vw;
+    }
+    .css-parallax-toplevel::after { /* top-level means we can only have one perspective
+                              * as we are going to scroll if overflowing vertically */
+        content: '';
+        height: 1e-12px;
+        background: cyan;
     }
 }
 

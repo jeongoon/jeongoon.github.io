@@ -119,10 +119,10 @@ these days, but I can not deny it is nostalsic.
 #+begin_src sh
   fish> math "500+29*50+12*20+210+21*5"
 #+end_src
-     and this is even written in my fish history!. So, naturally I could recall
-     later. (not forever though.)
+     and this is even written in my fish history! So, naturally I could recall it
+     later. (not forever though)
 
-     - /string/ even support regular expression. I forgot about /sed,/ /awk/ commands and
+     - /string/ supports even regular expression! I forgot about /sed,/ /awk/ commands and
      sometimes use the /perl/ to compare the texts against the regex. But now I could
      finish in fish shell.
 
@@ -204,7 +204,7 @@ these days, but I can not deny it is nostalsic.
 
      - /function/ has option /-S/ which ...
         #+begin_quote
-       - allows the function to access the variables of calling functions.
+       allows the function to access the variables of calling functions.
           Normally, any variables inside the function  that  have
           the  same  name as variables from the calling function are "shadowed" ...
         #+end_quote
@@ -214,7 +214,7 @@ these days, but I can not deny it is nostalsic.
 
      - function /-V/ option is
        #+begin_quote
-       - -V or --inherit-variable NAME
+       -V or --inherit-variable NAME
 
          snapshots the value of the variable NAME and defines a local variable with
          that same name and value when the function is defined.
@@ -226,9 +226,9 @@ these days, but I can not deny it is nostalsic.
          the function notify example below for how this might be used.
        #+end_quote
 
-     Very well.. so you need to /study/ before making a function or script in fish.
-     Otherwise you will get headache. because shell script doesn't consult kindly
-     you about your typo or misconcept.
+     Very well.. this maybe so you might need to /study/ before making a function or script
+     in fish. Otherwise you will get headache because generally shell script doesn't
+     consult you kindly about your typo or misconcept.
 
 ** Oh, This shell makes too lazy (Bad??)
 

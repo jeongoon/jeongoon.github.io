@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="general pros and cons about fish shell">
+
+
+    <meta name="keywords" content="fish, shell, script, function, util, bash, fisher">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - Good, So So, Bad about Fish Shell</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/17Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Good, So So, Bad about Fish Shell
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on April 16, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'fish'." href="../tags/fish.html">fish</a>, <a title="All pages tagged 'shell'." href="../tags/shell.html">shell</a>, <a title="All pages tagged 'script'." href="../tags/script.html">script</a>, <a title="All pages tagged 'function'." href="../tags/function.html">function</a>, <a title="All pages tagged 'util'." href="../tags/util.html">util</a>, <a title="All pages tagged 'bash'." href="../tags/bash.html">bash</a>, <a title="All pages tagged 'fisher'." href="../tags/fisher.html">fisher</a>
+  
+</div>
+
+<h2 id="credit-or-more-articles">Credit or More Articles</h2>
+<ul>
+<li><a href="https://nicolas-van.github.io/programming-with-fish-shell">Nicolas Vanhoren’s Blog</a>
+Nice introduction to fish shell programming</li>
+<li>Cover Image
+<a href="https://pixabay.com/photos/seashell-shell-shells-sea-ocean-2821388/">https://pixabay.com/photos/seashell-shell-shells-sea-ocean-2821388/</a></li>
+</ul>
+<p><img src="../images/shell.jpg" /></p>
+<h1 id="fish-is-another-shell">Fish is another shell</h1>
+<p>I’m too lazy to change my shell. I used to use only bash shell back until 2009?.
+I heard about <code class="verbatim">tcsh</code> and <code class="verbatim">ksh</code> at that time, but bash was kind of a new standard in
+linux world.</p>
+<p>Maybe <code class="verbatim">zsh</code> rules the shell-world for now, there is another competitor called fish.
+I didn’t research about fish shell.</p>
+<p>However, one thing I really like about fish shell is that fish shell has nice
+<em>default settings</em> out of box.</p>
+<p>Sometimes, even if I installed new fish shell in a new box. I have no problem
+with using fish shell.</p>
+<p>I’m missing some bash history substitution like though:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span> echo 123</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bassh</span><span class="op">&gt;</span> ^123^456</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> 456</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">456</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span></span></code></pre></div>
+<p>When I found those tricks in a book, I felt like I found some treasure in history.
+there were more (!$, !!) but I have forgotten many 😉. Frankly, I don’t miss those
+these days, but I can not deny it is nostalsic.</p>
+<h2 id="how-about-script-in-fish">How About Script in fish?</h2>
+<p>I heard that fish is not good for making script. But this is not right expression.
+However, IMHO, <em>bash</em> or <em>dash</em> or <em>zsh?</em> is still better choice for more featrues and portability.</p>
+<p>If you think about performance.. I think we need to go for another script
+languages, for example, perl, ruby, python.. or maybe javascript?!?
+<em>Perl</em> is the king for portability, but in 2022, python or ruby is
+available across the unix or linux world, isn’t it?</p>
+<h2 id="good">Good</h2>
+<h3 id="it-has-a-clean-syntax-arguably">It has a clean syntax (arguably)</h3>
+<div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env fish</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># find &quot;*.md (or *.markdown)&quot;, &quot;*.lhs&quot;, &quot;*.org&quot; and print out first 7 lines of</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># of each file.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> limit_numof_files 5</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> numof_files_printed 0</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> interested_extensions <span class="st">'md'</span> <span class="st">'markdown'</span> <span class="st">'lhs'</span> <span class="st">'org'</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> interested_extensions <span class="dt">\</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="er">(</span><span class="cf">for</span> e <span class="kw">in</span> <span class="va">$interested_extensions</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;.</span><span class="va">$e</span><span class="st">&quot;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">end</span><span class="kw">)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> extensions_regex <span class="st">'('</span><span class="er">(</span><span class="ex">string</span> join <span class="st">&quot;|&quot;</span> <span class="va">$interested_extensions</span><span class="kw">)</span><span class="st">')$'</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fn <span class="kw">in</span> <span class="pp">*</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">test</span> <span class="va">$numof_files_printed</span> <span class="at">-ge</span> <span class="va">$limit_numof_files</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">break</span><span class="kw">;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">end</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">test</span> <span class="at">-f</span> <span class="va">$fn</span> <span class="at">-a</span> <span class="dt">\</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        test <span class="er">(</span><span class="ex">string</span> match <span class="at">-q</span> <span class="at">-r</span> <span class="va">$extensions_regex</span> <span class="va">$fn</span><span class="kw">)</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">set</span> numof_files_printed <span class="er">(</span><span class="ex">math</span> <span class="st">&quot;</span><span class="va">$numof_files_printed</span><span class="st"> + 1&quot;</span><span class="kw">)</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">$numof_files_printed</span><span class="st">: filename: </span><span class="va">$fn</span><span class="st">\n&quot;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="fu">head</span> <span class="at">-n</span> 7 <span class="va">$fn</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;\n&quot;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">end</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
+<p>fish shell seems to use plain texts in its syntax, command and control flow. It looks
+similar to python or ruby. This doesn’t mean it look best but I doesn’t look tricky
+or geeky at least.</p>
+<p>But remember..</p>
+<blockquote>
+<p>You Can Write FORTRAN in any Language.</p>
+</blockquote>
+<p>(This kind of trend will change over and over again, IMHO. And one thing I found
+that is One day.. someone says he likes the curly brackets in the javascript,
+which gives him more balanced look. I was suprised because this preference is exactly
+opposite to what most of people think python has cleaner look than <em>perl</em> back in 200x.)</p>
+<h3 id="great-default-auto-completion">great default auto-completion</h3>
+<p>I don’t really have complains about fish’s auto-completion and I don’t think most of
+unix user never heard about auto-completion. I wouldn’t go deep inside.
+but you can make <a href="https://fishshell.com/docs/current/completions.html">your own completions</a> if you want.</p>
+<h3 id="powerful-builtin-functions">powerful builtin functions</h3>
+<ul>
+<li><em>math</em>, <em>string</em> are used in the prior example code, I found that it is very well</li>
+</ul>
+<p>documented via <em>man</em> page or website, and also convenient.</p>
+<p>For basic calculation, I normally open a terminal and type like below:</p>
+<div class="sourceCode" id="cb3" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> math <span class="st">&quot;500+29*50+12*20+210+21*5&quot;</span></span></code></pre></div>
+<p>and this is even written in my fish history! So, naturally I could recall it
+later. (not forever though)</p>
+<ul>
+<li><em>string</em> supports even regular expression! I forgot about <em>sed,</em> <em>awk</em> commands and</li>
+</ul>
+<p>sometimes use the <em>perl</em> to compare the texts against the regex. But now I could
+finish in fish shell.</p>
+<h3 id="remarkable-variable-scopes">remarkable variable scopes</h3>
+<p>This has pros and cons. It is just because it has different concept.
+This is where we should read the document very carefully.</p>
+<p>However <em>UNIVERSAL</em> variable scope is unique and convenient some times.
+when you are using several fish sessions and want to share some variable.</p>
+<blockquote>
+<ul>
+<li>set <em>-U</em> or <em>–universal</em> option
+causes the specified shell variable to be given a universal scope.
+If this option is supplied, the variable will be shared between all the current
+user’s fish instances on the current computer, and will be preserved across
+restarts of the shell.</li>
+</ul>
+</blockquote>
+<p>But it is easy to make mistake. for example, input <code class="verbatim">set -U somevar</code> in
+your <code>~/.config/fish/config.fish</code>. and <code>somevar</code> will be duplicated over and over again.</p>
+<h3 id="well-organized-directory-structure">well organized directory structure</h3>
+<p>If you have a look into <code>~/.config/fish/</code> directory. you will notice that
+there is a <code>functions</code> directory which consists of functions you can use during
+the session. It will be automatically loaded when you start a new shell or invoke
+<em>that</em> function for the first time. (sometimes you need to reload the file by <code class="verbatim">source</code>)</p>
+<blockquote>
+<p>Those function in <code>~/.config/fish/functions/</code> are avaiable in you all the sessions.</p>
+</blockquote>
+<h3 id="fisher">fisher</h3>
+<p>github repository: <a href="https://github.com/jorgebucaran/fisher">https://github.com/jorgebucaran/fisher</a>
+There might be another kind of programme like <em>fisher</em> out there. Nevertheless
+fisher is a great third-party tool to make your fish socialized into the internet
+and install useful themes or tools from the <em>github</em> repositories. I believe that
+this is quite essesntial concept thesedays.</p>
+<h2 id="so-so">So So</h2>
+<h3 id="index-starting-from-1-not-0">index starting from 1 not 0</h3>
+<p>This is a kind of joke 😅, but right now I think this is inconveient for programmer.
+Because when a <em>programmer</em> is loosing his/her focus and tends to make a mistake
+when indexing as 0 is very common in programming world.</p>
+<p>This is why I don’t think it as <em>better</em> choice, rather I think <strong>this is bold movement</strong>.</p>
+<h3 id="command-substitution-not-as-powerful-as-bash">command substitution not as powerful as bash</h3>
+<p>There is a traditional way to copy but reserve the file attributes. (access time,
+creation time, ownership, etc) like below:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span> touch a  b c</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span> mkdir dest</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span> tar cf <span class="at">-</span> a b c <span class="kw">|</span> <span class="kw">(</span><span class="bu">cd</span> dest<span class="kw">;</span> <span class="fu">tar</span> xvf <span class="at">-</span><span class="kw">)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span> <span class="er">(</span><span class="bu">cd</span> dest<span class="kw">;</span> <span class="fu">ls</span> <span class="at">-l</span><span class="kw">)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 myoungjin users 0 Apr 16 21:41 a</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 myoungjin users 0 Apr 16 21:41 b</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 myoungjin users 0 Apr 16 21:41 c</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span> ls <span class="at">-l</span> a b c</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 myoungjin users 0 Apr 16 21:41 a</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 myoungjin users 0 Apr 16 21:41 b</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 myoungjin users 0 Apr 16 21:41 c</span></code></pre></div>
+<p>As you can see above, sometimes grouped command in bash very useful.
+But, AFAIK, fish cannot do this or prevent this kind of behaviour.</p>
+<h2 id="bad">Bad</h2>
+<h3 id="unusual-variable-scope">Unusual variable scope</h3>
+<p>Actually, this is very powerful concept in fish, however it is not very common,
+In other words, it is confusing. This confusion occurs highly when you are dealing
+about local scope variable which is created by <code class="verbatim">set -l varname</code>.</p>
+<p><em>local scope</em> is very limited scope which is not even propagate into the a local
+scoped function(declared in your script).
+So if you want to make a <em>function</em>, we need to aware about how we deliver some
+values from local scoped variables.</p>
+<ul>
+<li><p><em>function</em> has option <em>-S</em> which …</p>
+<blockquote>
+<p>allows the function to access the variables of calling functions.
+Normally, any variables inside the function that have
+the same name as variables from the calling function are “shadowed” …</p>
+</blockquote>
+<p>so basically we cannot get any value from <em>parent</em> local scoped variables without <em>-S</em> option.
+But I agree that it is safer and strict.</p></li>
+<li><p>function <em>-V</em> option is</p>
+<blockquote>
+<p>-V or –inherit-variable NAME</p>
+<p>snapshots the value of the variable NAME and defines a local variable with
+that same name and value when the function is defined.
+This is similar to a closure in other languages like Python but a bit
+different. Note the word “snapshot” in the first sentence. If you change the
+value of the variable after defining the function, even if
+you do so in the same scope (typically another function) the new value
+will not be used by the function you just created using this option. See
+the function notify example below for how this might be used.</p>
+</blockquote></li>
+</ul>
+<p>Very well.. this maybe so you might need to <em>study</em> before making a function or script
+in fish. Otherwise you will get headache because generally shell script doesn’t
+consult you kindly about your typo or misconcept.</p>
+<h2 id="oh-this-shell-makes-too-lazy-bad">Oh, This shell makes too lazy (Bad??)</h2>
+<p>Nevertheless, fish is a great shell which I love to use everyday. And I lost chance
+to use <code class="verbatim">zsh</code>. This is not about mannerism. 😂 Just because of fish shell is enough for me.</p>
+<p>Thank you for reading!</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->
