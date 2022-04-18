@@ -299,9 +299,12 @@ html, body {
         font-size: 3.5vw;
 
     }
-    .css-parallax-toplevel {
-        height: calc(100vh+40px);
-    }
+    .css-parallax-toplevel::after {
+        position: fixed;
+        bottom: 0;
+        height: 1px;
+        background: cyan;
+   }
 
 }
 
