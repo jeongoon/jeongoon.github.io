@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="pandoc powerful document coverter will covert org-mode to markdown format without hassle.">
+
+
+    <meta name="keywords" content="pandoc, org-mode, markdown, haskell software, converter, stack">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - Org-mode to Markdown Made Easy</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/17Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Org-mode to Markdown Made Easy
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on April 18, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'pandoc'." href="../tags/pandoc.html">pandoc</a>, <a title="All pages tagged 'org-mode'." href="../tags/org-mode.html">org-mode</a>, <a title="All pages tagged 'markdown'." href="../tags/markdown.html">markdown</a>, <a title="All pages tagged 'haskell software'." href="../tags/haskell%20software.html">haskell software</a>, <a title="All pages tagged 'converter'." href="../tags/converter.html">converter</a>, <a title="All pages tagged 'stack'." href="../tags/stack.html">stack</a>
+  
+</div>
+
+<h2 id="i-kept-writing-in-org-mode-and..">I Kept writing in org-mode and..</h2>
+<p>Not to forget how to write down in org-mode or literate haskell, I’m keeping my blog in <em>.lhs</em>
+or <em>.org</em> and I realized that when I need to post in <a href="https://dev.to"><em>dev.to</em></a>. I found myself being a
+coverter. It is not very hard but annoying process. And I tried <em>pandoc</em> as a commandline tool.</p>
+<h2 id="install-pandoc">Install pandoc</h2>
+<p>you can install via <code class="verbatim">pacman</code> on arch linux!</p>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> sudo pacman <span class="at">-S</span> pandoc                       2517ms  Mon 18 Apr 2022 21:54:37</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">resolving</span> dependencies...</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">looking</span> for conflicting packages...</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Packages</span> <span class="er">(</span><span class="ex">129</span><span class="kw">)</span> <span class="ex">haskell-aeson-1.5.6.0-84</span>  haskell-aeson-pretty-0.8.9-35</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>               <span class="ex">haskell-ansi-terminal-0.11-218</span>  haskell-appar-0.1.8-13</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>               <span class="ex">haskell-asn1-encoding-0.9.6-154</span>  haskell-asn1-parse-0.9.5-154</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>               <span class="ex">haskell-asn1-types-0.3.4-133</span>  haskell-assoc-1.0.2-124</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>               <span class="ex">haskell-async-2.2.4-14</span>  haskell-attoparsec-0.14.4-3</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>       <span class="ex">..</span> snip ..</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>               <span class="ex">haskell-x509-store-1.6.9-5</span>  haskell-x509-system-1.6.7-8</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>               <span class="ex">haskell-x509-validation-1.6.12-10</span>  haskell-xml-1.3.14-30</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>               <span class="ex">haskell-xml-conduit-1.9.1.1-85</span>  haskell-xml-types-0.3.8-8</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>               <span class="ex">haskell-zip-archive-0.4.1-161</span>  haskell-zlib-0.6.2.3-62</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>               <span class="ex">pandoc-2.14.2-42</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> Download Size:    44.20 MiB</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> Installed Size:  297.95 MiB</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ex">::</span> Proceed with installation<span class="pp">?</span> [Y/n] n </span></code></pre></div>
+<p>Oh… Kay… abort mission. because I’m using <em>stack</em> and <em>stack</em> already has installed
+many haskell libraries already.</p>
+<div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack install pandoc</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> compiling ....</span></code></pre></div>
+<p>TBH, if you are compiling for the first time, it would take a lot of time.
+<del><em>ghc</em> is not blazing fast software</del>. It is up to you, but if you don’t use other haskell
+software, I recommends you try to install it via your package system first.</p>
+<h2 id="pandoc--t-markdown">Pandoc -t markdown</h2>
+<div class="sourceCode" id="cb3" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> pandoc <span class="at">-to</span> markdown some-article.org <span class="op">&gt;</span> out.markdown</span></code></pre></div>
+<p>and that’s it.</p>
+<h2 id="fix-metadata">Fix metadata</h2>
+<p>However, you might need to fix your metadata if you are input in your article.</p>
+<p>It looks like below:</p>
+<p>You can edit by yourself on your favourite editor or below <em>awk</em> programme can take
+out the metadata part.</p>
+<p>save below as <em>hakyll-pandoc-preproc.awk</em></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode awk"><code class="sourceCode awk"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/awk -f</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    numof_printed <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span> <span class="dt">$0</span> <span class="op">~</span> <span class="ot">/^</span><span class="ss">--</span><span class="ot">*$/</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        numof_printed<span class="op">++;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span> numof_printed <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="kw">print</span> <span class="dt">$0</span><span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">exit</span><span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span> numof_printed <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">print</span> <span class="dt">$0</span><span class="op">;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        numof_printed<span class="op">++;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb5" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sh</span><span class="op">&gt;</span> chmod u+x hakyll-pandoc-preproc.awk</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sh</span><span class="op">&gt;</span> ./hakyll-pandoc-preproc.awk <span class="st">&quot;your-document.org&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Builtin Benchmark with Go</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">description:</span> writing the benchmark code in go langauge.</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">keywords:</span> go, golang, benchmark, org-mode, hakyll</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> Myoungjin Jeon</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
+<p>Or.. maybe it is better for other script language to handle it.</p>
+<p>(to be continued …)</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->

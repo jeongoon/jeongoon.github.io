@@ -14,7 +14,7 @@ LICENSE: [Open Software License 3.0](https://opensource.org/licenses/OSL-3.0)
 
    1. [Combinations In Haskell (called Leaders and Followers)][leaders-and-followers]
    2. *Combinations In Haskell (called Tail After Tail)*
-   3. [Tail After Tail Story (Combinations In Haskell)](/posts/2022-04-03-Combinations-TailAfterTail.html)
+   3. [Tail After Tail Story (Combinations In Haskell)](/posts/2022-04-15-Combinations-TailAfterTail'.html)
 
 = Yet Another Combinations
 

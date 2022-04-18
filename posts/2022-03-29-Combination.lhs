@@ -11,7 +11,7 @@ LICENSE: Open Software License 3.0
 
    1. *Combinations In Haskell (called Leaders and Followers)*
    2. [Combinations In Haskell (called Tail After Tail)](/posts/2022-04-03-Combinations-TailAfterTail.html)
-   3. [Tail After Tail Story (Combinations In Haskell)](/posts/2022-04-03-Combinations-TailAfterTail.html)
+   3. [Tail After Tail Story (Combinations In Haskell)](/posts/2022-04-15-Combinations-TailAfterTail'.html)
 
 = Another Combination Module from me
 
@@ -236,7 +236,7 @@ combinations mList  n =
 ```
 
 Maybe you could guess what is going on now. but if you started read
-the no-comment-code from the begignning, It might be not very clear
+the no-comment-code from the beginning, It might be not very clear
 what I was trying to say.
 
 Because I'm a novice haskeller and so does other haskellers.
