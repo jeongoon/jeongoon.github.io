@@ -301,7 +301,7 @@ html, body {
     }
     .css-parallax-toplevel::after {
         content: '';
-        height: 1e-12px;
+        height: 10px
         background: cyan;
     }
 
