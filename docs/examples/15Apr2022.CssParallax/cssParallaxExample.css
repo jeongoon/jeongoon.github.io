@@ -299,11 +299,8 @@ html, body {
         font-size: 3.5vw;
 
     }
-    .css-parallax-toplevel::after {
-        content: '';
-        height: 15px;
-        background: cyan;
-        opacity: 0.01;
+    .css-parallax-toplevel {
+        height: 101vh;
     }
 
 }
