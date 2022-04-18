@@ -301,8 +301,9 @@ html, body {
     }
     .css-parallax-toplevel::after {
         content: '';
-        height: 10px
+        height: 15px;
         background: cyan;
+        opacity: 0.01;
     }
 
 }
@@ -316,8 +317,9 @@ html, body {
     .css-parallax-toplevel::after { /* top-level means we can only have one perspective
                               * as we are going to scroll if overflowing vertically */
         content: '';
-        height: 1e-12px;
+        height: 15px;
         background: cyan;
+        opacity: 0.01;
     }
 }
 
