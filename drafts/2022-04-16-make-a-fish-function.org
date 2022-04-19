@@ -1,0 +1,48 @@
+---
+title: DRY(Do no Repeat Yourself) in fish
+description: create some function or abbr to utilize your daily shell (fish)
+keywords: fish, shell, script, function, util, DRY
+author: Myoungjin Jeon
+---
+#+STARTUP: inlineimages
+
+** Credit or More Articles
+ -  [[https://nicolas-van.github.io/programming-with-fish-shell][Nicolas Vanhoren's Blog]]
+    Nice introduction to fish shell programming
+
+** Recap fish variable Pros and Cons
+
+** First Few functions
+
+#+begin_quote
+*WARNING:* A function is not an individual programme.
+#+end_quote
+
+ - It is part of your shell
+   - if we are using =exit= in a function, it will actually shut down your current session.
+
+ - we cannot control it as a process.
+   this is not a child process, if we are using =sleep= in a function, it will actually sleep /your current session/.
+
+#+begin_src sh
+  fish> function sleep_10sec; sleep 10; end
+  fish> sleep_10sec &
+  ... paused ...
+  ^C
+  fish: Job 1, 'echo_e &' has ended
+  fish> # note I canceled by pressing Ctrl-C on x86_64 linux
+#+end_src
+
+***  function command
+****  -d option
+**** functions directory for permanent access
+**** still need to source
+
+** function as aliasing
+*** abbr
+*** function
+
+** elm function
+***  what is elem
+*** let's remind UNIX principle
+*** where can I use?

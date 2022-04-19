@@ -76,6 +76,30 @@ main = hakyllWith config $ do
                 >>= loadAndApplyTemplate "templates/default.html" archiveCtx
                 >>= relativizeUrls
 
+    -- 19 Apr: add some drafts page
+    match "drafts/*" $ do
+        route $ setExtension "html"
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/post.html"
+                (postCtxWithTags tags)
+
+            >>= loadAndApplyTemplate "templates/default.html"
+                (postCtxWithTags tags)
+
+            >>= relativizeUrls
+
+    create ["drafts.html"] $ do
+        route idRoute
+        compile $ do
+            posts <- recentFirst =<< loadAll "drafts/*"
+            let archiveCtx =
+                    listField "posts" postCtx (return posts) `mappend`
+                    constField "title" "Drafts"              `mappend`
+                    defaultContext
+
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/drafts.html" archiveCtx
+                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
 
     match "index.html" $ do
         route idRoute

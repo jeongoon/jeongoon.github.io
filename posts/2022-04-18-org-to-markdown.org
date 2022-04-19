@@ -1,23 +1,32 @@
 ---
 title: Org-mode to Markdown Made Easy
-keywords: pandoc, org-mode, markdown, haskell software, converter, stack
+keywords: pandoc, org-mode, markdown, haskell software, converter, stack, fish, fish script, awk
 description: pandoc powerful document coverter will covert org-mode to markdown format without hassle.
 author: Myoungjin Jeon
 ---
 
 #+STARTUP: inlineimages
 
-** I Kept writing in org-mode and..
+** I'm writing blogs in org-mode and..
 
- Not to forget how to write down in org-mode or literate haskell, I'm keeping my blog in /.lhs/
+ Not to forget how to write down in org-mode or literate haskell, I keep writing my blog in /.lhs/
  or /.org/ and I realized that when I need to post in [[https://dev.to][/dev.to/]]. I found myself being a
  coverter. It is not very hard but annoying process. And I tried /pandoc/ as a commandline tool.
 
+#+begin_quote
+  A programmer is a person who spend 2 hours to make an automatic system, which takes only
+  2 minutes by hand at the moment. 😱
+#+end_quote
+
+  So I was looking for file format converter. which is actually something I always use
+  when I use /hakyll/ -- *pandoc*!
+
 ** Install pandoc
+
  you can install via =pacman= on arch linux!
 
  #+begin_src sh
-   sh> sudo pacman -S pandoc                       2517ms  Mon 18 Apr 2022 21:54:37
+   sh> sudo pacman -S pandoc
    resolving dependencies...
    looking for conflicting packages...
 
@@ -41,7 +50,7 @@ author: Myoungjin Jeon
    :: Proceed with installation? [Y/n] n 
  #+end_src
 
- Oh... Kay... abort mission. because I'm using /stack/ and /stack/ already has installed
+ Oh... Kay... abort mission. Because I'm using /stack/ and /stack/ has installed
  many haskell libraries already.
 
 #+begin_src sh
@@ -53,7 +62,7 @@ author: Myoungjin Jeon
  +/ghc/ is not blazing fast software+. It is up to you, but if you don't use other haskell
  software, I recommends you try to install it via your package system first.
 
-** Pandoc -t markdown
+** pandoc -t markdown
 
 #+begin_src sh
   sh> pandoc -to markdown some-article.org > out.markdown
@@ -67,11 +76,11 @@ author: Myoungjin Jeon
 
  It looks like below:
 
- #+begin_export ascii
+ #+begin_src ascii
 --- title: Builtin Benchmark with Go description: writing the benchmark
 code in go langauge. keywords: go, golang, benchmark, org-mode, hakyll
 author: Myoungjin Jeon ---
- #+end_export
+ #+end_src
 
  You can edit by yourself on your favourite editor or below /awk/ programme can take
  out the metadata part.
@@ -101,6 +110,8 @@ author: Myoungjin Jeon ---
   }
 #+end_src
 
+ and extact like below:
+ 
 #+begin_src sh
   sh> chmod u+x hakyll-pandoc-preproc.awk
   sh> ./hakyll-pandoc-preproc.awk "your-document.org"
@@ -113,14 +124,17 @@ author: Myoungjin Jeon
 #+end_src
 
   Or.. maybe it is better for other script language to handle it.
+  I tried with fish shell because me or yesterday talked about fish shell is good
+  for scripting as well!
 
 #+begin_src sh
   #!/usr/bin/env fish
   # filename: pandoc-any-to-markdown.fish
+  # version: 0.1
 
   set -l input_filepath $argv[1]
 
-  if not test -f $input_file
+  if not test -f $input_filepath
       echo \
   "Usage: <document file path> &> <output file path>
           will print out converted text to stdout.
@@ -133,7 +147,7 @@ author: Myoungjin Jeon
   set -l pandoc_from (string split "." $input_filepath | tail -n1)
   # ^ pandoc reader relys on extension
 
-  for x in once
+  begin
       while read -l line
           if string match -q --regex '^---' -- "$line"
               set numof_printed (math "$numof_printed + 1")
@@ -150,14 +164,18 @@ author: Myoungjin Jeon
       end
 
       pandoc -f $pandoc_from -t markdown -
-  end < $argv[1]
+  end < $input_filepath
 #+end_src
 
-  I'm trying to write down in fish shell just because I blog about fish yesterday. 😎
+  /You can find the recent version at [[https://github.com/jeongoon/fish-pandoc-any-to-markdown][here]]./
+
+  And make it executable and run!
+  (now I found myself a installer..)
 
 #+begin_src sh
 sh> chmod u+x pandoc-any-to-markdown.fish
 sh> ./pandoc-any-to-markdown.fish test-pandoc.org
 #+end_src
 
-  I think I can post to /dev.to/!! even if I wrote down in org-mode or literate haskell.
+  I think I can post more articles to /dev.to/ even if I wrote down in org-mode or literate haskell.
+  Oki... That's it all for today!

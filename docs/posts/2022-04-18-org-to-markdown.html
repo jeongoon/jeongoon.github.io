@@ -10,7 +10,7 @@
     <meta name="description" content="pandoc powerful document coverter will covert org-mode to markdown format without hassle.">
 
 
-    <meta name="keywords" content="pandoc, org-mode, markdown, haskell software, converter, stack">
+    <meta name="keywords" content="pandoc, org-mode, markdown, haskell software, converter, stack, fish, fish script, awk">
 
    <!-- even though I setup @media to make change all the fixed font size;
         FF on mobile -- incorrectly -- scales font size again.
@@ -32,7 +32,7 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
-    <link rel="stylesheet" type="text/css" href="../css/17Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/19Apr2022.css" />
     <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
   </head>
   <body class="surface-color">
@@ -48,6 +48,7 @@
         <a href="../">Home</a>
         <a href="../about.html">About</a>
         <a href="../contact.html">Contact</a>
+        <a href="../drafts.html">Drafts</a>
         <a href="../archive.html">Archive</a>
       </nav>
     </header>
@@ -61,17 +62,23 @@
 </div>
 <div class="info">
   
-  Tags: <a title="All pages tagged 'pandoc'." href="../tags/pandoc.html">pandoc</a>, <a title="All pages tagged 'org-mode'." href="../tags/org-mode.html">org-mode</a>, <a title="All pages tagged 'markdown'." href="../tags/markdown.html">markdown</a>, <a title="All pages tagged 'haskell software'." href="../tags/haskell%20software.html">haskell software</a>, <a title="All pages tagged 'converter'." href="../tags/converter.html">converter</a>, <a title="All pages tagged 'stack'." href="../tags/stack.html">stack</a>
+  Tags: <a title="All pages tagged 'pandoc'." href="../tags/pandoc.html">pandoc</a>, <a title="All pages tagged 'org-mode'." href="../tags/org-mode.html">org-mode</a>, <a title="All pages tagged 'markdown'." href="../tags/markdown.html">markdown</a>, <a title="All pages tagged 'haskell software'." href="../tags/haskell%20software.html">haskell software</a>, <a title="All pages tagged 'converter'." href="../tags/converter.html">converter</a>, <a title="All pages tagged 'stack'." href="../tags/stack.html">stack</a>, <a title="All pages tagged 'fish'." href="../tags/fish.html">fish</a>, <a title="All pages tagged 'fish script'." href="../tags/fish%20script.html">fish script</a>, <a title="All pages tagged 'awk'." href="../tags/awk.html">awk</a>
   
 </div>
 
-<h2 id="i-kept-writing-in-org-mode-and..">I Kept writing in org-mode and..</h2>
-<p>Not to forget how to write down in org-mode or literate haskell, I’m keeping my blog in <em>.lhs</em>
+<h2 id="im-writing-blogs-in-org-mode-and..">I’m writing blogs in org-mode and..</h2>
+<p>Not to forget how to write down in org-mode or literate haskell, I keep writing my blog in <em>.lhs</em>
 or <em>.org</em> and I realized that when I need to post in <a href="https://dev.to"><em>dev.to</em></a>. I found myself being a
 coverter. It is not very hard but annoying process. And I tried <em>pandoc</em> as a commandline tool.</p>
+<blockquote>
+<p>A programmer is a person who spend 2 hours to make an automatic system, which takes only
+2 minutes by hand at the moment. 😱</p>
+</blockquote>
+<p>So I was looking for file format converter. which is actually something I always use
+when I use <em>hakyll</em> – <strong>pandoc</strong>!</p>
 <h2 id="install-pandoc">Install pandoc</h2>
 <p>you can install via <code class="verbatim">pacman</code> on arch linux!</p>
-<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> sudo pacman <span class="at">-S</span> pandoc                       2517ms  Mon 18 Apr 2022 21:54:37</span>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> sudo pacman <span class="at">-S</span> pandoc</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">resolving</span> dependencies...</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">looking</span> for conflicting packages...</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -93,91 +100,102 @@ coverter. It is not very hard but annoying process. And I tried <em>pandoc</em> 
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> Installed Size:  297.95 MiB</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ex">::</span> Proceed with installation<span class="pp">?</span> [Y/n] n </span></code></pre></div>
-<p>Oh… Kay… abort mission. because I’m using <em>stack</em> and <em>stack</em> already has installed
+<p>Oh… Kay… abort mission. Because I’m using <em>stack</em> and <em>stack</em> has installed
 many haskell libraries already.</p>
 <div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack install pandoc</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> compiling ....</span></code></pre></div>
 <p>TBH, if you are compiling for the first time, it would take a lot of time.
 <del><em>ghc</em> is not blazing fast software</del>. It is up to you, but if you don’t use other haskell
 software, I recommends you try to install it via your package system first.</p>
-<h2 id="pandoc--t-markdown">Pandoc -t markdown</h2>
+<h2 id="pandoc--t-markdown">pandoc -t markdown</h2>
 <div class="sourceCode" id="cb3" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> pandoc <span class="at">-to</span> markdown some-article.org <span class="op">&gt;</span> out.markdown</span></code></pre></div>
 <p>and that’s it.</p>
 <h2 id="fix-metadata">Fix metadata</h2>
 <p>However, you might need to fix your metadata if you are input in your article.</p>
 <p>It looks like below:</p>
+<pre class="ascii"><code>--- title: Builtin Benchmark with Go description: writing the benchmark
+code in go langauge. keywords: go, golang, benchmark, org-mode, hakyll
+author: Myoungjin Jeon ---
+</code></pre>
 <p>You can edit by yourself on your favourite editor or below <em>awk</em> programme can take
 out the metadata part.</p>
 <p>save below as <em>hakyll-pandoc-preproc.awk</em></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode awk"><code class="sourceCode awk"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/awk -f</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span> <span class="op">{</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    numof_printed <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span> <span class="dt">$0</span> <span class="op">~</span> <span class="ot">/^</span><span class="ss">--</span><span class="ot">*$/</span> <span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        numof_printed<span class="op">++;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span> numof_printed <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="kw">print</span> <span class="dt">$0</span><span class="op">;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">exit</span><span class="op">;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span> numof_printed <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">print</span> <span class="dt">$0</span><span class="op">;</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        numof_printed<span class="op">++;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb5" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sh</span><span class="op">&gt;</span> chmod u+x hakyll-pandoc-preproc.awk</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sh</span><span class="op">&gt;</span> ./hakyll-pandoc-preproc.awk <span class="st">&quot;your-document.org&quot;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Builtin Benchmark with Go</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">description:</span> writing the benchmark code in go langauge.</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">keywords:</span> go, golang, benchmark, org-mode, hakyll</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> Myoungjin Jeon</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
-<p>Or.. maybe it is better for other script language to handle it.</p>
-<div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env fish</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filename: pandoc-any-to-markdown.fish</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> input_filepath <span class="va">$argv</span>[1]</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">not</span> test <span class="at">-f</span> <span class="va">$input_file</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="dt">\</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Usage: &lt;document file path&gt; &amp;&gt; &lt;output file path&gt;</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="st">        will print out converted text to stdout.</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1<span class="kw">;</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> numof_printed <span class="at">-1</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ^ indicating phase -1: meta not found (&gt;=0): meta found</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> pandoc_from <span class="er">(</span><span class="ex">string</span> split <span class="st">&quot;.&quot;</span> <span class="va">$input_filepath</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n1</span><span class="kw">)</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ^ pandoc reader relys on extension</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> once</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">read</span> <span class="at">-l</span> <span class="va">line</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="ex">string</span> match <span class="at">-q</span> <span class="at">--regex</span> <span class="st">'^---'</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">$line</span><span class="st">&quot;</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>            <span class="bu">set</span> numof_printed <span class="er">(</span><span class="ex">math</span> <span class="st">&quot;</span><span class="va">$numof_printed</span><span class="st"> + 1&quot;</span><span class="kw">)</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">test</span> <span class="va">$numof_printed</span> <span class="at">-gt</span> 0</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>                <span class="bu">echo</span> <span class="va">$line</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>                <span class="bu">break</span><span class="kw">;</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>            <span class="ex">end</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        <span class="ex">end</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">test</span> <span class="va">$numof_printed</span> <span class="at">-ge</span> 0</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            <span class="bu">echo</span> <span class="va">$line</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            <span class="bu">set</span> numof_printed <span class="er">(</span><span class="ex">math</span> <span class="st">&quot;</span><span class="va">$numof_printed</span><span class="st"> + 1&quot;</span><span class="kw">)</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        <span class="ex">end</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="ex">end</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pandoc</span> <span class="at">-f</span> <span class="va">$pandoc_from</span> <span class="at">-t</span> markdown <span class="at">-</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span> <span class="op">&lt;</span> <span class="va">$argv</span>[1]</span></code></pre></div>
-<p>I’m trying to write down in fish shell just because I blog about fish yesterday. 😎</p>
-<div class="sourceCode" id="cb7" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> chmod u+x pandoc-any-to-markdown.fish</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> ./pandoc-any-to-markdown.fish test-pandoc.org</span></code></pre></div>
-<p>I think I can post to <em>dev.to</em>!! even if I wrote down in org-mode or literate haskell.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode awk"><code class="sourceCode awk"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/awk -f</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    numof_printed <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span> <span class="dt">$0</span> <span class="op">~</span> <span class="ot">/^</span><span class="ss">--</span><span class="ot">*$/</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        numof_printed<span class="op">++;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span> numof_printed <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            <span class="kw">print</span> <span class="dt">$0</span><span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">exit</span><span class="op">;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span> numof_printed <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">print</span> <span class="dt">$0</span><span class="op">;</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        numof_printed<span class="op">++;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>and extact like below:</p>
+<div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sh</span><span class="op">&gt;</span> chmod u+x hakyll-pandoc-preproc.awk</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sh</span><span class="op">&gt;</span> ./hakyll-pandoc-preproc.awk <span class="st">&quot;your-document.org&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Builtin Benchmark with Go</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">description:</span> writing the benchmark code in go langauge.</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">keywords:</span> go, golang, benchmark, org-mode, hakyll</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> Myoungjin Jeon</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
+<p>Or.. maybe it is better for other script language to handle it.
+I tried with fish shell because me or yesterday talked about fish shell is good
+for scripting as well!</p>
+<div class="sourceCode" id="cb7" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env fish</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filename: pandoc-any-to-markdown.fish</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># version: 0.1</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> input_filepath <span class="va">$argv</span>[1]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">not</span> test <span class="at">-f</span> <span class="va">$input_filepath</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="dt">\</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Usage: &lt;document file path&gt; &amp;&gt; &lt;output file path&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">        will print out converted text to stdout.</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1<span class="kw">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> numof_printed <span class="at">-1</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ^ indicating phase -1: meta not found (&gt;=0): meta found</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-l</span> pandoc_from <span class="er">(</span><span class="ex">string</span> split <span class="st">&quot;.&quot;</span> <span class="va">$input_filepath</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n1</span><span class="kw">)</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ^ pandoc reader relys on extension</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="ex">begin</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">read</span> <span class="at">-l</span> <span class="va">line</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="ex">string</span> match <span class="at">-q</span> <span class="at">--regex</span> <span class="st">'^---'</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">$line</span><span class="st">&quot;</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">set</span> numof_printed <span class="er">(</span><span class="ex">math</span> <span class="st">&quot;</span><span class="va">$numof_printed</span><span class="st"> + 1&quot;</span><span class="kw">)</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">test</span> <span class="va">$numof_printed</span> <span class="at">-gt</span> 0</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>                <span class="bu">echo</span> <span class="va">$line</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>                <span class="bu">break</span><span class="kw">;</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>            <span class="ex">end</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="ex">end</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">test</span> <span class="va">$numof_printed</span> <span class="at">-ge</span> 0</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>            <span class="bu">echo</span> <span class="va">$line</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>            <span class="bu">set</span> numof_printed <span class="er">(</span><span class="ex">math</span> <span class="st">&quot;</span><span class="va">$numof_printed</span><span class="st"> + 1&quot;</span><span class="kw">)</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>        <span class="ex">end</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="ex">end</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pandoc</span> <span class="at">-f</span> <span class="va">$pandoc_from</span> <span class="at">-t</span> markdown <span class="at">-</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span> <span class="op">&lt;</span> <span class="va">$input_filepath</span></span></code></pre></div>
+<p><em>You can find the recent version at <a href="https://github.com/jeongoon/fish-pandoc-any-to-markdown">here</a>.</em></p>
+<p>And make it executable and run!
+(now I found myself a installer..)</p>
+<div class="sourceCode" id="cb8" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> chmod u+x pandoc-any-to-markdown.fish</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> ./pandoc-any-to-markdown.fish test-pandoc.org</span></code></pre></div>
+<p>I think I can post more articles to <em>dev.to</em> even if I wrote down in org-mode or literate haskell.
+Oki… That’s it all for today!</p>
 
     </div>
 

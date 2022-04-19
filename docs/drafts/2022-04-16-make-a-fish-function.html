@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="create some function or abbr to utilize your daily shell (fish)">
+
+
+    <meta name="keywords" content="fish, shell, script, function, util, DRY">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - DRY(Do no Repeat Yourself) in fish</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/19Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 DRY(Do no Repeat Yourself) in fish
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../drafts.html">Drafts</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on April 16, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'fish'." href="../tags/fish.html">fish</a>, <a title="All pages tagged 'shell'." href="../tags/shell.html">shell</a>, <a title="All pages tagged 'script'." href="../tags/script.html">script</a>, <a title="All pages tagged 'function'." href="../tags/function.html">function</a>, <a title="All pages tagged 'util'." href="../tags/util.html">util</a>
+  
+</div>
+
+<h2 id="credit-or-more-articles">Credit or More Articles</h2>
+<ul>
+<li><a href="https://nicolas-van.github.io/programming-with-fish-shell">Nicolas Vanhoren’s Blog</a>
+Nice introduction to fish shell programming</li>
+</ul>
+<h2 id="recap-fish-variable-pros-and-cons">Recap fish variable Pros and Cons</h2>
+<h2 id="first-few-functions">First Few functions</h2>
+<blockquote>
+<p><strong>WARNING:</strong> A function is not an individual programme.</p>
+</blockquote>
+<ul>
+<li>It is part of your shell
+<ul>
+<li>if we are using <code class="verbatim">exit</code> in a function, it will actually shut down your current session.</li>
+</ul></li>
+<li>we cannot control it as a process.
+this is not a child process, if we are using <code class="verbatim">sleep</code> in a function, it will actually sleep <em>your current session</em>.</li>
+</ul>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> function sleep_10sec<span class="kw">;</span> <span class="fu">sleep</span> 10<span class="kw">;</span> <span class="ex">end</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> sleep_10sec <span class="kw">&amp;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> paused ...</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">^C</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">fish:</span> Job 1, <span class="st">'echo_e &amp;'</span> has ended</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> # note I canceled by pressing Ctrl-C on x86_64 linux</span></code></pre></div>
+<h3 id="function-command">function command</h3>
+<ol>
+<li><p>-d option</p></li>
+<li><p>functions directory for permanent access</p></li>
+<li><p>still need to source</p></li>
+</ol>
+<h2 id="function-as-aliasing">function as aliasing</h2>
+<h3 id="abbr">abbr</h3>
+<h3 id="function">function</h3>
+<h2 id="elm-function">elm function</h2>
+<h3 id="what-is-elem">what is elem</h3>
+<h3 id="lets-remind-unix-principle">let’s remind UNIX principle</h3>
+<h3 id="where-can-i-use">where can I use?</h3>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->
