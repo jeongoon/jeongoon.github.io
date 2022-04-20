@@ -14,8 +14,8 @@ author: Myoungjin Jeon
  coverter. It is not very hard but annoying process. And I tried /pandoc/ as a commandline tool.
 
 #+begin_quote
-  A programmer is a person who spend 2 hours to make an automatic system, which takes only
-  2 minutes by hand at the moment. 😱
+  A programmer is a person who is willing to spend 2 hours to make an automatic system,
+  to save 2 minutes for now. 😱
 #+end_quote
 
   So I was looking for file format converter. which is actually something I always use
@@ -47,7 +47,7 @@ author: Myoungjin Jeon
    Total Download Size:    44.20 MiB
    Total Installed Size:  297.95 MiB
 
-   :: Proceed with installation? [Y/n] n 
+   :: Proceed with installation? [Y/n] n
  #+end_src
 
  Oh... Kay... abort mission. Because I'm using /stack/ and /stack/ has installed
@@ -72,9 +72,11 @@ author: Myoungjin Jeon
  
 ** Fix metadata
 
- However, you might need to fix your metadata if you are input in your article.
+ However, you might need to fix your metadata if you are input any.
+ This is sometimes necessary if you repost within some sort of static stie builder
+ like hakyll.
 
- It looks like below:
+ After previous command =pandoc -t markdwon=, metadata unusable because it looks like below:
 
  #+begin_src ascii
 --- title: Builtin Benchmark with Go description: writing the benchmark

@@ -71,8 +71,8 @@
 or <em>.org</em> and I realized that when I need to post in <a href="https://dev.to"><em>dev.to</em></a>. I found myself being a
 coverter. It is not very hard but annoying process. And I tried <em>pandoc</em> as a commandline tool.</p>
 <blockquote>
-<p>A programmer is a person who spend 2 hours to make an automatic system, which takes only
-2 minutes by hand at the moment. 😱</p>
+<p>A programmer is a person who is willing to spend 2 hours to make an automatic system,
+to save 2 minutes for now. 😱</p>
 </blockquote>
 <p>So I was looking for file format converter. which is actually something I always use
 when I use <em>hakyll</em> – <strong>pandoc</strong>!</p>
@@ -99,7 +99,7 @@ when I use <em>hakyll</em> – <strong>pandoc</strong>!</p>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> Download Size:    44.20 MiB</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> Installed Size:  297.95 MiB</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ex">::</span> Proceed with installation<span class="pp">?</span> [Y/n] n </span></code></pre></div>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ex">::</span> Proceed with installation<span class="pp">?</span> [Y/n] n</span></code></pre></div>
 <p>Oh… Kay… abort mission. Because I’m using <em>stack</em> and <em>stack</em> has installed
 many haskell libraries already.</p>
 <div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> stack install pandoc</span>
@@ -111,8 +111,10 @@ software, I recommends you try to install it via your package system first.</p>
 <div class="sourceCode" id="cb3" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> pandoc <span class="at">-to</span> markdown some-article.org <span class="op">&gt;</span> out.markdown</span></code></pre></div>
 <p>and that’s it.</p>
 <h2 id="fix-metadata">Fix metadata</h2>
-<p>However, you might need to fix your metadata if you are input in your article.</p>
-<p>It looks like below:</p>
+<p>However, you might need to fix your metadata if you are input any.
+This is sometimes necessary if you repost within some sort of static stie builder
+like hakyll.</p>
+<p>After previous command <code class="verbatim">pandoc -t markdwon</code>, metadata unusable because it looks like below:</p>
 <pre class="ascii"><code>--- title: Builtin Benchmark with Go description: writing the benchmark
 code in go langauge. keywords: go, golang, benchmark, org-mode, hakyll
 author: Myoungjin Jeon ---
