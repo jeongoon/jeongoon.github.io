@@ -191,6 +191,23 @@ these days, but I can not deny it is nostalsic.
   As you can see above, sometimes grouped command in bash very useful.
   But, AFAIK, fish cannot do this or prevent this kind of behaviour.
 
+*** update 20th Apr 2022
+    To correct my mention above, I'll show more example. It is not impossible but still
+    I think it is not as intuitive as /bash/ way.
+
+    This is a equivalent solution:
+#+begin_src sh
+  fish> tar cf - a b c | fish -c "cd dest; tar xvf -"
+#+end_src
+
+   Or this is a another approach:
+   #+begin_src sh
+  fish> tar cf - a b c | begin cd dest; tar xvf -; cd -; end
+   #+end_src
+
+  The difference is that the former code are using sub-shell as bash was, the latter one is
+  still in the same level of your current fish session.
+
 ** Bad
 ***  Unusual variable scope
      Actually, this is very powerful concept in fish, however it is not very common,

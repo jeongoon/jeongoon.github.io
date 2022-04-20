@@ -215,6 +215,15 @@ creation time, ownership, etc) like below:</p>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 myoungjin users 0 Apr 16 21:41 c</span></code></pre></div>
 <p>As you can see above, sometimes grouped command in bash very useful.
 But, AFAIK, fish cannot do this or prevent this kind of behaviour.</p>
+<h3 id="update-20th-apr-2022">update 20th Apr 2022</h3>
+<p>To correct my mention above, I’ll show more example. It is not impossible but still
+I think it is not as intuitive as <em>bash</em> way.</p>
+<p>This is a equivalent solution:</p>
+<div class="sourceCode" id="cb5" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> tar cf <span class="at">-</span> a b c <span class="kw">|</span> <span class="ex">fish</span> <span class="at">-c</span> <span class="st">&quot;cd dest; tar xvf -&quot;</span></span></code></pre></div>
+<p>Or this is a another approach:</p>
+<div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> tar cf <span class="at">-</span> a b c <span class="kw">|</span> <span class="ex">begin</span> cd dest<span class="kw">;</span> <span class="fu">tar</span> xvf <span class="at">-</span><span class="kw">;</span> <span class="bu">cd</span> <span class="at">-</span><span class="kw">;</span> <span class="ex">end</span></span></code></pre></div>
+<p>The difference is that the former code are using sub-shell as bash was, the latter one is
+still in the same level of your current fish session.</p>
 <h2 id="bad">Bad</h2>
 <h3 id="unusual-variable-scope">Unusual variable scope</h3>
 <p>Actually, this is very powerful concept in fish, however it is not very common,
