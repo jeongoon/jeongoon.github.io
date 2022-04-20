@@ -33,6 +33,33 @@ author: Myoungjin Jeon
       - a maintainable size of /block/
       - in a more readable form
 
+#+begin_quote
+  *WARNING:* It is different from the code block.
+#+end_quote
+
+  A code block inherit parent local variables:
+#+begin_src sh
+  fish> set -l local_test "outside"
+  fish> begin # begin a code block
+          echo $local_test
+       end
+  "outside"
+#+end_src
+
+  However, function don't inherit them /by default/.
+
+#+begin_src sh
+  fish> set -l local_test "outside"
+  fish> function echo_local_test # begin a code block
+          echo $local_test
+       end
+  fish> echo_local_test
+
+  fish>
+#+end_src
+
+  But you can read with /-S/ option. [[fixme]]
+
 *** A part of your session
 
    Function is so common in progamming langauges, however, I found that it has
@@ -152,35 +179,79 @@ Even though We could call them in a shell, A function is not an individual progr
     As you can see in /rmi/ alias in the prior example, /$argv/ is a special variable which
     takes all the arguments you passed.
 
+#+begin_src sh
+  fish> function print_first_arg; echo $argv[1]; end
+  fish> print_first_arg "hi" "fish" "shell"
+  "hi"
+
+#+end_src
+
+  *Note:* Index is string from 1[fn:2]
+
 *** Input / Output
-    This a way to communicate each other. Your /shell from/to function/ or /function to function/,
-    we will use shell subsitution like the prior example or pipe =|=.
+
+    I/O is communication. Nn the communication between Your /shell and function/ or
+    /function to another function/, we will use shell subsitution like the prior example.
+    we can use pipe =|=.
     
 #+begin_src sh
   fish>  echo "test.org" | sed 's/\.org$/\.md/'
   test.md
 #+end_src
 
+   And those kind of I/O action quite important and used very often in shell programming.
 
 ** Function named 'function'
+
+    Now it is time to make a function. /fish/ has straight /function/ even though
+    /go/ lang has /func/, /kotlin/ has /fun,/ /rust/ has /fn/,
+
 ***  function command
 ****  -d option
-**** -S / -V
-     - Recap fish variable Pros and Cons
+     this is an optional but quite helpful when you decide to make a function. Do you remember
+     'KISS'? To clarify what you excatly want to get from the function is the main key.
+     some lines of description will do the basic guide line.
+#+begin_src sh
+  function elem -d 'determine first argument occurs in the list(rest of arguments)'
+      # do the job
+  end
+#+end_src
 
-** 
+**** -S option
+     fish shell has distinguishable concepts in variable scope. as I demonstrate previously
+     in [[fixme]].. To access local variables in the parent, We need to turn on the /-S/ option
+     #+begin_quote
+     -S or --no-scope-shadowing
+
+     allows the function to access the variables of calling functions.
+     Normally, any variables inside the function  that  have
+     the  same  name as variables from the calling function are "shadowed" ...
+    #+end_quote
+
+#+begin_src fish
+  function elem -d 'determine first argument occurs in the list(rest of arguments)' \
+           -S
+  if set -q given_list # note not 'set -q $given_list'
+      # use given_list variable to test
+  else
+      # or reading from the rest of arguments
+  end
+#+end_src
+
+     It depends on your function design, but in this case, we can say that local variable is
+     safer to use here.
+
 **** functions directory for permanent access
+     Now if 
+
 **** still need to source
 
 *** function
 
-** Example Function
+** Refactor our example 'elem' function
 
-*** elem function
-****  what is elem
-
-**** where can I use?
 
 * Footnotes
 
 [fn:1] Introduction to Function in Shell Scripting: https://www.educba.com/function-in-shell-scripting/
+[fn:2] Index starting from 1 not 0 : https://view-source:https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#index-starting-from-1-not-0

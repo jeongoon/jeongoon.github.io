@@ -86,6 +86,24 @@ to make a function:</p>
 <li>a maintainable size of <em>block</em></li>
 <li>in a more readable form</li>
 </ul>
+<blockquote>
+<p><strong>WARNING:</strong> It is different from the code block.</p>
+</blockquote>
+<p>A code block inherit parent local variables:</p>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set <span class="at">-l</span> local_test <span class="st">&quot;outside&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> begin <span class="co"># begin a code block</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="va">$local_test</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>     <span class="ex">end</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;outside&quot;</span></span></code></pre></div>
+<p>However, function don’t inherit them <em>by default</em>.</p>
+<div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set <span class="at">-l</span> local_test <span class="st">&quot;outside&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> function echo_local_test <span class="co"># begin a code block</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="va">$local_test</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>     <span class="ex">end</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> echo_local_test</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span></span></code></pre></div>
+<p>But you can read with <em>-S</em> option. <span class="spurious-link" target="fixme"><em>fixme</em></span></p>
 <h3 id="a-part-of-your-session">A part of your session</h3>
 <p>Function is so common in progamming langauges, however, I found that it has
 some different aspects along with the similarity.</p>
@@ -98,12 +116,12 @@ it will actually shut down your current session.</p></li>
 <li><p>We cannot control it as a process as this is not a child process,
 if we are using <code class="verbatim">sleep</code> in a function, it will actually sleep <em>your current session</em>.</p></li>
 </ul>
-<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> function sleep_10sec<span class="kw">;</span> <span class="fu">sleep</span> 10<span class="kw">;</span> <span class="ex">end</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> sleep_10sec <span class="kw">&amp;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> paused ...</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">^C</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">fish:</span> Job 1, <span class="st">'echo_e &amp;'</span> has ended</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> # note I canceled by pressing Ctrl-C on x86_64 linux</span></code></pre></div>
+<div class="sourceCode" id="cb3" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> function sleep_10sec<span class="kw">;</span> <span class="fu">sleep</span> 10<span class="kw">;</span> <span class="ex">end</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> sleep_10sec <span class="kw">&amp;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> paused ...</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">^C</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">fish:</span> Job 1, <span class="st">'echo_e &amp;'</span> has ended</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> # note I canceled by pressing Ctrl-C on x86_64 linux</span></code></pre></div>
 <p>So if you want to function act as a programme, you need to put in a separate file.
 and execute in another (child) fish shell. But how to make a shell script is beyond
 this article, I’ll post about it maybe another article.</p>
@@ -120,11 +138,11 @@ function mc --description 'alias mc emacsclient $argv'
 end
 </code></pre>
 <p>Another famous example of aliasing might be:</p>
-<div class="sourceCode" id="cb3" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> rm</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rm</span> <span class="at">-i</span> <span class="va">$argv</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb5" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> rm</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rm</span> <span class="at">-i</span> <span class="va">$argv</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
 <p>and fish shell provide wrapper function <a href="https://fishshell.com/docs/current/cmds/alias.html?highlight=alias"><code class="verbatim">alias</code></a> as well.</p>
-<div class="sourceCode" id="cb4" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> rmi=<span class="st">&quot;rm -i&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> rmi=<span class="st">&quot;rm -i&quot;</span></span></code></pre></div>
 <p>This is actually care about more like below:</p>
 <pre class="fish"><code>alias rmi=&quot;rm -i&quot;
 
@@ -143,59 +161,85 @@ can still edit your typing as well. Please read about <a href="https://fishshell
 <p>To use variables in function is common, even though we don’t need at all sometimes.
 a variable could be set by <a href="https://fishshell.com/docs/current/cmds/set.html?highlight=set"><code class="verbatim">set</code></a>. One big diffent thing from bash is that
 <code class="verbatim">set</code> doesn’t require any <code class="verbatim">=</code> sign. So you could possibly make some typo</p>
-<div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set <span class="at">-l</span> local_var = <span class="st">&quot;my_example_value&quot;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set <span class="at">-S</span> local_var</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">$local_var</span><span class="ex">:</span> set in local scope, unexported, with 2 elements</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="va">$local_var</span><span class="ex">[1]:</span> <span class="kw">|</span><span class="ex">=</span><span class="kw">|</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="va">$local_var</span><span class="ex">[2]:</span> <span class="kw">|</span><span class="ex">my_example_value</span><span class="kw">|</span></span></code></pre></div>
+<div class="sourceCode" id="cb8" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set <span class="at">-l</span> local_var = <span class="st">&quot;my_example_value&quot;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set <span class="at">-S</span> local_var</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">$local_var</span><span class="ex">:</span> set in local scope, unexported, with 2 elements</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="va">$local_var</span><span class="ex">[1]:</span> <span class="kw">|</span><span class="ex">=</span><span class="kw">|</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="va">$local_var</span><span class="ex">[2]:</span> <span class="kw">|</span><span class="ex">my_example_value</span><span class="kw">|</span></span></code></pre></div>
 <p>so <code class="verbatim">local_var</code> above becomes an array. Which makes me hard to debug sometimes. because
 <em>fish</em> will trust you. As there was no syntax error.</p>
 <h3 id="return-value">Return value</h3>
 <p>A function is not a programme, but at the same time return value is quite similar to
 a programme as return value will always be an unsigned char(integer) value.</p>
-<div class="sourceCode" id="cb7" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> function test_return<span class="kw">;</span> <span class="cf">return</span> <span class="ex">-1</span><span class="kw">;</span> <span class="ex">end</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> test_return</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> echo <span class="va">$status</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">255</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> functions <span class="at">-e</span> test_return</span></code></pre></div>
+<div class="sourceCode" id="cb9" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> function test_return<span class="kw">;</span> <span class="cf">return</span> <span class="ex">-1</span><span class="kw">;</span> <span class="ex">end</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> test_return</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> echo <span class="va">$status</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">255</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> functions <span class="at">-e</span> test_return</span></code></pre></div>
 <p>There are some way to save its return value, however using echo and using command subsitution
 is a common way because it is common for unix tiny programmes, to communicate each other
 via <em>pipe</em>, <em>fifo</em>.</p>
-<div class="sourceCode" id="cb8" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set today <span class="er">(</span><span class="fu">date</span> <span class="st">&quot;+%Y-%m-%d&quot;</span><span class="kw">)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> echo <span class="va">$today</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2022-04-20</span></span></code></pre></div>
+<div class="sourceCode" id="cb10" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set today <span class="er">(</span><span class="fu">date</span> <span class="st">&quot;+%Y-%m-%d&quot;</span><span class="kw">)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> echo <span class="va">$today</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2022-04-20</span></span></code></pre></div>
 <h3 id="arguments">Arguments</h3>
 <p>As you can see in <em>rmi</em> alias in the prior example, <em>$argv</em> is a special variable which
 takes all the arguments you passed.</p>
+<div class="sourceCode" id="cb11" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> function print_first_arg<span class="kw">;</span> <span class="bu">echo</span> <span class="va">$argv</span>[1]<span class="kw">;</span> <span class="ex">end</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> print_first_arg <span class="st">&quot;hi&quot;</span> <span class="st">&quot;fish&quot;</span> <span class="st">&quot;shell&quot;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;hi&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
+<p><strong>Note:</strong> Index is string from 1<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <h3 id="input-output">Input / Output</h3>
-<p>This a way to communicate each other. Your <em>shell from/to function</em> or <em>function to function</em>,
-we will use shell subsitution like the prior example or pipe <code class="verbatim">|</code>.</p>
-<div class="sourceCode" id="cb9" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span>  echo <span class="st">&quot;test.org&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/\.org$/\.md/'</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">test.md</span></span></code></pre></div>
+<p>I/O is communication. Nn the communication between Your <em>shell and function</em> or
+<em>function to another function</em>, we will use shell subsitution like the prior example.
+we can use pipe <code class="verbatim">|</code>.</p>
+<div class="sourceCode" id="cb12" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span>  echo <span class="st">&quot;test.org&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/\.org$/\.md/'</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">test.md</span></span></code></pre></div>
+<p>And those kind of I/O action quite important and used very often in shell programming.</p>
 <h2 id="function-named-function">Function named ‘function’</h2>
+<p>Now it is time to make a function. <em>fish</em> has straight <em>function</em> even though
+<em>go</em> lang has <em>func</em>, <em>kotlin</em> has <em>fun,</em> <em>rust</em> has <em>fn</em>,</p>
 <h3 id="function-command">function command</h3>
 <ol>
-<li><p>-d option</p></li>
-<li><p>-S / -V</p>
-<ul>
-<li>Recap fish variable Pros and Cons</li>
-</ul></li>
+<li><p>-d option</p>
+<p>this is an optional but quite helpful when you decide to make a function. Do you remember
+‘KISS’? To clarify what you excatly want to get from the function is the main key.
+some lines of description will do the basic guide line.</p>
+<div class="sourceCode" id="cb13" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> elem</span> <span class="ex">-d</span> <span class="st">'determine first argument occurs in the list(rest of arguments)'</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do the job</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div></li>
+<li><p>-S option</p>
+<p>fish shell has distinguishable concepts in variable scope. as I demonstrate previously
+in <span class="spurious-link" target="fixme"><em>fixme</em></span>.. To access local variables in the parent, We need to turn on the <em>-S</em> option</p>
+<blockquote>
+<p>-S or –no-scope-shadowing</p>
+<p>allows the function to access the variables of calling functions.
+Normally, any variables inside the function that have
+the same name as variables from the calling function are “shadowed” …</p>
+</blockquote>
+<pre class="fish"><code>function elem -d 'determine first argument occurs in the list(rest of arguments)' \
+         -S
+if set -q given_list # note not 'set -q $given_list'
+    # use given_list variable to test
+else
+    # or reading from the rest of arguments
+end
+</code></pre>
+<p>It depends on your function design, but in this case, we can say that local variable is
+safer to use here.</p></li>
+<li><p>functions directory for permanent access</p>
+<p>Now if</p></li>
+<li><p>still need to source</p></li>
 </ol>
-<h2 id="section-1"></h2>
-<p>functions directory for permanent access</p>
-<p>still need to source</p>
 <h3 id="function">function</h3>
-<h2 id="example-function">Example Function</h2>
-<h3 id="elem-function">elem function</h3>
-<ol>
-<li><p>what is elem</p></li>
-<li><p>where can I use?</p></li>
-</ol>
+<h2 id="refactor-our-example-elem-function">Refactor our example ‘elem’ function</h2>
 <h1 id="footnotes">Footnotes</h1>
 <section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1" role="doc-endnote"><p>Introduction to Function in Shell Scripting: <a href="https://www.educba.com/function-in-shell-scripting/">https://www.educba.com/function-in-shell-scripting/</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Index starting from 1 not 0 : <a href="https://view-source:https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#index-starting-from-1-not-0">https://view-source:https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#index-starting-from-1-not-0</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
