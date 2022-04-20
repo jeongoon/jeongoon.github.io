@@ -1,36 +1,51 @@
 ---
-title: DRY(Do no Repeat Yourself) in fish
+title: DRY(Do not Repeat Yourself) in fish
 description: create some functions or abbr to utilize your daily shell (fish)
 keywords: fish, shell, script, function, util, DRY
 author: Myoungjin Jeon
 ---
 #+STARTUP: inlineimages
 
-** Credit or More Articles
- -  [[https://nicolas-van.github.io/programming-with-fish-shell][Nicolas Vanhoren's Blog]]: Nice introduction to fish shell programming
-
 ** We Need Functions
 
- The main reason we are using command line tool is to get jobs done. But it would be nicer
- If we could accomplish easier. Especially when we found some tasks or typing is repeated
- over and over again by typing by yourself.
+   Moving files, compling source codes, checking out git repositories ...
+   To get jobs done, We are frequently use command line tool. 
 
- But I'd like to mention something before making a function in fish shell.
+   Even if just change your working diretory -- behind the scene -- your shell
+   is working for you to get informative prompt thesedays, isn't it?
+
+   To do some work easier or faster, we could recall by searching your shell
+   history or you could make a function to do the tasks.
 
 ** What is Function in Fish Shell
-*** A piece of codes
-    - let's remind UNIX principle
 
-*** a function is a part of your session
+*** A piece of codes
+    A function is a block of code that is reusable and performs certain operations.[fn:1]
+    And I'd like to remind you an UNIX principle, /KISS/!
+
+    #+begin_quote
+    *KISS:* Keep it simple and stupid
+    #+end_quote
+
+    /We need to best of ourselves/ but keep our programme simple and stupid at the same time,
+    to make a function:
+
+      - a maintainable size of /block/
+      - in a more readable form
+
+*** A part of your session
+
+   Function is so common in progamming langauges, however, I found that it has
+   some different aspects along with the similarity.
 
 #+begin_quote
-*WARNING:* A function is not an individual programme.
+Even though We could call them in a shell, A function is not an individual programme.
 #+end_quote
 
- - It is part of your shell, if we are using =exit= in a function,
-   it will actually shut down your current session.
+ - A function is a part of your shell /session/, if we are using =exit= in a function,
+  it will actually shut down your current session.
 
- - we cannot control it as a process. This is not a child process,
+ - We cannot control it as a process as this is not a child process,
    if we are using =sleep= in a function, it will actually sleep /your current session/.
 
 #+begin_src sh
@@ -48,13 +63,104 @@ author: Myoungjin Jeon
 
 *** function as aliasing
 
-*** how about abbr
+    I use /emacs/ daily, and sometimes I use emacs in terminal as well and below function
+    will make an alias for shorter name of the programme.
+
+#+begin_src fish
+  # ~/.config/fish/functions/em.fish
+  function em --description 'alias em emacs -nw $argv'
+      emacs -nw $argv
+  end
+
+  function mc --description 'alias mc emacsclient $argv'
+      emacsclient -tc $argv
+  end
+#+end_src
+
+   Another famous example of aliasing might be:
+
+#+begin_src sh
+  function rm
+      rm -i $argv
+  end
+#+end_src
+
+  and fish shell provide wrapper function [[https://fishshell.com/docs/current/cmds/alias.html?highlight=alias][=alias=]] as well.
+
+#+begin_src sh
+  alias rmi="rm -i"
+#+end_src
+
+  This is actually care about more like below:
+  #+begin_src fish
+    alias rmi="rm -i"
+
+    # This is equivalent to entering the following function:
+    function rmi --wraps rm --description 'alias rmi=rm -i'
+        rm -i $argv
+    end
+  #+end_src
+  
+  /--wraps rm/ provides autocompletion which is same as /rm/. and makes a description on
+  behalf of you.
+
+*** how about abbr?
+    works differently, but also helpful as /abbr/ replace your typing words and you
+    can still edit your typing as well. Please read about [[https://fishshell.com/docs/current/cmds/abbr.html?highlight=abbr][this]] for more information.
 
 ** Function requirement
+
 *** Variable
+    To use variables in function is common, even though we don't need at all sometimes.
+    a variable could be set by [[https://fishshell.com/docs/current/cmds/set.html?highlight=set][=set=]]. One big diffent thing from bash is that
+    =set= doesn't require any === sign. So you could possibly make some typo
+
+#+begin_src sh
+  fish> set -l local_var = "my_example_value"
+  fish> set -S local_var
+  $local_var: set in local scope, unexported, with 2 elements
+  $local_var[1]: |=|
+  $local_var[2]: |my_example_value|
+#+end_src
+
+  so =local_var= above becomes an array. Which makes me hard to debug sometimes. because
+  /fish/ will trust you. As there was no syntax error.
+
 *** Return value
+    A function is not a programme, but at the same time return value is quite similar to
+    a programme as return value will always be an unsigned char(integer) value.
+
+#+begin_src sh
+  fish> function test_return; return -1; end
+  fish> test_return
+  fish> echo $status
+  255
+  fish> functions -e test_return
+#+end_src
+
+   There are some way to save its return value, however using echo and using command subsitution
+   is a common way because it is common for unix tiny programmes, to communicate each other
+   via /pipe/, /fifo/.
+
+#+begin_src sh
+  fish> set today (date "+%Y-%m-%d")
+  fish> echo $today
+  2022-04-20
+#+end_src
+
 *** Arguments
-*** Input I/O
+    As you can see in /rmi/ alias in the prior example, /$argv/ is a special variable which
+    takes all the arguments you passed.
+
+*** Input / Output
+    This a way to communicate each other. Your /shell from/to function/ or /function to function/,
+    we will use shell subsitution like the prior example or pipe =|=.
+    
+#+begin_src sh
+  fish>  echo "test.org" | sed 's/\.org$/\.md/'
+  test.md
+#+end_src
+
 
 ** Function named 'function'
 ***  function command
@@ -74,3 +180,7 @@ author: Myoungjin Jeon
 ****  what is elem
 
 **** where can I use?
+
+* Footnotes
+
+[fn:1] Introduction to Function in Shell Scripting: https://www.educba.com/function-in-shell-scripting/
