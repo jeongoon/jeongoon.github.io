@@ -1,28 +1,37 @@
 ---
 title: DRY(Do no Repeat Yourself) in fish
-description: create some function or abbr to utilize your daily shell (fish)
+description: create some functions or abbr to utilize your daily shell (fish)
 keywords: fish, shell, script, function, util, DRY
 author: Myoungjin Jeon
 ---
 #+STARTUP: inlineimages
 
 ** Credit or More Articles
- -  [[https://nicolas-van.github.io/programming-with-fish-shell][Nicolas Vanhoren's Blog]]
-    Nice introduction to fish shell programming
+ -  [[https://nicolas-van.github.io/programming-with-fish-shell][Nicolas Vanhoren's Blog]]: Nice introduction to fish shell programming
 
-** Recap fish variable Pros and Cons
+** We Need Functions
 
-** First Few functions
+ The main reason we are using command line tool is to get jobs done. But it would be nicer
+ If we could accomplish easier. Especially when we found some tasks or typing is repeated
+ over and over again by typing by yourself.
+
+ But I'd like to mention something before making a function in fish shell.
+
+** What is Function in Fish Shell
+*** A piece of codes
+    - let's remind UNIX principle
+
+*** a function is a part of your session
 
 #+begin_quote
 *WARNING:* A function is not an individual programme.
 #+end_quote
 
- - It is part of your shell
-   - if we are using =exit= in a function, it will actually shut down your current session.
+ - It is part of your shell, if we are using =exit= in a function,
+   it will actually shut down your current session.
 
- - we cannot control it as a process.
-   this is not a child process, if we are using =sleep= in a function, it will actually sleep /your current session/.
+ - we cannot control it as a process. This is not a child process,
+   if we are using =sleep= in a function, it will actually sleep /your current session/.
 
 #+begin_src sh
   fish> function sleep_10sec; sleep 10; end
@@ -33,16 +42,35 @@ author: Myoungjin Jeon
   fish> # note I canceled by pressing Ctrl-C on x86_64 linux
 #+end_src
 
+  So if you want to function act as a programme, you need to put in a separate file.
+  and execute in another (child) fish shell. But how to make a shell script is beyond
+  this article, I'll post about it maybe another article.
+
+*** function as aliasing
+
+*** how about abbr
+
+** Function requirement
+*** Variable
+*** Return value
+*** Arguments
+*** Input I/O
+
+** Function named 'function'
 ***  function command
 ****  -d option
+**** -S / -V
+     - Recap fish variable Pros and Cons
+
+** 
 **** functions directory for permanent access
 **** still need to source
 
-** function as aliasing
-*** abbr
 *** function
 
-** elm function
-***  what is elem
-*** let's remind UNIX principle
-*** where can I use?
+** Example Function
+
+*** elem function
+****  what is elem
+
+**** where can I use?
