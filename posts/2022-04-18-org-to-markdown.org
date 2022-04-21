@@ -72,9 +72,8 @@ author: Myoungjin Jeon
  
 ** Fix metadata
 
- However, you might need to fix your metadata if you are input any.
- This is sometimes necessary if you repost within some sort of static stie builder
- like hakyll.
+ However, you might need to fix your metadata, if you repost in markdown format
+ within some sort of static stie builder like hakyll.
 
  After previous command =pandoc -t markdwon=, metadata unusable because it looks like below:
 
@@ -126,7 +125,7 @@ author: Myoungjin Jeon
 #+end_src
 
   Or.. maybe it is better for other script language to handle it.
-  I tried with fish shell because me or yesterday talked about fish shell is good
+  I tried with fish shell because yesterday I talked about fish shell is good
   for scripting as well!
 
 #+begin_src sh
@@ -138,7 +137,7 @@ author: Myoungjin Jeon
 
   if not test -f $input_filepath
       echo \
-  "Usage: <document file path> &> <output file path>
+  "Usage: <document file path> > <output file path>
           will print out converted text to stdout.
   "
       exit 1;
@@ -172,7 +171,7 @@ author: Myoungjin Jeon
   /You can find the recent version at [[https://github.com/jeongoon/fish-pandoc-any-to-markdown][here]]./
 
   And make it executable and run!
-  (now I found myself a installer..)
+  (now I found myself beging an installer..)
 
 #+begin_src sh
 sh> chmod u+x pandoc-any-to-markdown.fish

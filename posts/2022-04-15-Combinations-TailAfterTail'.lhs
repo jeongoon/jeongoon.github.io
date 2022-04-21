@@ -260,7 +260,7 @@ combinationsWith allComboGroupedFunc ms n1@selectFrom n2@selectTo =
       else            ( True
                       , max n2 0
                       , max n1 0)
-      -- and ensure all range value are zero or positive by usig `max`
+      -- and ensure all range value are zero or positive by using `max`
     rangeLength = n2' - n1' + 1
     reverseIfNeeded
       | isFlipped = reverse
