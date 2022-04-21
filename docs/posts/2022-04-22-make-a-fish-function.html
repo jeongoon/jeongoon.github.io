@@ -55,18 +55,18 @@
 
     <div id="content" class="font-friendly">
             <div class="info">
-    Posted on April 16, 2022
+    Posted on April 22, 2022
     
         by Myoungjin Jeon
     
 </div>
 <div class="info">
   
-  Tags: <a title="All pages tagged 'fish'." href="../tags/fish.html">fish</a>, <a title="All pages tagged 'shell'." href="../tags/shell.html">shell</a>, <a title="All pages tagged 'script'." href="../tags/script.html">script</a>, <a title="All pages tagged 'function'." href="../tags/function.html">function</a>, <a title="All pages tagged 'util'." href="../tags/util.html">util</a>
+  Tags: <a title="All pages tagged 'fish'." href="../tags/fish.html">fish</a>, <a title="All pages tagged 'shell'." href="../tags/shell.html">shell</a>, <a title="All pages tagged 'script'." href="../tags/script.html">script</a>, <a title="All pages tagged 'function'." href="../tags/function.html">function</a>, <a title="All pages tagged 'util'." href="../tags/util.html">util</a>, <a title="All pages tagged 'DRY'." href="../tags/DRY.html">DRY</a>
   
 </div>
 
-<h2 id="we-need-functions">We Need Functions</h2>
+<h2 id="when-we-need-functions">When We Need Functions</h2>
 <p>Moving files, compling source codes, checking out git repositories …
 To get jobs done, We are frequently use command line tool.</p>
 <p>Even if just change your working diretory – behind the scene – your shell
@@ -103,7 +103,7 @@ to make a function:</p>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> echo_local_test</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span></span></code></pre></div>
-<p>But you can read with <em>-S</em> option. <span class="spurious-link" target="fixme"><em>fixme</em></span></p>
+<p>But you can read with <em>-S</em> option. I’d like to talk about little <a href="#s-option">later</a>.</p>
 <h3 id="a-part-of-your-session">A part of your session</h3>
 <p>Function is so common in progamming langauges, however, I found that it has
 some different aspects along with the similarity.</p>
@@ -128,15 +128,14 @@ this article, I’ll post about it maybe another article.</p>
 <h3 id="function-as-aliasing">function as aliasing</h3>
 <p>I use <em>emacs</em> daily, and sometimes I use emacs in terminal as well and below function
 will make an alias for shorter name of the programme.</p>
-<pre class="fish"><code># ~/.config/fish/functions/em.fish
-function em --description 'alias em emacs -nw $argv'
-    emacs -nw $argv
-end
-
-function mc --description 'alias mc emacsclient $argv'
-    emacsclient -tc $argv
-end
-</code></pre>
+<div class="sourceCode" id="cb4" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ~/.config/fish/functions/em.fish</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> em</span> <span class="ex">--description</span> <span class="st">'alias em emacs -nw $argv'</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">emacs</span> <span class="at">-nw</span> <span class="va">$argv</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> mc</span> <span class="ex">--description</span> <span class="st">'alias mc emacsclient $argv'</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">emacsclient</span> <span class="at">-tc</span> <span class="va">$argv</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
 <p>Another famous example of aliasing might be:</p>
 <div class="sourceCode" id="cb5" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> rm</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rm</span> <span class="at">-i</span> <span class="va">$argv</span></span>
@@ -144,13 +143,12 @@ end
 <p>and fish shell provide wrapper function <a href="https://fishshell.com/docs/current/cmds/alias.html?highlight=alias"><code class="verbatim">alias</code></a> as well.</p>
 <div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> rmi=<span class="st">&quot;rm -i&quot;</span></span></code></pre></div>
 <p>This is actually care about more like below:</p>
-<pre class="fish"><code>alias rmi=&quot;rm -i&quot;
-
-# This is equivalent to entering the following function:
-function rmi --wraps rm --description 'alias rmi=rm -i'
-    rm -i $argv
-end
-</code></pre>
+<div class="sourceCode" id="cb7" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> rmi=<span class="st">&quot;rm -i&quot;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This is equivalent to entering the following function:</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> rmi</span> <span class="ex">--wraps</span> rm <span class="at">--description</span> <span class="st">'alias rmi=rm -i'</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rm</span> <span class="at">-i</span> <span class="va">$argv</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
 <p><em>–wraps rm</em> provides autocompletion which is same as <em>rm</em>. and makes a description on
 behalf of you.</p>
 <h3 id="how-about-abbr">how about abbr?</h3>
@@ -161,6 +159,7 @@ can still edit your typing as well. Please read about <a href="https://fishshell
 <p>To use variables in function is common, even though we don’t need at all sometimes.
 a variable could be set by <a href="https://fishshell.com/docs/current/cmds/set.html?highlight=set"><code class="verbatim">set</code></a>. One big diffent thing from bash is that
 <code class="verbatim">set</code> doesn’t require any <code class="verbatim">=</code> sign. So you could possibly make some typo</p>
+<p>&lt;&lt;test target&gt;&gt;</p>
 <div class="sourceCode" id="cb8" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set <span class="at">-l</span> local_var = <span class="st">&quot;my_example_value&quot;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> set <span class="at">-S</span> local_var</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">$local_var</span><span class="ex">:</span> set in local scope, unexported, with 2 elements</span>
@@ -193,53 +192,90 @@ takes all the arguments you passed.</p>
 <h3 id="input-output">Input / Output</h3>
 <p>I/O is communication. Nn the communication between Your <em>shell and function</em> or
 <em>function to another function</em>, we will use shell subsitution like the prior example.
-we can use pipe <code class="verbatim">|</code>.</p>
+we can use pipe <code class="verbatim">|</code>. And this is how <em>KISS</em> works, too.</p>
 <div class="sourceCode" id="cb12" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span>  echo <span class="st">&quot;test.org&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/\.org$/\.md/'</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">test.md</span></span></code></pre></div>
 <p>And those kind of I/O action quite important and used very often in shell programming.</p>
 <h2 id="function-named-function">Function named ‘function’</h2>
-<p>Now it is time to make a function. <em>fish</em> has straight <em>function</em> even though
-<em>go</em> lang has <em>func</em>, <em>kotlin</em> has <em>fun,</em> <em>rust</em> has <em>fn</em>,</p>
-<h3 id="function-command">function command</h3>
-<ol>
-<li><p>-d option</p>
+<p>Now it is time to make a function. <em>fish</em> has straight <em>function.</em> meanwhile
+<em>go</em> lang has <em>func</em>, <em>kotlin</em> has <em>fun,</em> <em>rust</em> has <em>fn</em> …</p>
+<h3 id="d-option">-d option</h3>
 <p>this is an optional but quite helpful when you decide to make a function. Do you remember
 ‘KISS’? To clarify what you excatly want to get from the function is the main key.
 some lines of description will do the basic guide line.</p>
 <div class="sourceCode" id="cb13" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> elem</span> <span class="ex">-d</span> <span class="st">'determine first argument occurs in the list(rest of arguments)'</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do the job</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div></li>
-<li><p>-S option</p>
-<p>fish shell has distinguishable concepts in variable scope. as I demonstrate previously
-in <span class="spurious-link" target="fixme"><em>fixme</em></span>.. To access local variables in the parent, We need to turn on the <em>-S</em> option</p>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
+<h3 id="s-option">-S option</h3>
+<p>fish shell has distinguishable concepts in variable scope. To to access local variables
+in the parent, We need to turn on the <em>-S</em> option.</p>
 <blockquote>
 <p>-S or –no-scope-shadowing</p>
 <p>allows the function to access the variables of calling functions.
-Normally, any variables inside the function that have
-the same name as variables from the calling function are “shadowed” …</p>
+Normally, any variables inside the function that have the same name as
+variables from the calling function are “shadowed” …</p>
 </blockquote>
-<pre class="fish"><code>function elem -d 'determine first argument occurs in the list(rest of arguments)' \
-         -S
-if set -q given_list # note not 'set -q $given_list'
-    # use given_list variable to test
-else
-    # or reading from the rest of arguments
-end
-</code></pre>
+<p>So it is possible to some function check parent local variable, too.</p>
+<div class="sourceCode" id="cb14" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> elem</span> <span class="ex">-d</span> <span class="st">'determine first argument occurs in the list(rest of arguments)'</span> <span class="dt">\</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">-S</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">set</span> <span class="at">-q</span> given_list <span class="co"># note not 'set -q $given_list'</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># use given_list variable to test</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># or reading from the rest of arguments</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
 <p>It depends on your function design, but in this case, we can say that local variable is
-safer to use here.</p></li>
-<li><p>functions directory for permanent access</p>
-<p>Now if</p></li>
-<li><p>still need to source</p></li>
-</ol>
-<h3 id="function">function</h3>
+safer to use here.</p>
+<p>Note: <em>bash</em> doesn’t have local variable outside a function.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span> local a=<span class="st">&quot;Apple&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bash:</span> local: can only be used in a function</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span><span class="op">&gt;</span></span></code></pre></div>
 <h2 id="refactor-our-example-elem-function">Refactor our example ‘elem’ function</h2>
+<p>Now, let’s focus on <em>elem</em> function which was imcomplete.</p>
+<ol>
+<li><p><em>elem</em> function will <em>determine first argument occurs in the list(rest of arguments)</em>.
+so we need some loop to go through our argument.</p></li>
+<li><p>if the first argument occurs again <em>elem</em> function will return <code class="verbatim">true</code> or return <code class="verbatim">false</code>
+(more specifically, return ‘return value of true’, return ‘return value of false’)</p></li>
+<li><p>and If possible when we found first arument in the rest of aruments,
+it would be nicer we can quit earlier.</p></li>
+</ol>
+<h2 id="our-first-elem-function">our first elem function</h2>
+<div class="sourceCode" id="cb16" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> elem</span> <span class="ex">-d</span> <span class="st">'determine first argument occurs in the list(rest of arguments)'</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">set</span> found 0</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> arg <span class="kw">in</span> <span class="va">$argv</span>[2..-1]</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">test</span> <span class="va">$found</span> <span class="at">-eq</span> 0 <span class="kw">&amp;&amp;</span> <span class="bu">test</span> <span class="va">$arg</span> = <span class="va">$argv</span>[1]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="bu">set</span> found 1</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>            <span class="bu">break</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="ex">end</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">end</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">test</span> <span class="va">$found</span> <span class="at">-eq</span> 1</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">true</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">false</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">end</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="ex">end</span></span></code></pre></div>
+<h2 id="put-into-functions-directory-for-permanent-access">put into functions directory for permanent access</h2>
+<p>In bash, A function could be save in your <code>~/.bashrc</code> or equivalent file.
+On the other hand, fish provides more organized way to save it.
+In other words, you could put a function into your <code>~/.config/fish/functions/</code> !
+Genrally the filename is same as your function name. In the prior case, you could
+name it <code>~/.config/fish/functions/elem.fish</code>. and now you can use them in another
+fish shell section or next login as well!</p>
+<h3 id="still-need-to-source">still need to source</h3>
+<p>But if you start from put a function in the <em>functions</em> directory, you still need to
+<code class="verbatim">source</code> sometimes as your change may be not yet reloaded.</p>
+<div class="sourceCode" id="cb17" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> source ~/.config/fish/functions/elem.fish</span></code></pre></div>
+<h1 id="wait..-why-i-made-elm-function">Wait.. why I made ‘elm’ function?</h1>
+<p>I used this function when I wanto add some <em>path</em> to my executable <code class="verbatim">$PATH</code>,
+And actually, This whole article is starting from [][this my post] on
+<em>dev.to</em>. so.. It’s kind of recursion in my blog post.</p>
 <h1 id="footnotes">Footnotes</h1>
 <section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1" role="doc-endnote"><p>Introduction to Function in Shell Scripting: <a href="https://www.educba.com/function-in-shell-scripting/">https://www.educba.com/function-in-shell-scripting/</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>Index starting from 1 not 0 : <a href="https://view-source:https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#index-starting-from-1-not-0">https://view-source:https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#index-starting-from-1-not-0</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Index starting from 1 not 0 : <a href="https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#index-starting-from-1-not-0">https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#index-starting-from-1-not-0</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
