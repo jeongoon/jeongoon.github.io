@@ -305,8 +305,8 @@ Even though We could call them in a shell, A function is not an individual progr
 
 * Wait.. why I made 'elm' function?
     I used this function when I wanto add some /path/ to my executable =$PATH=,
-    And actually, This whole article is starting from [][this my post] on
-    /dev.to/. so.. It's kind of recursion in my blog post.
+    And actually, This whole article is starting from [[https://dev.to/jeongoon/fish-shell-function-p2l][this my post]] on  /dev.to/.
+    so.. I have created a recursion in my blog posts.
 
 * Footnotes
 
