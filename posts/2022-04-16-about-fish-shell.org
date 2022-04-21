@@ -7,6 +7,10 @@ author: Myoungjin Jeon
 
 #+STARTUP: inlineimages
 
+** Fish Shell Series
+    1. /Good, So So, Bad about Fish Shell/
+    2. [[https://jeongoon.github.io/posts/2022-04-21-make-a-fish-function.html][DRY(Do not Repeat Yourself) in fish]]
+
 ** Credit or More Articles
  -  [[https://nicolas-van.github.io/programming-with-fish-shell][Nicolas Vanhoren's Blog]]
     Nice introduction to fish shell programming

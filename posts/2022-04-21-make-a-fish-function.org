@@ -6,6 +6,10 @@ author: Myoungjin Jeon
 ---
 #+STARTUP: inlineimages
 
+** Fish Shell Series
+    1. [[https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html][Good, So So, Bad about Fish Shell]]
+    2. /DRY(Do not Repeat Yourself) in fish/
+
 ** When We Need Functions
 
    Moving files, compling source codes, checking out git repositories ...
