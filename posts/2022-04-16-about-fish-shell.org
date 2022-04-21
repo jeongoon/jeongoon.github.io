@@ -192,6 +192,7 @@ these days, but I can not deny it is nostalsic.
   But, AFAIK, fish cannot do this or prevent this kind of behaviour.
 
 *** update 20th Apr 2022
+
     To correct my mention above, I'll show more example. It is not impossible but still
     I think it is not as intuitive as /bash/ way.
 
@@ -205,8 +206,12 @@ these days, but I can not deny it is nostalsic.
   fish> tar cf - a b c | begin cd dest; tar xvf -; cd -; end
    #+end_src
 
-  The difference is that the former code are using sub-shell as bash was, the latter one is
-  still in the same level of your current fish session.
+  The difference between two codes is that the former code used sub-shell[fn:1] as bash had,
+  the latter one was still in the same level of your current fish session.
+
+  In either way, I could tell bash has more intuitive syntax for sub-shells.
+
+#+end_quote
 
 ** Bad
 ***  Unusual variable scope
@@ -251,5 +256,9 @@ these days, but I can not deny it is nostalsic.
 
 Nevertheless, fish is a great shell which I love to use everyday. And I lost chance
 to use =zsh=. This is not about mannerism. 😂 Just because of fish shell is enough for me. 
-
+<
 Thank you for reading!
+
+* Footnotes
+
+[fn:1] Bash Sub Shells: https://www.linuxjournal.com/content/bash-sub-shells

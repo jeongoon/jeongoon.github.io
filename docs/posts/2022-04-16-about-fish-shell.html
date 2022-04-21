@@ -222,8 +222,9 @@ I think it is not as intuitive as <em>bash</em> way.</p>
 <div class="sourceCode" id="cb5" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> tar cf <span class="at">-</span> a b c <span class="kw">|</span> <span class="ex">fish</span> <span class="at">-c</span> <span class="st">&quot;cd dest; tar xvf -&quot;</span></span></code></pre></div>
 <p>Or this is a another approach:</p>
 <div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> tar cf <span class="at">-</span> a b c <span class="kw">|</span> <span class="ex">begin</span> cd dest<span class="kw">;</span> <span class="fu">tar</span> xvf <span class="at">-</span><span class="kw">;</span> <span class="bu">cd</span> <span class="at">-</span><span class="kw">;</span> <span class="ex">end</span></span></code></pre></div>
-<p>The difference is that the former code are using sub-shell as bash was, the latter one is
-still in the same level of your current fish session.</p>
+<p>The difference between two codes is that the former code used sub-shell<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> as bash had,
+the latter one was still in the same level of your current fish session.</p>
+<p>In either way, I could tell bash has more intuitive syntax for sub-shells.</p>
 <h2 id="bad">Bad</h2>
 <h3 id="unusual-variable-scope">Unusual variable scope</h3>
 <p>Actually, this is very powerful concept in fish, however it is not very common,
@@ -260,8 +261,16 @@ in fish. Otherwise you will get headache because generally shell script doesn’
 consult you kindly about your typo or misconcept.</p>
 <h2 id="oh-this-shell-makes-too-lazy-bad">Oh, This shell makes too lazy (Bad??)</h2>
 <p>Nevertheless, fish is a great shell which I love to use everyday. And I lost chance
-to use <code class="verbatim">zsh</code>. This is not about mannerism. 😂 Just because of fish shell is enough for me.</p>
-<p>Thank you for reading!</p>
+to use <code class="verbatim">zsh</code>. This is not about mannerism. 😂 Just because of fish shell is enough for me.
+&lt;
+Thank you for reading!</p>
+<h1 id="footnotes">Footnotes</h1>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Bash Sub Shells: <a href="https://www.linuxjournal.com/content/bash-sub-shells">https://www.linuxjournal.com/content/bash-sub-shells</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
     </div>
 
