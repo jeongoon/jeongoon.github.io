@@ -10,7 +10,7 @@
     <meta name="description" content="when you using 'grep' command, print first head line as well">
 
 
-    <meta name="keywords" content="fish, shell, script, function, util, grep, perl, python">
+    <meta name="keywords" content="fish, shell, script, function, util, grep, perl">
 
    <!-- even though I setup @media to make change all the fixed font size;
         FF on mobile -- incorrectly -- scales font size again.
@@ -145,7 +145,7 @@ tasks very well.</p>
 <p><code class="verbatim">begin .. end &lt; $input_path</code> pattern is used before when I made <a href="https://github.com/jeongoon/fish-pandoc-any-to-markdown/blob/d45c2207dac63706ae6a947aacb72d092aa5f089/pandoc-any-to-markdown.fish#L28-L45">fish-pandoc-any-to-markdown</a>.
 So I found this version a bit easier than others.</p>
 <h2 id="perl-solution">Perl Solution</h2>
-<p>My perl solution was made very long time ago. I’m happy to see that it is still working
+<p>My perl solution was made very long time ago. And probably not very fancy.
 Even if it has one more options, basic routine is the same.</p>
 <p>The recent file is on my github: <a href="https://github.com/jeongoon/hgrep/blob/main/perl/hgrep.pl">hgrep.pl</a></p>
 <h3 id="parsing-options-in-perl">parsing options in perl</h3>
@@ -384,20 +384,8 @@ about system programming.</p>
 which is actually not. so my programme was on hang after <code class="verbatim">grep</code> had fisnihed its job.</p></li>
 </ol>
 <h2 id="conculsion">Conculsion</h2>
-<h3 id="pipe-and-shells-power">pipe and shell’s power</h3>
 <p>Even though, it was good chance to learn about basic pipe usage,
 Shell script is very powerful for basic process communication between two proccesses.</p>
-<h3 id="parsing-option-is-easier-with-modules">parsing option is easier with modules</h3>
-<p>And also I tried to add option and test them.</p>
-<ul>
-<li><em>fish</em>’s argparse is relatively new, which</li>
-<li>Perl’s OptArgs has more features and handle optional argument as well</li>
-<li>python’s argparse has good type system for checking data type and is performant,
-however it doesn’t support optional (positional) arguments. so I applied
-some workaround.</li>
-</ul>
-<p>Thank you for reading!
-and Happy coding!</p>
 
     </div>
 
