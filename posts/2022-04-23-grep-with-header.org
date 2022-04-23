@@ -15,8 +15,6 @@ author: Myoungjin Jeon
   myoungj+    2665  0.0  0.1 172848 10076 pts/2    Ss+  09:24   0:00 -fish
   myoungj+    2781  0.0  0.1 172724  9712 pts/0    Ss+  09:27   0:00 -fish
   myoungj+    3024  0.0  0.1 164528  9552 pts/3    Ss+  09:32   0:00 -fish
-  myoungj+    3135  0.0  0.1 164092 11304 pts/4    Ss+  09:34   0:00 -fish
-  myoungj+    3549  0.2  0.2 246696 19224 pts/5    Ssl  09:38   0:03 -fish
   myoungj+    4709  0.0  0.0   9136  2692 pts/5    S+   10:00   0:00 grep --color=auto fish
 #+end_src
 
@@ -100,14 +98,25 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
 
 ** Perl Solution
 
-    My perl solution was made very long time ago. I'm happy to see that it is still working
-    Even if it has one more options, basic routine is the same.
+    My perl solution was made very long time ago. I'm happy to see that it is still working.
+    Basic routine is the same, except it has one more options. /--nohead/ which is not neccessary.
+    I think I just wanted to chceck the how the /OptArgs/ is working at that time.
 
-    The recent file is on my github: [[https://github.com/jeongoon/hgrep/blob/main/perl/hgrep.pl][hgrep.pl]]
+#+begin_quote
+    I realized /today/ that the routine in fish shell is also applicable.
+
+    1. read one line from input and print to stdout
+    2. exec to grep with option
+#+end_quote
+
+    /Nevertheless, I believed that it is worth to learn!/
 
 *** parsing options in perl
+
     And thanks to [[https://metacpan.org/pod/OptArgs][OptArgs]] module, I could handle option handy and in a more structural approach.
-    (However, I think this is little heavier than python's =argsparse=.)
+    (However, I think this is little heavier than python's =argparse=.)
+
+    The recent file is on my github: [[https://github.com/jeongoon/hgrep/blob/main/perl/hgrep.pl][hgrep.pl]]
 
 #+begin_src perl
   #!/usr/bin/env perl
@@ -198,7 +207,7 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
   =|-= means creating a pipe, and fork implictly at the same time and now we have two processes,
   when the parent writing into new handle $to_gh, the child will read from the stdin.
   
-  If this is compared in shell script it looks like below at the moment.
+  In terms of shell script, it looks like below at the moment.
 
 #+begin_src ascii
   sh>  parent_perl <some options ...> | child_perl
@@ -314,75 +323,83 @@ if os.environ['TERM'].lower != 'dumb':
   grep_options.append( args.search )
 #+end_src    
 
-    I don't really know about python, I think I took the very lowlevel =pipe()= function
+    I don't really know about python, but I guess I took the very lowlevel =pipe()= function
     in python.
 
 #+begin_src python
-# and let's go for plumbing
-# file descriptors r,w for reading and writing
-r, w = os.pipe()
+  # and let's go for plumbing
+  # file descriptors r,w for reading and writing
+  r, w = os.pipe()
 
-if args.file_path == "-":
-    # open file path to read
-    file_to_read = sys.stdin
-else:
-    # or from stdin
-    if os.path.isfile( args.file_path ):
-        file_to_read = open( args.file_path, "r" )
-    else:
-        print( "A file path:({fp}) is not readable"
-               .format( fp=args.file_path )
-               , file = sys.stderr )
-        exit( 2 )
+  if args.file_path == "-":
+      # open file path to read
+      file_to_read = sys.stdin
+  else:
+      # or from stdin
+      if os.path.isfile( args.file_path ):
+          file_to_read = open( args.file_path, "r" )
+      else:
 
-print( file_to_read.readline() , file = sys.stdout, flush = True )
 
-grep_pid = os.fork()
+          print( "A file path:({fp}) is not readable"
+                 .format( fp=args.file_path )
+                 , file = sys.stderr )
+          exit( 2 )
 
-if grep_pid:
-    # parent process
+  # read head first and print into stdout directly
+  print( file_to_read.readline() , file = sys.stdout, flush = True )
 
-    # to communicate with to a child process
-    # writing file descriptor will be used
-    os.close(r)
-    os.dup2( w, sys.stdout.fileno() )
+  # fork() will create a child process
+  # and we can ditinguish which one is parent process by checking
+  # return value
+  grep_pid = os.fork()
 
-    # read head first and print into stdout directly
+  if grep_pid:
+      # parent process
 
-    for line in file_to_read:
-        print( line )
+      # to communicate with to a child process
+      # writing file descriptor will be used
+      os.close(r)
+      os.dup2( w, sys.stdout.fileno() )
 
-    # It is good practice to close all the file open
-    os.close( w )
+      for line in file_to_read:
+          print( line )
 
-    # safely waiting for children processes
-    os.waitpid( grep_pid,
-                os.WNOHANG # if child process status not available: no wait
-               )
+      # It is good practice to close all the file open
+      os.close( w )
 
-else:
-    # child process
-    os.dup2( r, sys.stdin.fileno() )
-    os.closerange( r, w )
-    os.execvp( 'grep', grep_options )
+      # safely waiting for children processes
+      os.waitpid( grep_pid,
+                  os.WNOHANG # if child process status not available: no wait
+                 )
 
-exit(0)
+  else:
+      # child process
+      os.dup2( r, sys.stdin.fileno() )
+
+      # child process only requires 'r' as stdin
+      # and stdout so it is better to close r,w here.
+      os.closerange( r, w )
+      os.execvp( 'grep', grep_options )
+
+  exit(0)
 #+end_src
 
 ***  Where I found difficulty
 
     =os.dup2= is essential to communicate with the =grep= in child process as =grep= only care about
-    ~stdin~ here, but there is no way to inform that parent is talking to newly open
+    ~stdin~ here, but there is no way to inform /the child/ that /parent/ is going to newly open
     file descriptors (r,w). TBH, I spent too much time on this because lacks of my knoweldge
     about system programming.
 
     and =os.waitpid= requires =os.WNOHANG= option value, I thought it will be ~0~,
     which is actually not. so my programme was on hang after =grep= had fisnihed its job.
 
-** Conculsion
+** Wrapping Up
 
 *** pipe and shell's power
-    - Even though, it was good chance to learn about basic pipe usage,
+
+    - Even though it was good chance to learn about basic pipe usage,
       Shell script is very powerful for basic process communication between two proccesses.
     - perl's old open function's arguments are a little bit hacky.
 

@@ -74,9 +74,7 @@
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">myoungj+</span>    2665  0.0  0.1 172848 10076 pts/2    Ss+  09:24   0:00 <span class="at">-fish</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">myoungj+</span>    2781  0.0  0.1 172724  9712 pts/0    Ss+  09:27   0:00 <span class="at">-fish</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">myoungj+</span>    3024  0.0  0.1 164528  9552 pts/3    Ss+  09:32   0:00 <span class="at">-fish</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">myoungj+</span>    3135  0.0  0.1 164092 11304 pts/4    Ss+  09:34   0:00 <span class="at">-fish</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">myoungj+</span>    3549  0.2  0.2 246696 19224 pts/5    Ssl  09:38   0:03 <span class="at">-fish</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">myoungj+</span>    4709  0.0  0.0   9136  2692 pts/5    S+   10:00   0:00 grep <span class="at">--color</span><span class="op">=</span>auto fish</span></code></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">myoungj+</span>    4709  0.0  0.0   9136  2692 pts/5    S+   10:00   0:00 grep <span class="at">--color</span><span class="op">=</span>auto fish</span></code></pre></div>
 <h2 id="headline-is-helpful">Headline is helpful</h2>
 <p>However, I found that no head line sometimes makes me wondering what
 those information actually means. i.e: I’d though it would be nicer if I could see the
@@ -145,12 +143,21 @@ tasks very well.</p>
 <p><code class="verbatim">begin .. end &lt; $input_path</code> pattern is used before when I made <a href="https://github.com/jeongoon/fish-pandoc-any-to-markdown/blob/d45c2207dac63706ae6a947aacb72d092aa5f089/pandoc-any-to-markdown.fish#L28-L45">fish-pandoc-any-to-markdown</a>.
 So I found this version a bit easier than others.</p>
 <h2 id="perl-solution">Perl Solution</h2>
-<p>My perl solution was made very long time ago. I’m happy to see that it is still working
-Even if it has one more options, basic routine is the same.</p>
-<p>The recent file is on my github: <a href="https://github.com/jeongoon/hgrep/blob/main/perl/hgrep.pl">hgrep.pl</a></p>
+<p>My perl solution was made very long time ago. I’m happy to see that it is still working.
+Basic routine is the same, except it has one more options. <em>–nohead</em> which is not neccessary.
+I think I just wanted to chceck the how the <em>OptArgs</em> is working at that time.</p>
+<blockquote>
+<p>I realized <em>today</em> that the routine in fish shell is also applicable.</p>
+<ol>
+<li>read one line from input and print to stdout</li>
+<li>exec to grep with option</li>
+</ol>
+</blockquote>
+<p><em>Nevertheless, I believed that it is worth to learn!</em></p>
 <h3 id="parsing-options-in-perl">parsing options in perl</h3>
 <p>And thanks to <a href="https://metacpan.org/pod/OptArgs">OptArgs</a> module, I could handle option handy and in a more structural approach.
-(However, I think this is little heavier than python’s <code class="verbatim">argsparse</code>.)</p>
+(However, I think this is little heavier than python’s <code class="verbatim">argparse</code>.)</p>
+<p>The recent file is on my github: <a href="https://github.com/jeongoon/hgrep/blob/main/perl/hgrep.pl">hgrep.pl</a></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">#!/usr/bin/env perl</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -*- Mode: cperl; cperl-indent-level:4; tab-width: 8; indent-tabs-mode: nil -*-</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -*- coding: utf-8 -*-</span></span>
@@ -226,7 +233,7 @@ which <code>shell</code> normally does for me.</p>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p><code class="verbatim">|-</code> means creating a pipe, and fork implictly at the same time and now we have two processes,
 when the parent writing into new handle $to<sub>gh</sub>, the child will read from the stdin.</p>
-<p>If this is compared in shell script it looks like below at the moment.</p>
+<p>In terms of shell script, it looks like below at the moment.</p>
 <pre class="ascii"><code>sh&gt;  parent_perl &lt;some options ...&gt; | child_perl
 </code></pre>
 <p>i.e. parent<sub>perl</sub> and child<sub>perl</sub> now communicate with piple(<code class="verbatim">|</code>) and the <code>child_perl</code> <em>process</em>
@@ -323,7 +330,7 @@ optional opsitional argument is natural in <code class="verbatim">grep</code>. S
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    grep_options.extend( [ <span class="st">'-C'</span>, args.context ] )</span>
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>grep_options.append( args.search )</span></code></pre></div>
-<p>I don’t really know about python, I think I took the very lowlevel <code class="verbatim">pipe()</code> function
+<p>I don’t really know about python, but I guess I took the very lowlevel <code class="verbatim">pipe()</code> function
 in python.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># and let's go for plumbing</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># file descriptors r,w for reading and writing</span></span>
@@ -337,54 +344,61 @@ in python.</p>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.isfile( args.file_path ):</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        file_to_read <span class="op">=</span> <span class="bu">open</span>( args.file_path, <span class="st">&quot;r&quot;</span> )</span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>( <span class="st">&quot;A file path:(</span><span class="sc">{fp}</span><span class="st">) is not readable&quot;</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>               .<span class="bu">format</span>( fp<span class="op">=</span>args.file_path )</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>               , <span class="bu">file</span> <span class="op">=</span> sys.stderr )</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        exit( <span class="dv">2</span> )</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>( file_to_read.readline() , <span class="bu">file</span> <span class="op">=</span> sys.stdout, flush <span class="op">=</span> <span class="va">True</span> )</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>( <span class="st">&quot;A file path:(</span><span class="sc">{fp}</span><span class="st">) is not readable&quot;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>               .<span class="bu">format</span>( fp<span class="op">=</span>args.file_path )</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>               , <span class="bu">file</span> <span class="op">=</span> sys.stderr )</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        exit( <span class="dv">2</span> )</span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>grep_pid <span class="op">=</span> os.fork()</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> grep_pid:</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># parent process</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to communicate with to a child process</span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># writing file descriptor will be used</span></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    os.close(r)</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    os.dup2( w, sys.stdout.fileno() )</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># read head first and print into stdout directly</span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> line <span class="kw">in</span> file_to_read:</span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>( line )</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># It is good practice to close all the file open</span></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    os.close( w )</span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># safely waiting for children processes</span></span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    os.waitpid( grep_pid,</span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>                os.WNOHANG <span class="co"># if child process status not available: no wait</span></span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>               )</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># child process</span></span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>    os.dup2( r, sys.stdin.fileno() )</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    os.closerange( r, w )</span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>    os.execvp( <span class="st">'grep'</span>, grep_options )</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>exit(<span class="dv">0</span>)</span></code></pre></div>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"># read head first and print into stdout directly</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>( file_to_read.readline() , <span class="bu">file</span> <span class="op">=</span> sys.stdout, flush <span class="op">=</span> <span class="va">True</span> )</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co"># fork() will create a child process</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co"># and we can ditinguish which one is parent process by checking</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co"># return value</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>grep_pid <span class="op">=</span> os.fork()</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> grep_pid:</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># parent process</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to communicate with to a child process</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># writing file descriptor will be used</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    os.close(r)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    os.dup2( w, sys.stdout.fileno() )</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> line <span class="kw">in</span> file_to_read:</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>( line )</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># It is good practice to close all the file open</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>    os.close( w )</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># safely waiting for children processes</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    os.waitpid( grep_pid,</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                os.WNOHANG <span class="co"># if child process status not available: no wait</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>               )</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># child process</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>    os.dup2( r, sys.stdin.fileno() )</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># child process only requires 'r' as stdin</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and stdout so it is better to close r,w here.</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>    os.closerange( r, w )</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>    os.execvp( <span class="st">'grep'</span>, grep_options )</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>exit(<span class="dv">0</span>)</span></code></pre></div>
 <h3 id="where-i-found-difficulty">Where I found difficulty</h3>
 <p><code class="verbatim">os.dup2</code> is essential to communicate with the <code class="verbatim">grep</code> in child process as <code class="verbatim">grep</code> only care about
-<code>stdin</code> here, but there is no way to inform that parent is talking to newly open
+<code>stdin</code> here, but there is no way to inform <em>the child</em> that <em>parent</em> is going to newly open
 file descriptors (r,w). TBH, I spent too much time on this because lacks of my knoweldge
 about system programming.</p>
 <p>and <code class="verbatim">os.waitpid</code> requires <code class="verbatim">os.WNOHANG</code> option value, I thought it will be <code>0</code>,
 which is actually not. so my programme was on hang after <code class="verbatim">grep</code> had fisnihed its job.</p>
-<h2 id="conculsion">Conculsion</h2>
+<h2 id="wrapping-up">Wrapping Up</h2>
 <h3 id="pipe-and-shells-power">pipe and shell’s power</h3>
 <ul>
-<li>Even though, it was good chance to learn about basic pipe usage,
+<li>Even though it was good chance to learn about basic pipe usage,
 Shell script is very powerful for basic process communication between two proccesses.</li>
 <li>perl’s old open function’s arguments are a little bit hacky.</li>
 </ul>
