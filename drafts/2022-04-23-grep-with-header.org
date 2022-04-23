@@ -1,0 +1,191 @@
+
+---
+title: Grep with Head Line
+description: when you using 'grep' command, print first head line as well
+keywords: fish, shell, script, function, util, grep, perl
+author: Myoungjin Jeon
+---
+
+** Head Line
+   when I tried to find a process, I normally use =ps= with =grep= command.
+
+#+begin_src sh
+  sh> ps aux | grep fish
+  myoungj+     695  0.0  0.0  88596  7000 tty2     S+   09:17   0:00 -/usr/bin/fish -c /usr/bin/gnome-session -l 
+  myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
+  myoungj+    2665  0.0  0.1 172848 10076 pts/2    Ss+  09:24   0:00 -fish
+  myoungj+    2781  0.0  0.1 172724  9712 pts/0    Ss+  09:27   0:00 -fish
+  myoungj+    3024  0.0  0.1 164528  9552 pts/3    Ss+  09:32   0:00 -fish
+  myoungj+    3135  0.0  0.1 164092 11304 pts/4    Ss+  09:34   0:00 -fish
+  myoungj+    3549  0.2  0.2 246696 19224 pts/5    Ssl  09:38   0:03 -fish
+  myoungj+    4709  0.0  0.0   9136  2692 pts/5    S+   10:00   0:00 grep --color=auto fish
+#+end_src
+
+** No Headline
+
+    However, I found it doesn't print out head line which sometimes makes me wondering what
+    those information actually means. i.e: I'd though it would be nicer if I could see the
+    head line of =ps= command along with search results.
+
+#+begin_src sh
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+myoungj+     695  0.0  0.0  88596  7000 tty2     S+   09:17   0:00 -/usr/bin/fish -c /usr/bin/gnome-session -l 
+myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
+.. snip ..
+#+end_src
+
+** Fish shell solution
+    Recently, I wrote some fish functions and shell script will probably serve this kind of
+    tasks well.
+
+** Perl Solution
+    So below code is my perl solution, which has more options to make my util more interesting.
+
+*** parsing options in perl
+    - -h|help : help message and exit
+    - -C|context : which is passed to as a 'grep option'
+
+    And thanks to [https://metacpan.org/pod/OptArgs][OptArgs] module, I could handle
+    option handy and in a more structural approach.
+
+#+begin_src perl
+  #!/usr/bin/env perl
+  # -*- Mode: cperl; cperl-indent-level:4; tab-width: 8; indent-tabs-mode: nil -*-
+  # -*- coding: utf-8 -*-
+  # vim: set tabstop=8 expandtab:
+
+  use strict; use warnings;
+  use FindBin;
+  use feature qw(switch);
+  use OptArgs; # https://metacpan.org/dist/OptArgs/view/bin/optargs
+
+  my @grep_options = qw(-i);
+
+  for ( $ENV{'TERM'} ) {
+      if ( $_ =~ /dumb/ ) { }
+      default { push @grep_options, "--color=auto" }
+  }
+
+
+  # ref: https://metacpan.org/pod/OptArgs
+  ## option parts ...
+  opt context =>
+    ( isa => 'Num',
+      alias => 'C',
+      default => 5,
+      comment => 'print NUM lines of output context' );
+
+  opt help =>
+    ( isa => 'Bool',
+      alias => 'h',
+      comment => 'print a help message and exit',
+      ishelp => 1 );
+
+  # argument parts ...
+  arg search =>
+    ( isa => 'Str',
+      required => 1,
+      comment => 'string to search from file' );
+
+  arg file_name =>
+    ( isa => 'Str',
+      default => '-', # default input from stdin
+      comment => 'the file which we search from' );
+
+  # parsing options via optargs function!
+  my $opts = optargs;
+
+#+end_src
+
+    And now processing the parsed arguments and open a file (or stdin)
+  
+#+begin_src perl
+  if ( $opts->{'context'} >  0 ) {
+      push @grep_options, '-C', $opts->{'context'};
+  }
+
+  my $fh;
+
+  if ( $opts->{'file_name'} ne '-' ) {
+      open my $fh, "<$opts->{file_name}",
+          or die "Can't open `$opts->{file_name}'";
+  }
+  else {
+      # http://perldoc.perl.org/functions/open.html
+      open( $fh, "<&=",*STDIN );
+  }
+
+  if ( not $opts->{nohead} ) {
+      my $head = <$fh>;
+      # FIXME: colourising ....
+      print "$head";
+  }
+
+  my $to_gh;
+#+end_src
+
+***  requirement for system programming
+
+    And when I try to go further, I found that I need little more system programming underneath,
+    which ~shell~ normally does for me.
+
+    To communicate with =grep= function, we need to open a pipe via =open= function.
+
+#+begin_src perl
+  my $grep_pid = open( $to_gh, '|-' );
+  if ( not defined $grep_pid ) {
+      die "Can't fork: $!";
+  }
+#+end_src
+
+  =|-= means open a pipe to stdout, and now we have two processes of perl because this is
+  actually the way to fork implicitly. If this is written in shell script it looks
+  like below at the moment.
+
+#+begin_src ascii
+  sh>  parent_perl <some options ...> | child_perl
+#+end_src
+
+  i.e. parent_perl and child_perl now communicate with piple(=|=) and the ~child_perl~ /process/
+  will be replaced with =grep= process via =exec=.
+
+  There is a simple way to we are in the ~parent_perl~ /process/ or ~child_perl~ process,
+  which is checking the =$grep_pid= value.
+
+#+begin_src perl
+  if ( $grep_pid ) {
+      # if grep_pid is not zero, this is parent_perl (parent process)
+      # which handle both file handles.
+      while ( <$fh> ) { print $to_gh $_; }
+
+      close $_ for $to_gh, $fh;
+
+      # parent process have to wait any children processes finsished.
+      waitpid $grep_pid, 0;
+  }
+  else {
+      # otherwise, this is child_perl (child process)
+      close $fh; # not used in child process
+      exec 'grep', @grep_options, $opts->{'search'};
+  }
+
+  exit 0;
+#+end_src
+
+  and last =exec 'grep' ...= will replace its own perl process to =grep= process.
+  I found that this is worth trying to understand basic system programming in perl,
+  However shell script will be much easier to handle it.
+
+** Python Soltion (as a newbie)
+   How about python? I think the same logic could be applied in python as well.
+   however, I didn't get chance to write down a python script yet. so, I didn't make
+   any function and write it as simple as possible.
+
+*** credit:
+    - os pipe: https://www.tutorialspoint.com/python/os_pipe.htm
+    - for loop: https://realpython.com/python-for-loop/
+    - file i/o: https://www.w3schools.com/python/python_file_open.asp
+    - optparse: https://docs.python.org/3/library/optparse.html
+
+#+begin_src pyhton
+#+end_src
