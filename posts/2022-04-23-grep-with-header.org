@@ -1,7 +1,7 @@
 ---
 title: Grep with Head Line
 description: when you using 'grep' command, print first head line as well
-keywords: fish, shell, script, function, util, grep, perl
+keywords: fish, shell, script, function, util, grep, perl, python
 author: Myoungjin Jeon
 ---
 
@@ -100,7 +100,7 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
 
 ** Perl Solution
 
-    My perl solution was made very long time ago. And probably not very fancy.
+    My perl solution was made very long time ago. I'm happy to see that it is still working
     Even if it has one more options, basic routine is the same.
 
     The recent file is on my github: [[https://github.com/jeongoon/hgrep/blob/main/perl/hgrep.pl][hgrep.pl]]
@@ -380,5 +380,18 @@ exit(0)
 
 ** Conculsion
 
+*** pipe and shell's power
     Even though, it was good chance to learn about basic pipe usage,
     Shell script is very powerful for basic process communication between two proccesses.
+
+*** parsing option is easier with modules
+
+    And also I tried to add option and test them.
+    - /fish/'s argparse is relatively new, which
+    - Perl's OptArgs has more features and handle optional argument as well
+    - python's argparse has good type system for checking data type and is performant,
+      however it doesn't support optional (positional) arguments. so I applied
+      some workaround.
+
+Thank you for reading!
+and Happy coding!
