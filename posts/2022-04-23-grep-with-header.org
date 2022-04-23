@@ -368,7 +368,7 @@ else:
 exit(0)
 #+end_src
 
-****  Where I found difficulty
+***  Where I found difficulty
 
     =os.dup2= is essential to communicate with the =grep= in child process as =grep= only care about
     ~stdin~ here, but there is no way to inform that parent is talking to newly open

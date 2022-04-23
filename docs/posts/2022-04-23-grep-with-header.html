@@ -374,15 +374,13 @@ in python.</p>
 <span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>    os.execvp( <span class="st">'grep'</span>, grep_options )</span>
 <span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>exit(<span class="dv">0</span>)</span></code></pre></div>
-<ol>
-<li><p>Where I found difficulty</p>
+<h3 id="where-i-found-difficulty">Where I found difficulty</h3>
 <p><code class="verbatim">os.dup2</code> is essential to communicate with the <code class="verbatim">grep</code> in child process as <code class="verbatim">grep</code> only care about
 <code>stdin</code> here, but there is no way to inform that parent is talking to newly open
 file descriptors (r,w). TBH, I spent too much time on this because lacks of my knoweldge
 about system programming.</p>
 <p>and <code class="verbatim">os.waitpid</code> requires <code class="verbatim">os.WNOHANG</code> option value, I thought it will be <code>0</code>,
-which is actually not. so my programme was on hang after <code class="verbatim">grep</code> had fisnihed its job.</p></li>
-</ol>
+which is actually not. so my programme was on hang after <code class="verbatim">grep</code> had fisnihed its job.</p>
 <h2 id="conculsion">Conculsion</h2>
 <h3 id="pipe-and-shells-power">pipe and shell’s power</h3>
 <p>Even though, it was good chance to learn about basic pipe usage,
