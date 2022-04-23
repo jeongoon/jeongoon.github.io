@@ -224,9 +224,9 @@ which <code>shell</code> normally does for me.</p>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> ( <span class="ot">not</span> <span class="fu">defined</span> <span class="dt">$grep_pid</span> ) {</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">die</span> <span class="ot">&quot;</span><span class="st">Can't fork: </span><span class="wa">$!</span><span class="ot">&quot;</span>;</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p><code class="verbatim">|-</code> means open a pipe to stdout, and now we have two processes of perl because this is
-actually the way to fork implicitly. If this is written in shell script it looks
-like below at the moment.</p>
+<p><code class="verbatim">|-</code> means creating a pipe, and fork implictly at the same time and now we have two processes,
+when the parent writing into new handle $to<sub>gh</sub>, the child will read from the stdin.</p>
+<p>If this is compared in shell script it looks like below at the moment.</p>
 <pre class="ascii"><code>sh&gt;  parent_perl &lt;some options ...&gt; | child_perl
 </code></pre>
 <p>i.e. parent<sub>perl</sub> and child<sub>perl</sub> now communicate with piple(<code class="verbatim">|</code>) and the <code>child_perl</code> <em>process</em>
@@ -383,8 +383,11 @@ about system programming.</p>
 which is actually not. so my programme was on hang after <code class="verbatim">grep</code> had fisnihed its job.</p>
 <h2 id="conculsion">Conculsion</h2>
 <h3 id="pipe-and-shells-power">pipe and shell’s power</h3>
-<p>Even though, it was good chance to learn about basic pipe usage,
-Shell script is very powerful for basic process communication between two proccesses.</p>
+<ul>
+<li>Even though, it was good chance to learn about basic pipe usage,
+Shell script is very powerful for basic process communication between two proccesses.</li>
+<li>perl’s old open function’s arguments are a little bit hacky.</li>
+</ul>
 <h3 id="parsing-option-is-easier-with-modules">parsing option is easier with modules</h3>
 <p>And also I tried to add option and test them.</p>
 <ul>

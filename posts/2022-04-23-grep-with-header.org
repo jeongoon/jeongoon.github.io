@@ -195,9 +195,10 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
   }
 #+end_src
 
-  =|-= means open a pipe to stdout, and now we have two processes of perl because this is
-  actually the way to fork implicitly. If this is written in shell script it looks
-  like below at the moment.
+  =|-= means creating a pipe, and fork implictly at the same time and now we have two processes,
+  when the parent writing into new handle $to_gh, the child will read from the stdin.
+  
+  If this is compared in shell script it looks like below at the moment.
 
 #+begin_src ascii
   sh>  parent_perl <some options ...> | child_perl
@@ -381,8 +382,9 @@ exit(0)
 ** Conculsion
 
 *** pipe and shell's power
-    Even though, it was good chance to learn about basic pipe usage,
-    Shell script is very powerful for basic process communication between two proccesses.
+    - Even though, it was good chance to learn about basic pipe usage,
+      Shell script is very powerful for basic process communication between two proccesses.
+    - perl's old open function's arguments are a little bit hacky.
 
 *** parsing option is easier with modules
 
