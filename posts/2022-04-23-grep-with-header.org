@@ -31,16 +31,47 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
 .. snip ..
 #+end_src
 
-** Fish shell solution
+** Quick Solution for single use
+    =awk= or =sed= could be useful in this category if you don't need any other feature from =grep=.
+    #+begin_src sh
+    sh> ps aux | awk 'NR == 1 || /fish/ { print; }'
+    #+end_src
 
-    Recently, I wrote some fish functions and shell script will probably serve this kind of
-    tasks very well.
+    But I think =grep= is more powerful tool.
+
+    In bash, it looks straight forward for me.
+
+#+begin_src sh
+    bash> ps aux | { read line; echo "$line"; grep 'fish'; }
+#+end_src
+
+    or using sub-shell.
+
+#+begin_src sh
+    bash> ps aux | ( read line; echo "$line"; grep 'fish'; )
+#+end_src
+
+    or in fish shell (little longer)
+
+#+begin_src sh
+    fish> ps aux | begin read -l line; echo "$line"; grep 'fish'; end
+#+end_src
+
+    [[https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#command-substitution-not-as-powerful-as-bash][Still]], I think bash is better than fish in one-liner command.
+
+** More Serious Approach
+
+    But those one-liner is not very friendly. IMHO, all the programme, at least,
+    provide us of simple usage. So I decided to go little deeper.
+
+** Fish shell solution
 
     The recent file is on my github: [[https://github.com/jeongoon/hgrep/blob/main/fish/hgrep.fish][hgrep.fish]]
 
     The basic options are below:
     - -h|help : help message and exit
-    - -C|context : which is passed to as a 'grep option'
+    - -C|context : which is passed to as a 'grep option', Which is sometimes useful when
+      we need the context literally.
 
 #+begin_src sh
   #!/usr/bin/env fish
@@ -85,7 +116,7 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
   begin
       # print head first
       read -l line
-      echo $line
+      echo "$line"
 
       # let 'grep' do the rest
       exec grep $grep_options
@@ -389,18 +420,18 @@ if os.environ['TERM'].lower != 'dumb':
 
     =os.dup2= is essential to communicate with the =grep= in child process as =grep= only care about
     ~stdin~ here, but there is no way to inform /the child/ that /parent/ is going to newly open
-    file descriptors (r,w). TBH, I spent too much time on this because lacks of my knoweldge
+    file descriptors (r,w). TBH, I spent too much time on this because lacks of my knowledge
     about system programming.
 
     and =os.waitpid= requires =os.WNOHANG= option value, I thought it will be ~0~,
-    which is actually not. so my programme was on hang after =grep= had fisnihed its job.
+    which is actually not. so my programme was on hang after =grep= had finished its job.
 
 ** Wrapping Up
 
 *** pipe and shell's power
 
     - Even though it was good chance to learn about basic pipe usage,
-      Shell script is very powerful for basic process communication between two proccesses.
+      Shell script is very powerful for basic process communication between two processes.
     - perl's old open function's arguments are a little bit hacky.
 
 *** parsing option is easier with modules
@@ -412,5 +443,21 @@ if os.environ['TERM'].lower != 'dumb':
       however it doesn't support optional (positional) arguments. so I applied
       some workaround.
 
-Thank you for reading!
-and Happy coding!
+** Suggestion after post
+
+    - It would be nicer, if we have option for /case sensitive/ option because I put
+      case-insensitive for default.
+
+    - After making /fish-pandoc-any-to-markdown/ and /hgrep/, only I need a programme to pre-process
+      and let the other application could handle rest of it. So it becomes more general
+      programme like below:
+
+#+begin_src sh
+  sh> ps aux | head-width get-one-line --tail-with grep -i /fish/
+      # or in fish-pandoc-any-to-markdown
+  sh> cat some.org | head-width retrieve-metadata --tail-with pandoc -t markdown > some.md
+#+end_src
+      
+Well... but not for today. maybe after I get more chance to use the similar patterns!
+
+Thank you for reading! and Happy coding!
