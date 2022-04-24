@@ -245,11 +245,11 @@ which <code>shell</code> normally does for me.</p>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">die</span> <span class="ot">&quot;</span><span class="st">Can't fork: </span><span class="wa">$!</span><span class="ot">&quot;</span>;</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p><code class="verbatim">|-</code> means creating a pipe, and fork implictly at the same time and now we have two processes,
-when the parent writing into new handle $to<sub>gh</sub>, the child will read from the stdin.</p>
+when the parent writing into new handle $to_gh, the child will read from the stdin.</p>
 <p>In terms of shell script, it looks like below at the moment.</p>
 <pre class="ascii"><code>sh&gt;  parent_perl &lt;some options ...&gt; | child_perl
 </code></pre>
-<p>i.e. parent<sub>perl</sub> and child<sub>perl</sub> now communicate with piple(<code class="verbatim">|</code>) and the <code>child_perl</code> <em>process</em>
+<p>i.e. parent_perl and child_perl now communicate with piple(<code class="verbatim">|</code>) and the <code>child_perl</code> <em>process</em>
 will be replaced with <code class="verbatim">grep</code> process via <code class="verbatim">exec</code>.</p>
 <p>There is a simple way to we are in the <code>parent_perl</code> <em>process</em> or <code>child_perl</code> process,
 which is checking the <code class="verbatim">$grep_pid</code> value.</p>
@@ -350,10 +350,10 @@ in python.</p>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>r, w <span class="op">=</span> os.pipe()</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> args.file_path <span class="op">==</span> <span class="st">&quot;-&quot;</span>:</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># open file path to read</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># from stdin</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    file_to_read <span class="op">=</span> sys.stdin</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># or from stdin</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># or open file path to read</span></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.isfile( args.file_path ):</span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        file_to_read <span class="op">=</span> <span class="bu">open</span>( args.file_path, <span class="st">&quot;r&quot;</span> )</span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>

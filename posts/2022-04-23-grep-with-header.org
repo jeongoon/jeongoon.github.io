@@ -5,7 +5,10 @@ keywords: fish, shell, script, function, util, grep, perl, python
 author: Myoungjin Jeon
 ---
 
+#+OPTIONS: ^:{}
+
 ** No Head Line in grep search
+
    when I tried to find a process, I normally use =ps= with =grep= command.
 
 #+begin_src sh
@@ -363,10 +366,10 @@ if os.environ['TERM'].lower != 'dumb':
   r, w = os.pipe()
 
   if args.file_path == "-":
-      # open file path to read
+      # from stdin
       file_to_read = sys.stdin
   else:
-      # or from stdin
+      # or open file path to read
       if os.path.isfile( args.file_path ):
           file_to_read = open( args.file_path, "r" )
       else:
