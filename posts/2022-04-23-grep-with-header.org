@@ -440,8 +440,9 @@ if os.environ['TERM'].lower != 'dumb':
 *** parsing option is easier with modules
 
     And also I tried to add option and test them.
-    - /fish/'s argparse is relatively new, which
-    - Perl's OptArgs has more features and handle optional argument as well
+    - /fish/'s argparse is relatively new, which is useful for my cases.
+    - Perl's OptArgs has more features and handle optional argument as well. However,
+      a little bit slower than python's.
     - python's argparse has good type system for checking data type and is performant,
       however it doesn't support optional (positional) arguments. so I applied
       some workaround.
@@ -449,16 +450,16 @@ if os.environ['TERM'].lower != 'dumb':
 ** Suggestion after post
 
     - It would be nicer, if we have option for /case sensitive/ option because I put
-      case-insensitive for default.
+      case-insensitive by default.
 
     - After making /fish-pandoc-any-to-markdown/ and /hgrep/, only I need a programme to pre-process
       and let the other application could handle rest of it. So it becomes more general
       programme like below:
 
 #+begin_src sh
-  sh> ps aux | head-width get-one-line --tail-with grep -i /fish/
+  sh> ps aux | head-with get-one-line --tail-with grep -i /fish/
       # or in fish-pandoc-any-to-markdown
-  sh> cat some.org | head-width retrieve-metadata --tail-with pandoc -t markdown > some.md
+  sh> cat some.org | head-with retrieve-metadata --tail-with pandoc -t markdown > some.md
 #+end_src
       
 Well... but not for today. maybe after I get more chance to use the similar patterns!

@@ -418,8 +418,9 @@ Shell script is very powerful for basic process communication between two proces
 <h3 id="parsing-option-is-easier-with-modules">parsing option is easier with modules</h3>
 <p>And also I tried to add option and test them.</p>
 <ul>
-<li><em>fish</em>’s argparse is relatively new, which</li>
-<li>Perl’s OptArgs has more features and handle optional argument as well</li>
+<li><em>fish</em>’s argparse is relatively new, which is useful for my cases.</li>
+<li>Perl’s OptArgs has more features and handle optional argument as well. However,
+a little bit slower than python’s.</li>
 <li>python’s argparse has good type system for checking data type and is performant,
 however it doesn’t support optional (positional) arguments. so I applied
 some workaround.</li>
@@ -427,14 +428,14 @@ some workaround.</li>
 <h2 id="suggestion-after-post">Suggestion after post</h2>
 <ul>
 <li><p>It would be nicer, if we have option for <em>case sensitive</em> option because I put
-case-insensitive for default.</p></li>
+case-insensitive by default.</p></li>
 <li><p>After making <em>fish-pandoc-any-to-markdown</em> and <em>hgrep</em>, only I need a programme to pre-process
 and let the other application could handle rest of it. So it becomes more general
 programme like below:</p></li>
 </ul>
-<div class="sourceCode" id="cb16" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> ps aux <span class="kw">|</span> <span class="ex">head-width</span> get-one-line <span class="at">--tail-with</span> grep <span class="at">-i</span> /fish/</span>
+<div class="sourceCode" id="cb16" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> ps aux <span class="kw">|</span> <span class="ex">head-with</span> get-one-line <span class="at">--tail-with</span> grep <span class="at">-i</span> /fish/</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># or in fish-pandoc-any-to-markdown</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> cat some.org <span class="kw">|</span> <span class="ex">head-width</span> retrieve-metadata <span class="at">--tail-with</span> pandoc <span class="at">-t</span> markdown <span class="op">&gt;</span> some.md</span></code></pre></div>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span><span class="op">&gt;</span> cat some.org <span class="kw">|</span> <span class="ex">head-with</span> retrieve-metadata <span class="at">--tail-with</span> pandoc <span class="at">-t</span> markdown <span class="op">&gt;</span> some.md</span></code></pre></div>
 <p>Well… but not for today. maybe after I get more chance to use the similar patterns!</p>
 <p>Thank you for reading! and Happy coding!</p>
 
