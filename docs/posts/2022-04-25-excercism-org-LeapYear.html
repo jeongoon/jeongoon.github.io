@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="exercism.org provides a community for learning programming languages">
+
+
+    <meta name="keywords" content="exercism, haskell">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - Learning A Lanugage with Exercism</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/19Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Learning A Lanugage with Exercism
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../drafts.html">Drafts</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on April 25, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'exercism'." href="../tags/exercism.html">exercism</a>, <a title="All pages tagged 'haskell'." href="../tags/haskell.html">haskell</a>
+  
+</div>
+
+<h2 id="tasting-language-vs-learning-lanugage">Tasting Language vs Learning Lanugage</h2>
+<p>Tasting a language is easy one. Just look at the example source code
+and run on my computer or online to play with it.</p>
+<p>However serious studying is different story. I need to get deeper insight
+during learning the languages, trying to apply them for real situation.</p>
+<p>I’m still thinking which language I’ll learn along with Haskell.
+I have limited time and this is quite tough choice. My choice is leaning to
+<code>rust</code> but at the same time want to learn C# or Dart. Something I can make
+a application, web application and mobile apps if possible.</p>
+<p>Only I worry about <code>rust</code> language, it is too complicated for me now to
+understand until I could use it professionally, which is actually the same
+problem I have with <code>Haskell</code>.</p>
+<p>Anyway, I used to solve the <a href="https://theweeklychallenge.org/">The Weekly Challange</a>.
+But I feel like I want to try something else at this time.</p>
+<h2 id="exercism-for-learning-language">Exercism for Learning Language</h2>
+<p>I saw someone making a git repository named <code>exercism</code> and today I finally
+check what it is. It is community for learning by solving exercises posted
+on the web site. One thing I really appriciate about is that I could test
+via their web site as well.</p>
+<h2 id="leap-year">Leap Year</h2>
+<p>Given a year, report if it is a leap year.</p>
+<p>The tricky thing here is that a leap year in the Gregorian calendar occurs:</p>
+<p>on every year that is evenly divisible by 4
+except every year that is evenly divisible by 100
+unless the year is also evenly divisible by 400</p>
+<p>For example, 1997 is not a leap year, but 1996 is. 1900 is not a leap year, but 2000 is.</p>
+<h2 id="my-second-iteration">My Second iteration</h2>
+<p>I believe that this implementation is applicable in most of languages.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">LeapYear</span> (isLeapYear) <span class="kw">where</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ot">isLeapYear ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>isLeapYear year <span class="ot">=</span> divisibleBy <span class="dv">4</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                  <span class="op">&amp;&amp;</span> ( divisibleBy <span class="dv">400</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                       <span class="op">||</span> (<span class="fu">not</span> <span class="op">.</span> divisibleBy <span class="op">$</span> <span class="dv">100</span>) )</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    divisibleBy fac <span class="ot">=</span> year <span class="ot">`rem`</span> fac <span class="op">==</span> <span class="dv">0</span></span></code></pre></div>
+<p>And then I look around others solution, and realized that it is more interesting
+than I thought at first time.</p>
+<h2 id="my-fifth-iteration">My fifth iteration</h2>
+<p>My 5th try is inspired by user <em>Pi</em>. she made custom operator called <code>unless</code>
+and write down the solution in more english-like language.</p>
+<p>But I’m not very familiar with her implementation of <code>unless</code> though.
+So I made a variant with two different operators:
+throu</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">LeapYear</span> (isLeapYear) <span class="kw">where</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ot">isLeapYear'' ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>isLeapYear'' year <span class="ot">=</span> (divisibleBy <span class="dv">4</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                   <span class="ot">`except'`</span> ( (divisibleBy <span class="dv">100</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                              <span class="ot">`unless'`</span> (divisibleBy <span class="dv">400</span>) )</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    divisibleBy fac <span class="ot">=</span> year <span class="ot">`rem`</span> fac <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">infixr</span> <span class="ot">`except'`</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ot">except' ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>a <span class="ot">`except'`</span> b</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> a <span class="op">==</span> <span class="dt">False</span> <span class="ot">=</span> <span class="dt">False</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>  <span class="ot">=</span> <span class="fu">not</span> b</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">infixr</span> <span class="ot">`unless'`</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ot">unless' ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>a <span class="ot">`unless'`</span> b</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> b <span class="op">==</span> <span class="dt">True</span> <span class="ot">=</span> <span class="dt">False</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span> <span class="ot">=</span> a</span></code></pre></div>
+<h2 id="confusing-unless-concept">confusing <code>unless</code> concept</h2>
+<p>Then I realized something is not right even though it will give correct answer.</p>
+<p>The original her implementation of unless looks like:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">infixr</span> <span class="ot">`unless`</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ot">unless ::</span> (t <span class="ot">-&gt;</span> <span class="dt">Bool</span>) <span class="ot">-&gt;</span> (t <span class="ot">-&gt;</span> <span class="dt">Bool</span>) <span class="ot">-&gt;</span> t <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>(p <span class="ot">`unless`</span> q) x <span class="ot">=</span> p x <span class="op">&amp;&amp;</span> <span class="fu">not</span> (q x)</span></code></pre></div>
+<p>However, <code>unless</code> in Perl5 is something like below:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">unless</span> ( someBool ) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    // <span class="kw">do</span> <span class="ot">or</span> something <span class="kw">if</span> <span class="ot">not</span> someBool</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This is not normal balanced if-then-else condition, rather it’s unary condition.
+we cannot what will come <code>someBool</code> is true because it is not defined.</p>
+<p>So, my understanding is that return of unless is kind of Maybe type.</p>
+<h2 id="my-fifth-iteration-1">My fifth’ iteration</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">infixr</span> <span class="ot">`unless`</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ot">unless ::</span> <span class="dt">Maybe</span> a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> a</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">`unless`</span> q</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> q <span class="op">==</span> <span class="dt">Just</span> <span class="dt">False</span> <span class="ot">=</span> p</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>       <span class="ot">=</span> <span class="dt">Nothing</span></span></code></pre></div>
+<p>So I could make <code>except</code> again</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">infixr</span> <span class="ot">`except`</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ot">except ::</span> <span class="dt">Maybe</span> a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> a</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">`except`</span> q</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> q <span class="op">==</span> <span class="dt">Just</span> <span class="dt">True</span> <span class="ot">=</span> <span class="dt">Nothing</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>      <span class="ot">=</span> p</span></code></pre></div>
+<p>And Now I need to change my isLeapYear Again:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ot">isLeapYear' ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>isLeapYear' year <span class="ot">=</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">case</span> mbLeapYear year <span class="kw">of</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Just</span> result <span class="ot">-&gt;</span> result</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Nothing</span>     <span class="ot">-&gt;</span> <span class="dt">False</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    mbLeapYear year <span class="ot">=</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      (mbDivisibleBy <span class="dv">4</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="ot">`except`</span> ( (mbDivisibleBy <span class="dv">100</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                 <span class="ot">`unless`</span> (mbDivisibleBy <span class="dv">400</span>) )</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    mbDivisibleBy fac</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> year <span class="ot">`rem`</span> fac <span class="op">==</span> <span class="dv">0</span> <span class="ot">=</span> <span class="dt">Just</span> <span class="dt">True</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> <span class="fu">otherwise</span>           <span class="ot">=</span> <span class="dt">Just</span> <span class="dt">False</span></span></code></pre></div>
+<p>However if the year is divisible by 400, still we need to divide by 4 again.
+Because:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- (mbDivisibleBy 4) `except` ( (mbDivisibleBy 100) `unless` (Maybe True) )</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- becomes:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>(mbDivisibleBy <span class="dv">4</span>) <span class="ot">`except`</span> <span class="dt">Nothing</span></span></code></pre></div>
+<p>So I think I just go back to my 2nd iteration or declare another data type
+to make all the sense through the codes.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">YesOrNoAnswer</span> <span class="ot">=</span> <span class="dt">Yes</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                   <span class="op">|</span> <span class="dt">No</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                   <span class="op">|</span> <span class="dt">Unsure</span> <span class="kw">deriving</span> (<span class="dt">Eq</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">infixr</span> <span class="ot">`ifUnsure`</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ot">ifUnsure ::</span> <span class="dt">YesOrNoAnswer</span> <span class="ot">-&gt;</span> <span class="dt">YesOrNoAnswer</span> <span class="ot">-&gt;</span> <span class="dt">YesOrNoAnswer</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">`ifUnsure`</span> q</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> q <span class="op">==</span> <span class="dt">Unsure</span> <span class="ot">=</span> p</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>   <span class="ot">=</span> q</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ot">withDefault ::</span> <span class="dt">YesOrNoAnswer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">`withDefault`</span> def <span class="ot">=</span> <span class="kw">case</span> ans <span class="kw">of</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                          <span class="dt">Yes</span>    <span class="ot">-&gt;</span> <span class="dt">True</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                          <span class="dt">No</span>     <span class="ot">-&gt;</span> <span class="dt">False</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                          <span class="dt">Unsure</span> <span class="ot">-&gt;</span> def</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="ot">isLeapYear ::</span> <span class="dt">Integral</span> a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>isLeapYear year <span class="ot">=</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  (checkDivisibleBy100</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`ifUnsure`</span> checkDivisibleBy400) <span class="ot">`withDefault`</span> (divisibleBy <span class="dv">4</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    divisibleBy fac <span class="ot">=</span> year <span class="ot">`rem`</span> fac <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    checkDivisibleBy100 <span class="ot">=</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">if</span> divisibleBy <span class="dv">100</span> <span class="kw">then</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        <span class="dt">No</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">else</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Unsure</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    checkDivisibleBy400 <span class="ot">=</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">if</span> divisibleBy <span class="dv">400</span> <span class="kw">then</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Yes</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      <span class="kw">else</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Unsure</span></span></code></pre></div>
+<p>Hmm… This is exactly what I did in 2nd iteration. But I thought in my head
+and change the order of conditions to make a shortest path to reach the answer.
+And maybe this implementation shows how I thought in my 2nd iteration.</p>
+<p>Nevetheless, I don’t really enjoy this approach because it is still not
+general function or operator.</p>
+<h2 id="wrapping-up">Wrapping Up</h2>
+<p>We can make your own functions or operators, However if your operator is not
+for general usage, It is generally good idea not to export to the module.</p>
+<p>IMHO, Making an operator is only helpful when the operator gives more readable
+form without making any confusion.</p>
+<p>At the same time, Over-generalizing is always bad idea. It doesn’t make
+a problem simple, It doesn’t make people understand code better, either.</p>
+<p>Thank you for reading.</p>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->
