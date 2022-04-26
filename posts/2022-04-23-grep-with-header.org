@@ -159,6 +159,7 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
   # vim: set tabstop=8 expandtab:
 
   use strict; use warnings;
+  use feature qw(switch);
   use OptArgs; # https://metacpan.org/dist/OptArgs/view/bin/optargs
 
   my @grep_options = qw(-i);
@@ -238,7 +239,7 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
   }
 #+end_src
 
-  =|-= means creating a pipe, and fork implictly at the same time and now we have two processes,
+  =|-= means creating a pipe, and fork implicitly at the same time and now we have two processes,
   when the parent writing into new handle $to_gh, the child will read from the stdin.
   
   In terms of shell script, it looks like below at the moment.
@@ -279,7 +280,7 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
   I found that it is worth trying to understand basic system programming in perl,
   However shell script will be much easier to handle it.
 
-** Python Soltion (as a newbie)
+** Python Solution (as a newbie)
 
    How about python? I think the same logic could be applied in python as well.
    However, I didn't get chance to write down a python script yet. so, I didn't make
@@ -357,7 +358,7 @@ if os.environ['TERM'].lower != 'dumb':
   grep_options.append( args.search )
 #+end_src    
 
-    I don't really know about python, but I guess I took the very lowlevel =pipe()= function
+    I don't really know about python, but I guess I took the very low-level =pipe()= function
     in python.
 
 #+begin_src python
@@ -384,7 +385,7 @@ if os.environ['TERM'].lower != 'dumb':
   print( file_to_read.readline() , file = sys.stdout, flush = True )
 
   # fork() will create a child process
-  # and we can ditinguish which one is parent process by checking
+  # and we can distinguish which one is parent process by checking
   # return value
   grep_pid = os.fork()
 
@@ -423,7 +424,9 @@ if os.environ['TERM'].lower != 'dumb':
 
     =os.dup2= is essential to communicate with the =grep= in child process as =grep= only care about
     ~stdin~ here, but there is no way to inform /the child/ that /parent/ is going to newly open
-    file descriptors (r,w). TBH, I spent too much time on this because lacks of my knowledge
+    file descriptors (r,w). So we should kindly re-bind the new file descriptor to stdin
+
+    TBH, I spent too much time on this because lacks of my knowledge
     about system programming.
 
     and =os.waitpid= requires =os.WNOHANG= option value, I thought it will be ~0~,

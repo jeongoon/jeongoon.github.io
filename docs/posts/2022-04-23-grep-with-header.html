@@ -177,43 +177,44 @@ I think I just wanted to chceck the how the <em>OptArgs</em> is working at that 
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># vim: set tabstop=8 expandtab:</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">use</span> <span class="kw">strict</span>; <span class="fu">use</span> <span class="kw">warnings</span>;</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">use</span> OptArgs; <span class="co"># https://metacpan.org/dist/OptArgs/view/bin/optargs</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">my</span> <span class="dt">@grep_options</span> = <span class="ot">qw(</span>-i<span class="ot">)</span>;</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> ( <span class="wa">$ENV</span>{<span class="ot">'</span><span class="ss">TERM</span><span class="ot">'</span>} ) {</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> ( <span class="wa">$_</span> =~ <span class="ot">/dumb/</span> ) { }</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">default</span> { <span class="fu">push</span> <span class="dt">@grep_options</span>, <span class="ot">&quot;</span><span class="st">--color=auto</span><span class="ot">&quot;</span> }</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ref: https://metacpan.org/pod/OptArgs</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">## option parts ...</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>opt context =&gt;</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  ( isa =&gt; <span class="ot">'</span><span class="ss">Num</span><span class="ot">'</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    alias =&gt; <span class="ot">'</span><span class="ss">C</span><span class="ot">'</span>,</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">default</span> =&gt; <span class="dv">3</span>,</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    comment =&gt; <span class="ot">'</span><span class="ss">print NUM lines of output context</span><span class="ot">'</span> );</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>opt help =&gt;</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  ( isa =&gt; <span class="ot">'</span><span class="ss">Bool</span><span class="ot">'</span>,</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    alias =&gt; <span class="ot">'</span><span class="ss">h</span><span class="ot">'</span>,</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    comment =&gt; <span class="ot">'</span><span class="ss">print a help message and exit</span><span class="ot">'</span>,</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    ishelp =&gt; <span class="dv">1</span> );</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co"># argument parts ...</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>arg search =&gt;</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  ( isa =&gt; <span class="ot">'</span><span class="ss">Str</span><span class="ot">'</span>,</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    required =&gt; <span class="dv">1</span>,</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    comment =&gt; <span class="ot">'</span><span class="ss">string to search from file</span><span class="ot">'</span> );</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>arg file_name =&gt;</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  ( isa =&gt; <span class="ot">'</span><span class="ss">Str</span><span class="ot">'</span>,</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">default</span> =&gt; <span class="ot">'</span><span class="ss">-</span><span class="ot">'</span>, <span class="co"># default input from stdin</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    comment =&gt; <span class="ot">'</span><span class="ss">the file which we search from</span><span class="ot">'</span> );</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co"># parsing options via optargs function!</span></span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="kw">my</span> <span class="dt">$opts</span> = optargs;</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">use</span> feature <span class="ot">qw(</span>switch<span class="ot">)</span>;</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">use</span> OptArgs; <span class="co"># https://metacpan.org/dist/OptArgs/view/bin/optargs</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="kw">my</span> <span class="dt">@grep_options</span> = <span class="ot">qw(</span>-i<span class="ot">)</span>;</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> ( <span class="wa">$ENV</span>{<span class="ot">'</span><span class="ss">TERM</span><span class="ot">'</span>} ) {</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> ( <span class="wa">$_</span> =~ <span class="ot">/dumb/</span> ) { }</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">default</span> { <span class="fu">push</span> <span class="dt">@grep_options</span>, <span class="ot">&quot;</span><span class="st">--color=auto</span><span class="ot">&quot;</span> }</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ref: https://metacpan.org/pod/OptArgs</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">## option parts ...</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>opt context =&gt;</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  ( isa =&gt; <span class="ot">'</span><span class="ss">Num</span><span class="ot">'</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    alias =&gt; <span class="ot">'</span><span class="ss">C</span><span class="ot">'</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">default</span> =&gt; <span class="dv">3</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    comment =&gt; <span class="ot">'</span><span class="ss">print NUM lines of output context</span><span class="ot">'</span> );</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>opt help =&gt;</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  ( isa =&gt; <span class="ot">'</span><span class="ss">Bool</span><span class="ot">'</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    alias =&gt; <span class="ot">'</span><span class="ss">h</span><span class="ot">'</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    comment =&gt; <span class="ot">'</span><span class="ss">print a help message and exit</span><span class="ot">'</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    ishelp =&gt; <span class="dv">1</span> );</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co"># argument parts ...</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>arg search =&gt;</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  ( isa =&gt; <span class="ot">'</span><span class="ss">Str</span><span class="ot">'</span>,</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    required =&gt; <span class="dv">1</span>,</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    comment =&gt; <span class="ot">'</span><span class="ss">string to search from file</span><span class="ot">'</span> );</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>arg file_name =&gt;</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  ( isa =&gt; <span class="ot">'</span><span class="ss">Str</span><span class="ot">'</span>,</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">default</span> =&gt; <span class="ot">'</span><span class="ss">-</span><span class="ot">'</span>, <span class="co"># default input from stdin</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    comment =&gt; <span class="ot">'</span><span class="ss">the file which we search from</span><span class="ot">'</span> );</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="co"># parsing options via optargs function!</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="kw">my</span> <span class="dt">$opts</span> = optargs;</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
 <p>And now processing the parsed arguments and open a file (or stdin)</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> ( <span class="fu">defined</span> <span class="dt">$opts</span>-&gt;{<span class="ot">'</span><span class="ss">context</span><span class="ot">'</span>} <span class="ot">and</span> <span class="dt">$opts</span>-&gt;{<span class="ot">'</span><span class="ss">context</span><span class="ot">'</span>} &gt; <span class="dv">0</span> ) {</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">push</span> <span class="dt">@grep_options</span>, <span class="ot">'</span><span class="ss">-C</span><span class="ot">'</span>, <span class="dt">$opts</span>-&gt;{<span class="ot">'</span><span class="ss">context</span><span class="ot">'</span>};</span>
@@ -244,7 +245,7 @@ which <code>shell</code> normally does for me.</p>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> ( <span class="ot">not</span> <span class="fu">defined</span> <span class="dt">$grep_pid</span> ) {</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">die</span> <span class="ot">&quot;</span><span class="st">Can't fork: </span><span class="wa">$!</span><span class="ot">&quot;</span>;</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p><code class="verbatim">|-</code> means creating a pipe, and fork implictly at the same time and now we have two processes,
+<p><code class="verbatim">|-</code> means creating a pipe, and fork implicitly at the same time and now we have two processes,
 when the parent writing into new handle $to_gh, the child will read from the stdin.</p>
 <p>In terms of shell script, it looks like below at the moment.</p>
 <pre class="ascii"><code>sh&gt;  parent_perl &lt;some options ...&gt; | child_perl
@@ -274,7 +275,7 @@ which is checking the <code class="verbatim">$grep_pid</code> value.</p>
 <em>no process could not be created without a parent.</em></p>
 <p>I found that it is worth trying to understand basic system programming in perl,
 However shell script will be much easier to handle it.</p>
-<h2 id="python-soltion-as-a-newbie">Python Soltion (as a newbie)</h2>
+<h2 id="python-solution-as-a-newbie">Python Solution (as a newbie)</h2>
 <p>How about python? I think the same logic could be applied in python as well.
 However, I didn’t get chance to write down a python script yet. so, I didn’t make
 any function and write it as simple as possible. <em>BTW, I only have python version 3.</em></p>
@@ -343,7 +344,7 @@ optional opsitional argument is natural in <code class="verbatim">grep</code>. S
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    grep_options.extend( [ <span class="st">'-C'</span>, args.context ] )</span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>grep_options.append( args.search )</span></code></pre></div>
-<p>I don’t really know about python, but I guess I took the very lowlevel <code class="verbatim">pipe()</code> function
+<p>I don’t really know about python, but I guess I took the very low-level <code class="verbatim">pipe()</code> function
 in python.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># and let's go for plumbing</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># file descriptors r,w for reading and writing</span></span>
@@ -368,7 +369,7 @@ in python.</p>
 <span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>( file_to_read.readline() , <span class="bu">file</span> <span class="op">=</span> sys.stdout, flush <span class="op">=</span> <span class="va">True</span> )</span>
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># fork() will create a child process</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co"># and we can ditinguish which one is parent process by checking</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co"># and we can distinguish which one is parent process by checking</span></span>
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co"># return value</span></span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>grep_pid <span class="op">=</span> os.fork()</span>
 <span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
@@ -404,7 +405,8 @@ in python.</p>
 <h3 id="where-i-found-difficulty">Where I found difficulty</h3>
 <p><code class="verbatim">os.dup2</code> is essential to communicate with the <code class="verbatim">grep</code> in child process as <code class="verbatim">grep</code> only care about
 <code>stdin</code> here, but there is no way to inform <em>the child</em> that <em>parent</em> is going to newly open
-file descriptors (r,w). TBH, I spent too much time on this because lacks of my knowledge
+file descriptors (r,w). So we should kindly re-bind the new file descriptor to stdin</p>
+<p>TBH, I spent too much time on this because lacks of my knowledge
 about system programming.</p>
 <p>and <code class="verbatim">os.waitpid</code> requires <code class="verbatim">os.WNOHANG</code> option value, I thought it will be <code>0</code>,
 which is actually not. so my programme was on hang after <code class="verbatim">grep</code> had finished its job.</p>
