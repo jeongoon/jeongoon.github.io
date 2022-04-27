@@ -5,7 +5,7 @@ keywords: exercism, haskell
 author: Myoungjin Jeon
 ---
 
-== Tasting Language vs Learning Lanugage
+== Tasting A Language vs A Learning Lanugage
 
 Tasting a language is easy one. Just look at the example source code
 and run on my computer or online to play with it.
@@ -25,12 +25,14 @@ problem I have with `Haskell`.
 Anyway, I used to solve the [The Weekly Challange](https://theweeklychallenge.org/).
 But I feel like I want to try something else at this time.
 
-== Exercism for Learning Language
+== Exercism for Learning a Language
 
 I saw someone making a git repository named `exercism` and today I finally
 check what it is. It is community for learning by solving exercises posted
 on the web site. One thing I really appriciate about is that I could test
 via their web site as well.
+
+And I just try one of easy question for haskell.
 
 == Leap Year
 
@@ -130,7 +132,7 @@ p `unless` q
   | otherwise       = Nothing
 \end{code}
 
-So I could make `except` again
+So I should make `except` again.
 
 \begin{code}
 infixr `except`
@@ -160,7 +162,9 @@ isLeapYear' year =
       | otherwise           = Just False
 \end{code}
 
-However if the year is divisible by 400, still we need to divide by 4 again.
+However if the year is divisible by 400, we still need to divide by 4 again,
+unecessarily.
+
 Because:
 
 ```haskell
@@ -197,17 +201,13 @@ isLeapYear year =
   where
     divisibleBy fac = year `rem` fac == 0
 
-    checkDivisibleBy100 =
-      if divisibleBy 100 then
-        No
-      else
-        Unsure
+    checkDivisibleBy100
+      | divisibleBy 100 = No
+      | otherwise       = Unsure
 
-    checkDivisibleBy400 =
-      if divisibleBy 400 then
-        Yes
-      else
-        Unsure
+    checkDivisibleBy400
+      | divisibleBy 400 = Yes
+      | otherwise       = Unsure
 \end{code}
 
 Hmm... This is exactly what I did in 2nd iteration. But I thought in my head

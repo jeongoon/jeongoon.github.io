@@ -64,7 +64,7 @@ myoungj+    2490  0.0  0.1 164660 10140 pts/1    Ss   09:21   0:00 -fish
 
 ** More Serious Approach
 
-    But those one-liner is not very friendly. IMHO, all the programme, at least,
+    But those one-liners are not very friendly. IMHO, all the programmes, at least,
     provide us of simple usage. So I decided to go little deeper.
 
 ** Fish shell solution

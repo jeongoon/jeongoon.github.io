@@ -95,7 +95,7 @@ head line of <code class="verbatim">ps</code> command along with search results.
 <div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fish</span><span class="op">&gt;</span> ps aux <span class="kw">|</span> <span class="ex">begin</span> read <span class="at">-l</span> line<span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$line</span><span class="st">&quot;</span><span class="kw">;</span> <span class="fu">grep</span> <span class="st">'fish'</span><span class="kw">;</span> <span class="ex">end</span></span></code></pre></div>
 <p><a href="https://jeongoon.github.io/posts/2022-04-16-about-fish-shell.html#command-substitution-not-as-powerful-as-bash">Still</a>, I think bash is better than fish in one-liner command.</p>
 <h2 id="more-serious-approach">More Serious Approach</h2>
-<p>But those one-liner is not very friendly. IMHO, all the programme, at least,
+<p>But those one-liners are not very friendly. IMHO, all the programmes, at least,
 provide us of simple usage. So I decided to go little deeper.</p>
 <h2 id="fish-shell-solution">Fish shell solution</h2>
 <p>The recent file is on my github: <a href="https://github.com/jeongoon/hgrep/blob/main/fish/hgrep.fish">hgrep.fish</a></p>

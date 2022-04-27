@@ -66,7 +66,7 @@
   
 </div>
 
-<h2 id="tasting-language-vs-learning-lanugage">Tasting Language vs Learning Lanugage</h2>
+<h2 id="tasting-a-language-vs-a-learning-lanugage">Tasting A Language vs A Learning Lanugage</h2>
 <p>Tasting a language is easy one. Just look at the example source code
 and run on my computer or online to play with it.</p>
 <p>However serious studying is different story. I need to get deeper insight
@@ -80,11 +80,12 @@ understand until I could use it professionally, which is actually the same
 problem I have with <code>Haskell</code>.</p>
 <p>Anyway, I used to solve the <a href="https://theweeklychallenge.org/">The Weekly Challange</a>.
 But I feel like I want to try something else at this time.</p>
-<h2 id="exercism-for-learning-language">Exercism for Learning Language</h2>
+<h2 id="exercism-for-learning-a-language">Exercism for Learning a Language</h2>
 <p>I saw someone making a git repository named <code>exercism</code> and today I finally
 check what it is. It is community for learning by solving exercises posted
 on the web site. One thing I really appriciate about is that I could test
 via their web site as well.</p>
+<p>And I just try one of easy question for haskell.</p>
 <h2 id="leap-year">Leap Year</h2>
 <p>Given a year, report if it is a leap year.</p>
 <p>The tricky thing here is that a leap year in the Gregorian calendar occurs:</p>
@@ -150,7 +151,7 @@ we cannot what will come <code>someBool</code> is true because it is not defined
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">`unless`</span> q</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> q <span class="op">==</span> <span class="dt">Just</span> <span class="dt">False</span> <span class="ot">=</span> p</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>       <span class="ot">=</span> <span class="dt">Nothing</span></span></code></pre></div>
-<p>So I could make <code>except</code> again</p>
+<p>So I should make <code>except</code> again.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">infixr</span> <span class="ot">`except`</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ot">except ::</span> <span class="dt">Maybe</span> a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> a</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">`except`</span> q</span>
@@ -172,8 +173,9 @@ we cannot what will come <code>someBool</code> is true because it is not defined
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    mbDivisibleBy fac</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> year <span class="ot">`rem`</span> fac <span class="op">==</span> <span class="dv">0</span> <span class="ot">=</span> <span class="dt">Just</span> <span class="dt">True</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> <span class="fu">otherwise</span>           <span class="ot">=</span> <span class="dt">Just</span> <span class="dt">False</span></span></code></pre></div>
-<p>However if the year is divisible by 400, still we need to divide by 4 again.
-Because:</p>
+<p>However if the year is divisible by 400, we still need to divide by 4 again,
+unecessarily.</p>
+<p>Because:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- (mbDivisibleBy 4) `except` ( (mbDivisibleBy 100) `unless` (Maybe True) )</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- becomes:</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>(mbDivisibleBy <span class="dv">4</span>) <span class="ot">`except`</span> <span class="dt">Nothing</span></span></code></pre></div>
@@ -203,17 +205,13 @@ to make all the sense through the codes.</p>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    divisibleBy fac <span class="ot">=</span> year <span class="ot">`rem`</span> fac <span class="op">==</span> <span class="dv">0</span></span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    checkDivisibleBy100 <span class="ot">=</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">if</span> divisibleBy <span class="dv">100</span> <span class="kw">then</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        <span class="dt">No</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">else</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Unsure</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    checkDivisibleBy400 <span class="ot">=</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">if</span> divisibleBy <span class="dv">400</span> <span class="kw">then</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Yes</span></span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      <span class="kw">else</span></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Unsure</span></span></code></pre></div>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    checkDivisibleBy100</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> divisibleBy <span class="dv">100</span> <span class="ot">=</span> <span class="dt">No</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> <span class="fu">otherwise</span>       <span class="ot">=</span> <span class="dt">Unsure</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    checkDivisibleBy400</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> divisibleBy <span class="dv">400</span> <span class="ot">=</span> <span class="dt">Yes</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> <span class="fu">otherwise</span>       <span class="ot">=</span> <span class="dt">Unsure</span></span></code></pre></div>
 <p>Hmm… This is exactly what I did in 2nd iteration. But I thought in my head
 and change the order of conditions to make a shortest path to reach the answer.
 And maybe this implementation shows how I thought in my 2nd iteration.</p>
