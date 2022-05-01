@@ -6,7 +6,7 @@ author: Myoungjin Jeon
 ---
 #+OPTIONS: ^:{}
 
-** Instructions from Exercism.org
+** Clock - Instructions from Exercism.org
 
 Implement a clock that handles times without dates.
 
