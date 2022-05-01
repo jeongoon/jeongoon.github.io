@@ -1,0 +1,317 @@
+---
+title: Exercism Rust - Clock
+description: Implement a clock that handles times without dates.
+keywords: exercism, rust, clock
+author: Myoungjin Jeon
+---
+#+OPTIONS: ^:{}
+
+** Instructions from Exercism.org
+
+Implement a clock that handles times without dates.
+
+You should be able to add and subtract minutes to it.
+
+Two clocks that represent the same time should be equal to each other.
+
+You will also need to implement .to_string() for the Clock struct.
+We will be using this to display the Clock's state.
+You can either do it via implementing it directly or using the Display trait.
+
+Did you implement .to_string() for the Clock struct?
+
+If so, try implementing the Display trait for Clock instead.
+
+Traits allow for a common way to implement functionality for various types.
+
+For additional learning, consider how you might implement String::from for the Clock type.
+You don't have to actually implement this—it's redundant with Display,
+which is generally the better choice when the destination type is String -- but
+it's useful to have a few type-conversion traits in your toolkit.
+
+** My first Iteration(implementation)
+
+This is my first /working/ version. I didn't know that there is [[https://doc.rust-lang.org/std/?search=rem_euclid][=rem_euclid=]] function, and
+I made simliar function first.
+and I stored each property in a separate member variable, ~hours~ and ~minutes~, respectively.
+Even though I could easily find that someone just stored in a single variable (~minutes~).
+
+#+begin_src rust
+  use std::fmt;
+
+  #[derive(PartialEq, Debug, Clone, Copy)]
+  pub struct Clock {
+      hours: i32,
+      minutes: i32,
+  }
+
+  const MINUTES_PER_HOUR: i32 = 60;
+  const HOURS_PER_DAY: i32 = 24;
+
+  pub fn clock_div_mod (val: i32, by: i32) -> (i32, i32) {
+      let ( mut quot, mut modu ) = ( val / by, val % by );
+
+      if modu < 0 {
+          modu += by;
+          quot -= 1;
+      }
+
+      ( quot, modu )
+  }
+#+end_src
+
+
+So basically =clock_div_mod= will do wrapping down if the value is negative.
+
+To display via =std::fmt::Display= trait, I need to implement it for my Clock struct.
+
+So basically, I stored in separate variables, I could simply access each member.
+
+I think this structure good for easy displaying. So ~hours~ and ~minutes~ are not required to calculated
+everytime, on the other hand 
+
+#+begin_src rust
+  // https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html
+  impl fmt::Display for Clock {
+      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+          write!(
+              f,
+              "{hours:0>2}:{minutes:0>2}",
+              hours = &self.hours,
+              minutes = &self.minutes
+          )
+      }
+  }
+#+end_src
+
+={hours:0>2}= is working similar to below code in Perl (or c language)
+
+#+begin_src perl
+  printf( "%02d", 9 );
+#+end_src
+
+
+~Clock~ has a constructor and method for add minutes:
+
+#+begin_src rust
+  impl Clock {
+      pub fn new(hours: i32, minutes: i32) -> Self {
+          let mut clock = Clock {
+              hours : hours,
+              minutes : minutes,
+          };
+
+          // clean up the hours and minutes
+          clock.add_minutes( 0 )
+      }
+
+      pub fn add_minutes(&mut self, minutes: i32) -> Self {
+          let ( additional_hours, new_minutes ) =
+              clock_div_mod( self.minutes + minutes, MINUTES_PER_HOUR );
+          let ( _, new_hours ) =
+              clock_div_mod( self.hours + additional_hours,
+                             HOURS_PER_DAY );
+
+          self.hours   = new_hours;
+          self.minutes = new_minutes;
+          *self
+      }
+  }
+#+end_src
+
+*** To Update or Not to Update
+But when I look someones' codes and reelized that someone doesn't care about updating
+member values when calling =add_minutes=. They just create a new instance of Clock.
+Unfortunately, test code doesn't care about it is modified. but I'm wondering
+why we take ~&mut self~ if we don't need to update the values?
+
+***  implicit return without semi-colon(;)
+
+This is something that I am familiar with. In perl code, we can return a value as exactly same
+as we can in Rust. (there are more ... ~raku~, ~ruby~ .. but not ~python~)
+
+#+begin_src perl
+  # this is a perl code not rust
+  sub return_some_clock_as_hash {
+      { 'hours' => 16,
+        'minutes' => 53,
+      }
+  }
+#+end_src
+
+Or even you can define a constant value in the same way in perl,
+However In perl, we can even add semi-colon in a return statement because
+perl always return the last statement in a code block.
+
+#+begin_src perl
+  # perl code
+  sub HOURS_PER_DAY { 24 }
+
+  # or
+  sub HOURS_PER_DAY { 24; }
+
+  # both are working in Perl
+
+#+end_src
+
+BTW, there is a module for defining constant for perl.
+
+credit: https://perldoc.perl.org/constant
+
+#+begin_src perl
+  # perl's first idiom:  There's more than one way to do it.
+  # ??: but please don't give me too much.
+  sub PI { 4 * atan2(1,1) }
+  # or
+  use constant PI => 4 * atan2(1,1)
+
+#+end_src
+
+Nevetheless, it is quite convenient way to return a type and we can make sure that
+there is no more code in a logically after ~the code without semicolon~.
+
+So if I put more code after =*self=, the compiler will report an error regarding to
+your syntax. (even a semicolon)
+
+#+begin_src rust
+  // .. snip ..
+          self.hours   = new_hours;
+          self.minutes = new_minutes;
+          *self; // note: semi-colon added
+          // and there is no return type
+  // .. snip ..
+#+end_src
+
+Will produce error message when compling
+
+#+begin_src sh
+   Compiling clock v0.1.0 (/path/to/your/code/clock)
+error[E0308]: mismatched types
+  --> src/main.rs:54:52
+   |
+54 |     pub fn add_minutes(&mut self, minutes: i32) -> Self {
+   |            -----------                             ^^^^ expected struct `Clock`, found `()`
+   |            |
+   |            implicitly returns `()` as its body has no tail or `return` expression
+...
+59 |         *self;
+   |              - help: consider removing this semicolon
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `clock` due to previous error
+#+end_src
+
+
+** My Forth Iteration
+
+#+begin_src rust
+  use std::fmt;
+
+  #[derive(PartialEq, Debug, Clone, Copy)]
+  pub struct Clock {
+      hours: u8,
+      minutes: u8,
+  }
+
+#+end_src
+
+And also I reduced the struct size by using ~u8~ for each member variable ~hours~ and ~minutes~.
+
+
+#+begin_src rust
+  const MINUTES_PER_HOUR: i32 = 60;
+  const HOURS_PER_DAY: i32 = 24;
+
+  pub fn unsafe_clock_div_mod(val: i32, divider_: i32) -> (i32, i32) {
+      // which doesn't check divider could be zero
+      let divider = divider_ as i32;
+
+      let (mut quot, mut modu) = (val / divider, val % divider);
+
+      // below condition will not used in this implementation though ...
+      if modu < 0 {
+          modu += divider;
+          quot -= 1;
+      }
+      (quot, modu)
+  }
+
+  // https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html
+  impl fmt::Display for Clock {
+      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+          write!(
+              f,
+              "{hours:0>2}:{minutes:0>2}",
+              hours = &self.hours,
+              minutes = &self.minutes
+          )
+      }
+  }
+#+end_src
+
+*** rem_euclid
+I realized that second call of =clock_div_mod= creats an unused value along with
+~new_hours~ value. so I modified in my forth iteration. so I used =rem_euclid= for the case.
+
+And I add helper member function which is called =to_my_clock= for =new= and =add_minutes=.
+
+#+begin_src rust
+  impl Clock {
+      fn to_my_clock(hours: i32, minutes: i32) -> Self {
+          let total_minutes =
+              (hours * MINUTES_PER_HOUR + minutes).rem_euclid(HOURS_PER_DAY * MINUTES_PER_HOUR);
+
+          let (new_hours, new_minutes) = unsafe_clock_div_mod(total_minutes, MINUTES_PER_HOUR);
+
+          Clock {
+              hours: new_hours as u8,
+              minutes: new_minutes as u8,
+          }
+      }
+
+      pub fn new(hours: i32, minutes: i32) -> Self {
+          Clock::to_my_clock(hours, minutes)
+      }
+
+      pub fn add_minutes(&mut self, minutes: i32) -> Self {
+          let new_clock = Clock::to_my_clock(self.hours as i32, self.minutes as i32 + minutes);
+
+          // update values
+          *self = new_clock;
+          *self
+      }
+  }
+#+end_src
+
+I am till not sure I need to separate the values into ~hours~ and ~minutes~, but I guess
+it is depends on the situation. I could only guess that If we modify the value less
+and display more, it is better idea to separate them. Otherwise, we can keep in a
+single member variable.
+
+** Wrapping Up
+
+In this task, I realized that:
+
+ - It is good idea to check out ~std~ method before I create one. (rem_euclid)
+ - Implicit way of returning a value is similar to perl or raku.
+   - it has simpler syntax
+   - we could write them on purpose to detect redundant code afterward.
+
+ - As instruction suggests, to implement ~std::fmt::Display~ is generally good idea
+   for better integration with other formatting method.
+ * return ~Self~ makes always create a copy of the original value, which seems to
+   good idea in general programming which make less side effects.
+
+** TODO 
+:LOGBOOK:
+- State "TODO"       from              [2022-05-01 Sun 17:43] \\
+  should I add more information about it?
+  I guess that I need more study before doing that.
+:END:
+    - how fast coercision of =i32 -> u8= ? instant?
+    - =add_minutes= suggests the Clock is mutable or not?
+
+
+Thank you for reading !!
+
+I am still very confused with Rust language, but it seems worth learning!!
