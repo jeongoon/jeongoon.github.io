@@ -8,6 +8,7 @@ author: Myoungjin Jeon
 
 ** Clock - Instructions from Exercism.org
 
+#+begin_quote
 Implement a clock that handles times without dates.
 
 You should be able to add and subtract minutes to it.
@@ -28,6 +29,7 @@ For additional learning, consider how you might implement String::from for the C
 You don't have to actually implement this—it's redundant with Display,
 which is generally the better choice when the destination type is String -- but
 it's useful to have a few type-conversion traits in your toolkit.
+#+end_quote
 
 ** My first Iteration(implementation)
 
