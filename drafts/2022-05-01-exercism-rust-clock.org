@@ -65,11 +65,11 @@ Even though I could easily find that someone just stored in a single variable (~
 
 So basically =clock_div_mod= will do wrapping down if the value is negative.
 
-To display via =std::fmt::Display= trait, I need to implement it for my Clock struct.
+To display via =std::fmt::Display= trait, An implement it for my Clock struct was required.
 
-So basically, I stored in separate variables, I could simply access each member.
+So basically, I stored in separate variables, I could simply access each member easily.
 
-I think this structure good for easy displaying. So ~hours~ and ~minutes~ are not required to calculated
+I think this structure good for quick displaying. So ~hours~ and ~minutes~ are not required to calculated
 everytime, on the other hand 
 
 #+begin_src rust

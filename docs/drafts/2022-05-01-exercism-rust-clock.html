@@ -109,9 +109,9 @@ Even though I could easily find that someone just stored in a single variable (<
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    ( quot<span class="op">,</span> modu )</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>So basically <code class="verbatim">clock_div_mod</code> will do wrapping down if the value is negative.</p>
-<p>To display via <code class="verbatim">std::fmt::Display</code> trait, I need to implement it for my Clock struct.</p>
-<p>So basically, I stored in separate variables, I could simply access each member.</p>
-<p>I think this structure good for easy displaying. So <code>hours</code> and <code>minutes</code> are not required to calculated
+<p>To display via <code class="verbatim">std::fmt::Display</code> trait, An implement it for my Clock struct was required.</p>
+<p>So basically, I stored in separate variables, I could simply access each member easily.</p>
+<p>I think this structure good for quick displaying. So <code>hours</code> and <code>minutes</code> are not required to calculated
 everytime, on the other hand</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> <span class="pp">fmt::</span><span class="bu">Display</span> <span class="kw">for</span> Clock <span class="op">{</span></span>

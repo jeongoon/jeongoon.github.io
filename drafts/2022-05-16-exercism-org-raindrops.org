@@ -1,0 +1,221 @@
+---
+title: Exercism - Rust - Raindrops
+description: my raindrops solution for exercism.org
+keywords: rust, elm, haskell
+author: Myoungjin Jeon
+---
+
+#+OPTIONS: ^:{}
+
+I kept doing learning Rust via [[https://exercism.org/][exercism.org]]. and I learnt some basic usage of functions,
+but still don't have enough concrete understandings.. However, I found something similar in
+syntax in rust to /haskell/ or /elm/. let's look at the problem first.
+
+** Introductions
+
+#+begin_quote
+Your task is to convert a number into a string that contains raindrop sounds corresponding to certain potential factors. A factor is a number that evenly divides into another number, leaving no remainder. The simplest way to test if a one number is a factor of another is to use the modulo operation.
+
+The rules of raindrops are that if a given number:
+
+#+begin_src ascii
+    has 3 as a factor, add 'Pling' to the result.
+    has 5 as a factor, add 'Plang' to the result.
+    has 7 as a factor, add 'Plong' to the result.
+    does not have any of 3, 5, or 7 as a factor, the result should be the digits of the number.
+#+end_src
+#+end_quote
+
+*** Examples
+#+begin_src ascii
+    28 has 7 as a factor, but not 3 or 5, so the result would be "Plong".
+    30 has both 3 and 5 as factors, but not 7, so the result would be "PlingPlang".
+    34 is not factored by 3, 5, or 7, so the result would be "34".
+#+end_src
+
+
+** First Iteration
+This is categories as an /easy/ problem. and I solve the problem by using =.map()= and =.join()=.
+
+#+begin_src rust
+  pub fn raindrops(n: u32) -> String {
+      let divisible_by = |k| -> bool { n % k == 0 };
+
+      let sound = [(3, "Pling"), (5, "Plang"), (7, "Plong")]
+          .map(|(k, sound)| if divisible_by(k as u32) { sound } else { "" })
+          .join("");
+
+      if sound.is_empty() {
+          n.to_string()
+      } else {
+          sound
+      }
+  }
+#+end_src
+
+*** divisible_by
+ this is not a function but it is called /closure/. Rust allows us to declare a function
+ in a function but the /local function/ is unabled to access local variables, which is
+ uncomfortable for me because In /haskell/, we could make a local function which can access
+ the variables in current scope:
+
+ #+begin_src haskell
+   raindrops :: Int -> String
+   raindrops n =
+     let divisible_by k = n `rem` k == 0
+     -- snip ..
+ #+end_src
+
+ So, I tried to use /closure/ here. And it is great to see it is working as I wanted.
+
+ 
+*** filter_map is more efficient
+
+ I could have used =filter_map()= instead of =map()=. so if I revise the iteration 1, it would be like:
+
+#+begin_src rust
+  // .. snip ..
+      let sound = [(3, "Pling"), (5, "Plang"), (7, "Plong")]
+          .iter()
+          .filter_map(|(k, sound)| {
+              if divisible_by(*k as u32) {
+                  Some(sound.to_string())
+              } else {
+                  None
+              }
+          })
+          .collect::<String>();
+  // .. snip ..
+#+end_src
+
+And /filter_map/ in rust is actually efficient than =filter().map()= combination.
+
+** Second Iteration
+
+ And I found some other's iteration using =fold=. In functional programming, this is kind of
+ folding problem. which sounds familiar to me, so I tried to figure out how to use it.
+
+And this is =raindrops= function by using fold:
+
+#+begin_src rust
+  // .. some structure and implementation ..
+  // snip ..
+  pub fn raindrops(n: u32) -> String {
+      let divisible_by = |k| -> bool { n % k == 0 };
+
+      // fold_helper will be used later
+      let fold_helper = |acc: Option<String>, fac_sound: &FacToSound| {
+          if divisible_by(fac_sound.get_factor()) {
+              let new_sound = fac_sound.get_sound();
+              acc
+                  .map(|s| s + new_sound)
+                  .or_else(|| Some(String::from(new_sound)))
+          } else {
+              acc
+          }
+      };
+
+      RAIN_DROP_SOUND_MAP
+          .iter()
+          .fold(None, fold_helper)
+          .unwrap_or_else(|| n.to_string())
+          // I think unwrap_or_else is cool stuff
+  }
+#+end_src
+
+So /fold/ in rust is basically /foldl/ in haskell. The accumulator is the first argument as same
+as in haskell as well. I enjoyed the struggling to reach this solution.
+but I didn't like the part shown below:
+
+#+begin_src rust
+              acc
+                  .map(|s| s + new_sound)
+                  .or_else(|| Some(String::from(new_sound)))
+#+end_src
+
+because =.or_else= will always check the result of =acc.map()= is /Some/ (Just in Haskell) or
+/None/ (Nothing in Haskell).
+
+If I use the pattern matching, It runs either =.map()= part or =.or_else= part.
+even though it look fancy or expressive, it leads us less efficient code and it make for
+reviewer to understand a little bit harder.
+
+** leave it as basic
+
+In [[https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra][Maybe-Extra package]], there is [[https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra#orElse][=orElse=]] as well.
+
+#+begin_src elm
+  Just 5
+      |> orElse (Just 4)
+  --> Just 5
+
+  Nothing
+      |> orElse (Just 7)
+  --> Just 7
+#+end_src
+
+But this is coming from an /extra/ package! because elm language encourages the user use
+simpler syntax, and it is pattern matching in this case.
+
+#+begin_src elm
+  case Just 5 of
+      Nothing ->
+          Just 4
+      x ->
+          x
+#+end_src
+
+It results in a bit longer codes than one with helper package, nevertheless the user still
+understand the code easier with basic syntax background. No need to look up the extra documentation!
++reading documentation is stressfull.+
+
+so finally I made another iteration.
+
+** Third Iteration
+
+ *Note:* I add more types and implentation for study purpose.
+
+#+begin_src rust
+  struct FacToSound(u32, &'static str);
+
+  impl FacToSound {
+      pub fn get_factor(&self) -> u32 {
+          self.0
+      }
+
+      pub fn get_sound(&self) -> &str {
+          self.1
+      }
+  }
+
+  const RAIN_DROP_SOUND_MAP: [FacToSound; 3] = [
+      FacToSound(3, "Pling"),
+      FacToSound(5, "Plang"),
+      FacToSound(7, "Plong"),
+  ];
+
+  pub fn raindrops(n: u32) -> String {
+      let divisible_by = |k| -> bool { n % k == 0 };
+      let fold_helper = |acc: Option<String>, fac_sound: &FacToSound| {
+          if divisible_by(fac_sound.get_factor()) {
+              let new_sound = fac_sound.get_sound();
+              Some(match acc {
+                  Some(sound_so_far) => sound_so_far + new_sound,
+                  None => String::from(new_sound),
+              })
+          } else {
+              acc
+          }
+      };
+
+      RAIN_DROP_SOUND_MAP
+          .iter()
+          .fold(None, fold_helper)
+          .unwrap_or_else(|| n.to_string())
+  }
+#+end_src
+
+** Wrapping Up
+
+ - In Rust, it is possible to solve a problem in a functional programming way.
+ - The simpler syntax we write, The easier code we read!
