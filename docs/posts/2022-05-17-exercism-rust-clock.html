@@ -55,14 +55,14 @@
 
     <div id="content" class="font-friendly">
             <div class="info">
-    Posted on May  1, 2022
+    Posted on May 17, 2022
     
         by Myoungjin Jeon
     
 </div>
 <div class="info">
   
-  Tags: <a title="All pages tagged 'exercism'." href="../tags/exercism.html">exercism</a>
+  Tags: <a title="All pages tagged 'exercism'." href="../tags/exercism.html">exercism</a>, <a title="All pages tagged 'rust'." href="../tags/rust.html">rust</a>, <a title="All pages tagged 'clock'." href="../tags/clock.html">clock</a>
   
 </div>
 
@@ -83,10 +83,11 @@ which is generally the better choice when the destination type is String – but
 it’s useful to have a few type-conversion traits in your toolkit.</p>
 </blockquote>
 <h2 id="my-first-iterationimplementation">My first Iteration(implementation)</h2>
-<p>This is my first <em>working</em> version. I didn’t know that there is <a href="https://doc.rust-lang.org/std/?search=rem_euclid"><code class="verbatim">rem_euclid</code></a> function, and
-I made simliar function first.
+<p>This is my first <em>working</em> version. I didn’t know that there is <a href="https://doc.rust-lang.org/std/?search=rem_euclid"><code class="verbatim">rem_euclid()</code></a> function, and
+I made my own similar function first.
 and I stored each property in a separate member variable, <code>hours</code> and <code>minutes</code>, respectively.
-Even though I could easily find that someone just stored in a single variable (<code>minutes</code>).</p>
+Even though I could easily find that some other exercism user just stored in a single
+variable. (<code>minutes only</code>).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::</span>fmt<span class="op">;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span><span class="bu">PartialEq</span><span class="op">,</span> <span class="bu">Debug</span><span class="op">,</span> <span class="bu">Clone</span><span class="op">,</span> <span class="bu">Copy</span><span class="at">)]</span></span>
@@ -108,11 +109,10 @@ Even though I could easily find that someone just stored in a single variable (<
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    ( quot<span class="op">,</span> modu )</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>So basically <code class="verbatim">clock_div_mod</code> will do wrapping down if the value is negative.</p>
-<p>To display via <code class="verbatim">std::fmt::Display</code> trait, An implement it for my Clock struct was required.</p>
-<p>So basically, I stored in separate variables, I could simply access each member easily.</p>
-<p>I think this structure good for quick displaying. So <code>hours</code> and <code>minutes</code> are not required to calculated
-everytime, on the other hand</p>
+<p>Basically, <code class="verbatim">clock_div_mod</code> will do wrapping down(floor) if the value is negative.</p>
+<p>To display via <code class="verbatim">std::fmt::Display</code> trait, An implement for my Clock struct was required.</p>
+<p>I think this structure – hours and minutes are stored separately – is good for
+quick displaying because <code>hours</code> and <code>minutes</code> are not required to calculated everytime.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> <span class="pp">fmt::</span><span class="bu">Display</span> <span class="kw">for</span> Clock <span class="op">{</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> fmt(<span class="op">&amp;</span><span class="kw">self</span><span class="op">,</span> f<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> <span class="pp">fmt::</span>Formatter) <span class="op">-&gt;</span> <span class="pp">fmt::</span><span class="dt">Result</span> <span class="op">{</span></span>
@@ -151,22 +151,25 @@ everytime, on the other hand</p>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="to-update-or-not-to-update">To Update or Not to Update</h3>
-<p>But when I look someones’ codes and reelized that someone doesn’t care about updating
+<p>But when I look someones’ codes and realized that the person doesn’t care about updating
 member values when calling <code class="verbatim">add_minutes</code>. They just create a new instance of Clock.
-Unfortunately, test code doesn’t care about it is modified. but I’m wondering
-why we take <code>&amp;mut self</code> if we don’t need to update the values?</p>
+Unfortunately, the test code on this task doesn’t care about it is modified.
+but I’m wondering why we take <code>&amp;mut self</code> if we don’t need to update the values?</p>
+<p>I concluded that if the <code class="verbatim">add_minutes</code> takes <code class="verbatim">&amp;mut self</code>, it should update the value
+or we just get <code class="verbatim">&amp;self</code> as first argument.</p>
 <h3 id="implicit-return-without-semi-colon">implicit return without semi-colon(;)</h3>
-<p>This is something that I am familiar with. In perl code, we can return a value as exactly same
-as we can in Rust. (there are more … <code>raku</code>, <code>ruby</code> .. but not <code>python</code>)</p>
+<p>This is something that I am familiar with. In perl language, we can return a value as
+exactly same as we can in rust. (there are more … <code>raku</code>, <code>ruby</code> .. but not <code>python</code>)</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this is a perl code not rust</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">sub </span><span class="fu">return_some_clock_as_hash</span> {</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    { <span class="ot">'</span><span class="ss">hours</span><span class="ot">'</span> =&gt; <span class="dv">16</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="ot">'</span><span class="ss">minutes</span><span class="ot">'</span> =&gt; <span class="dv">53</span>,</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>Or even you can define a constant value in the same way in perl,
-However In perl, we can even add semi-colon in a return statement because
-perl always return the last statement in a code block.</p>
+<p>You can define even a constant value in the same way in perl.
+In Rust, we cannot end the implicit statement with semicolon(;), On the contrary,
+we can even add a semi-colon in perl. (maybe in ruby as well?)
+as perl always return the last statement in a code block.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># perl code</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">sub </span><span class="fu">HOURS_PER_DAY</span> { <span class="dv">24</span> }</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -217,7 +220,7 @@ your syntax. (even a semicolon)</p>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    minutes<span class="op">:</span> <span class="dt">u8</span><span class="op">,</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
-<p>And also I reduced the struct size by using <code>u8</code> for each member variable <code>hours</code> and <code>minutes</code>.</p>
+<p>And also I reduced the struct member size by using <code>u8</code> for each member variable <code>hours</code> and <code>minutes</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> MINUTES_PER_HOUR<span class="op">:</span> <span class="dt">i32</span> <span class="op">=</span> <span class="dv">60</span><span class="op">;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> HOURS_PER_DAY<span class="op">:</span> <span class="dt">i32</span> <span class="op">=</span> <span class="dv">24</span><span class="op">;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -293,13 +296,9 @@ for better integration with other formatting method.</li>
 <li>return <code>Self</code> makes always create a copy of the original value, which seems to
 good idea in general programming which make less side effects.</li>
 </ul>
-<h2 id="section-1"><span class="todo TODO">TODO</span> </h2>
-<ul>
-<li>how fast coercision of <code class="verbatim">i32 -&gt; u8</code> ? instant?</li>
-<li><code class="verbatim">add_minutes</code> suggests the Clock is mutable or not?</li>
-</ul>
-<p>Thank you for reading !!</p>
-<p>I am still very confused with Rust language, but it seems worth learning!!</p>
+<h2 id="thank-you">Thank you</h2>
+<p>Thank you for reading !!
+I am still very confused with Rust language, but it seems worth learning!!</p>
 
     </div>
 

@@ -33,10 +33,11 @@ it's useful to have a few type-conversion traits in your toolkit.
 
 ** My first Iteration(implementation)
 
-This is my first /working/ version. I didn't know that there is [[https://doc.rust-lang.org/std/?search=rem_euclid][=rem_euclid=]] function, and
-I made simliar function first.
+This is my first /working/ version. I didn't know that there is [[https://doc.rust-lang.org/std/?search=rem_euclid][=rem_euclid()=]] function, and
+I made my own similar function first.
 and I stored each property in a separate member variable, ~hours~ and ~minutes~, respectively.
-Even though I could easily find that someone just stored in a single variable (~minutes~).
+Even though I could easily find that some other exercism user just stored in a single
+variable. (~minutes only~).
 
 #+begin_src rust
   use std::fmt;
@@ -63,14 +64,12 @@ Even though I could easily find that someone just stored in a single variable (~
 #+end_src
 
 
-So basically =clock_div_mod= will do wrapping down if the value is negative.
+Basically, =clock_div_mod= will do wrapping down(floor) if the value is negative.
 
-To display via =std::fmt::Display= trait, An implement it for my Clock struct was required.
+To display via =std::fmt::Display= trait, An implement for my Clock struct was required.
 
-So basically, I stored in separate variables, I could simply access each member easily.
-
-I think this structure good for quick displaying. So ~hours~ and ~minutes~ are not required to calculated
-everytime, on the other hand 
+I think this structure -- hours and minutes are stored separately -- is good for
+quick displaying because ~hours~ and ~minutes~ are not required to calculated everytime.
 
 #+begin_src rust
   // https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html
@@ -91,7 +90,6 @@ everytime, on the other hand
 #+begin_src perl
   printf( "%02d", 9 );
 #+end_src
-
 
 ~Clock~ has a constructor and method for add minutes:
 
@@ -121,16 +119,19 @@ everytime, on the other hand
   }
 #+end_src
 
-*** To Update or Not to Update
-But when I look someones' codes and reelized that someone doesn't care about updating
-member values when calling =add_minutes=. They just create a new instance of Clock.
-Unfortunately, test code doesn't care about it is modified. but I'm wondering
-why we take ~&mut self~ if we don't need to update the values?
+***  To Update or Not to Update
+     But when I look someones' codes and realized that the person doesn't care about updating
+     member values when calling =add_minutes=. They just create a new instance of Clock.
+     Unfortunately, the test code on this task doesn't care about it is modified.
+     but I'm wondering why we take ~&mut self~ if we don't need to update the values?
+
+     I concluded that if the =add_minutes= takes =&mut self=, it should update the value
+     or we just get =&self= as first argument.
 
 ***  implicit return without semi-colon(;)
 
-This is something that I am familiar with. In perl code, we can return a value as exactly same
-as we can in Rust. (there are more ... ~raku~, ~ruby~ .. but not ~python~)
+    This is something that I am familiar with. In perl language, we can return a value as
+    exactly same as we can in rust. (there are more ... ~raku~, ~ruby~ .. but not ~python~)
 
 #+begin_src perl
   # this is a perl code not rust
@@ -141,9 +142,10 @@ as we can in Rust. (there are more ... ~raku~, ~ruby~ .. but not ~python~)
   }
 #+end_src
 
-Or even you can define a constant value in the same way in perl,
-However In perl, we can even add semi-colon in a return statement because
-perl always return the last statement in a code block.
+    You can define even a constant value in the same way in perl.
+    In Rust, we cannot end the implicit statement with semicolon(;), On the contrary,
+    we can even add a semi-colon in perl. (maybe in ruby as well?)
+    as perl always return the last statement in a code block.
 
 #+begin_src perl
   # perl code
@@ -156,9 +158,9 @@ perl always return the last statement in a code block.
 
 #+end_src
 
-BTW, there is a module for defining constant for perl.
+  BTW, there is a module for defining constant for perl.
 
-credit: https://perldoc.perl.org/constant
+  credit: https://perldoc.perl.org/constant
 
 #+begin_src perl
   # perl's first idiom:  There's more than one way to do it.
@@ -169,11 +171,11 @@ credit: https://perldoc.perl.org/constant
 
 #+end_src
 
-Nevetheless, it is quite convenient way to return a type and we can make sure that
-there is no more code in a logically after ~the code without semicolon~.
+  Nevetheless, it is quite convenient way to return a type and we can make sure that
+  there is no more code in a logically after ~the code without semicolon~.
 
-So if I put more code after =*self=, the compiler will report an error regarding to
-your syntax. (even a semicolon)
+  So if I put more code after =*self=, the compiler will report an error regarding to
+  your syntax. (even a semicolon)
 
 #+begin_src rust
   // .. snip ..
@@ -217,8 +219,7 @@ error: could not compile `clock` due to previous error
 
 #+end_src
 
-And also I reduced the struct size by using ~u8~ for each member variable ~hours~ and ~minutes~.
-
+And also I reduced the struct member size by using ~u8~ for each member variable ~hours~ and ~minutes~.
 
 #+begin_src rust
   const MINUTES_PER_HOUR: i32 = 60;
@@ -304,16 +305,7 @@ In this task, I realized that:
  * return ~Self~ makes always create a copy of the original value, which seems to
    good idea in general programming which make less side effects.
 
-** TODO 
-:LOGBOOK:
-- State "TODO"       from              [2022-05-01 Sun 17:43] \\
-  should I add more information about it?
-  I guess that I need more study before doing that.
-:END:
-    - how fast coercision of =i32 -> u8= ? instant?
-    - =add_minutes= suggests the Clock is mutable or not?
-
+** Thank you
 
 Thank you for reading !!
-
 I am still very confused with Rust language, but it seems worth learning!!
