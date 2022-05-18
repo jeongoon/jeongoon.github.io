@@ -125,8 +125,9 @@ quick displaying because ~hours~ and ~minutes~ are not required to calculated ev
      Unfortunately, the test code on this task doesn't care about it is modified.
      but I'm wondering why we take ~&mut self~ if we don't need to update the values?
 
-     I concluded that if the =add_minutes= takes =&mut self=, it should update the value
-     or we just get =&self= as first argument.
+     I concluded that the spec doesn't say anything about update original instance. so
+     it is not required to implement. and generally it is safer to keep most of things
+     immutable.
 
 ***  implicit return without semi-colon(;)
 
@@ -172,10 +173,10 @@ quick displaying because ~hours~ and ~minutes~ are not required to calculated ev
 #+end_src
 
   Nevetheless, it is quite convenient way to return a type and we can make sure that
-  there is no more code in a logically after ~the code without semicolon~.
+  there is no more code logically after ~the code without semicolon~.
 
   So if I put more code after =*self=, the compiler will report an error regarding to
-  your syntax. (even a semicolon)
+  your syntax.
 
 #+begin_src rust
   // .. snip ..
@@ -186,23 +187,23 @@ quick displaying because ~hours~ and ~minutes~ are not required to calculated ev
   // .. snip ..
 #+end_src
 
-Will produce error message when compling
+Will produce error message when compiling.
 
 #+begin_src sh
-   Compiling clock v0.1.0 (/path/to/your/code/clock)
-error[E0308]: mismatched types
-  --> src/main.rs:54:52
-   |
-54 |     pub fn add_minutes(&mut self, minutes: i32) -> Self {
-   |            -----------                             ^^^^ expected struct `Clock`, found `()`
-   |            |
-   |            implicitly returns `()` as its body has no tail or `return` expression
-...
-59 |         *self;
-   |              - help: consider removing this semicolon
+     Compiling clock v0.1.0 (/path/to/your/code/clock)
+  error[E0308]: mismatched types
+    --> src/main.rs:54:52
+     |
+  54 |     pub fn add_minutes(&mut self, minutes: i32) -> Self {
+     |            -----------                             ^^^^ expected struct `Clock`, found `()`
+     |            |
+     |            implicitly returns `()` as its body has no tail or `return` expression
+  ...
+  59 |         *self;
+     |              - help: consider removing this semicolon
 
-For more information about this error, try `rustc --explain E0308`.
-error: could not compile `clock` due to previous error
+  For more information about this error, try `rustc --explain E0308`.
+  error: could not compile `clock` due to previous error
 #+end_src
 
 

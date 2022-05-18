@@ -155,8 +155,9 @@ quick displaying because <code>hours</code> and <code>minutes</code> are not req
 member values when calling <code class="verbatim">add_minutes</code>. They just create a new instance of Clock.
 Unfortunately, the test code on this task doesn’t care about it is modified.
 but I’m wondering why we take <code>&amp;mut self</code> if we don’t need to update the values?</p>
-<p>I concluded that if the <code class="verbatim">add_minutes</code> takes <code class="verbatim">&amp;mut self</code>, it should update the value
-or we just get <code class="verbatim">&amp;self</code> as first argument.</p>
+<p>I concluded that the spec doesn’t say anything about update original instance. so
+it is not required to implement. and generally it is safer to keep most of things
+immutable.</p>
 <h3 id="implicit-return-without-semi-colon">implicit return without semi-colon(;)</h3>
 <p>This is something that I am familiar with. In perl language, we can return a value as
 exactly same as we can in rust. (there are more … <code>raku</code>, <code>ruby</code> .. but not <code>python</code>)</p>
@@ -187,16 +188,16 @@ as perl always return the last statement in a code block.</p>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">use</span> <span class="kw">constant</span> PI =&gt; <span class="dv">4</span> <span class="ot">*</span> <span class="fu">atan2</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
 <p>Nevetheless, it is quite convenient way to return a type and we can make sure that
-there is no more code in a logically after <code>the code without semicolon</code>.</p>
+there is no more code logically after <code>the code without semicolon</code>.</p>
 <p>So if I put more code after <code class="verbatim">*self</code>, the compiler will report an error regarding to
-your syntax. (even a semicolon)</p>
+your syntax.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span><span class="op">.</span>hours   <span class="op">=</span> new_hours<span class="op">;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span><span class="op">.</span>minutes <span class="op">=</span> new_minutes<span class="op">;</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span><span class="kw">self</span><span class="op">;</span> <span class="co">// note: semi-colon added</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// and there is no return type</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span></code></pre></div>
-<p>Will produce error message when compling</p>
+<p>Will produce error message when compiling.</p>
 <div class="sourceCode" id="cb9" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Compiling</span> clock v0.1.0 <span class="er">(</span><span class="ex">/path/to/your/code/clock</span><span class="kw">)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="va">error</span><span class="op">[</span>E0308<span class="op">]</span><span class="ex">:</span> mismatched types</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">--</span><span class="op">&gt;</span> src/main.rs:54:52</span>
