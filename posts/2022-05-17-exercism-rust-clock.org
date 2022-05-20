@@ -125,9 +125,9 @@ quick displaying because ~hours~ and ~minutes~ are not required to calculated ev
      Unfortunately, the test code on this task doesn't care about it is modified.
      but I'm wondering why we take ~&mut self~ if we don't need to update the values?
 
-     I concluded that the spec doesn't say anything about update original instance. so
-     it is not required to implement. and generally it is safer to keep most of things
-     immutable.
+     I concluded that the spec doesn't say anything about update original instance so
+     it is not required to implement. However, generally, it is safer to keep most of things
+     immutable. (and this task didn't keep it even though mutability is not desired.)
 
 ***  implicit return without semi-colon(;)
 
@@ -144,6 +144,7 @@ quick displaying because ~hours~ and ~minutes~ are not required to calculated ev
 #+end_src
 
     You can define even a constant value in the same way in perl.
+
     In Rust, we cannot end the implicit statement with semicolon(;), On the contrary,
     we can even add a semi-colon in perl. (maybe in ruby as well?)
     as perl always return the last statement in a code block.
@@ -172,7 +173,7 @@ quick displaying because ~hours~ and ~minutes~ are not required to calculated ev
 
 #+end_src
 
-  Nevetheless, it is quite convenient way to return a type and we can make sure that
+  Nevetheless, it is quite convenient way to return a value and we can make sure that
   there is no more code logically after ~the code without semicolon~.
 
   So if I put more code after =*self=, the compiler will report an error regarding to
@@ -254,10 +255,10 @@ And also I reduced the struct member size by using ~u8~ for each member variable
 #+end_src
 
 *** rem_euclid
-I realized that second call of =clock_div_mod= creats an unused value along with
-~new_hours~ value. so I modified in my forth iteration. so I used =rem_euclid= for the case.
+    I realized that second call of =clock_div_mod= creats an unused value along with
+    ~new_hours~ value. so I modified in my forth iteration. so I used =rem_euclid= for the case.
 
-And I add helper member function which is called =to_my_clock= for =new= and =add_minutes=.
+    And I add helper member function which is called =to_my_clock= for =new= and =add_minutes=.
 
 #+begin_src rust
   impl Clock {
@@ -287,10 +288,10 @@ And I add helper member function which is called =to_my_clock= for =new= and =ad
   }
 #+end_src
 
-I am till not sure I need to separate the values into ~hours~ and ~minutes~, but I guess
-it is depends on the situation. I could only guess that If we modify the value less
-and display more, it is better idea to separate them. Otherwise, we can keep in a
-single member variable.
+    I am still unsure I need to separate the values into ~hours~ and ~minutes~, but I guess
+    it is depends on the situation. I could only guess that If we modify the value less
+    and display more, it is better idea to separate them. Otherwise, we can keep in a
+    single member variable.
 
 ** Wrapping Up
 
@@ -299,7 +300,7 @@ In this task, I realized that:
  - It is good idea to check out ~std~ method before I create one. (rem_euclid)
  - Implicit way of returning a value is similar to perl or raku.
    - it has simpler syntax
-   - we could write them on purpose to detect redundant code afterward.
+   - we could write them on purpose to detect redundant code after returning a value.
 
  - As instruction suggests, to implement ~std::fmt::Display~ is generally good idea
    for better integration with other formatting method.
@@ -308,5 +309,5 @@ In this task, I realized that:
 
 ** Thank you
 
-Thank you for reading !!
-I am still very confused with Rust language, but it seems worth learning!!
+  Thank you for reading !!
+  I am still very confused with Rust language, but it seems worth learning!!

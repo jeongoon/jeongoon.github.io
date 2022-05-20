@@ -155,9 +155,9 @@ quick displaying because <code>hours</code> and <code>minutes</code> are not req
 member values when calling <code class="verbatim">add_minutes</code>. They just create a new instance of Clock.
 Unfortunately, the test code on this task doesn’t care about it is modified.
 but I’m wondering why we take <code>&amp;mut self</code> if we don’t need to update the values?</p>
-<p>I concluded that the spec doesn’t say anything about update original instance. so
-it is not required to implement. and generally it is safer to keep most of things
-immutable.</p>
+<p>I concluded that the spec doesn’t say anything about update original instance so
+it is not required to implement. However, generally, it is safer to keep most of things
+immutable. (and this task didn’t keep it even though mutability is not desired.)</p>
 <h3 id="implicit-return-without-semi-colon">implicit return without semi-colon(;)</h3>
 <p>This is something that I am familiar with. In perl language, we can return a value as
 exactly same as we can in rust. (there are more … <code>raku</code>, <code>ruby</code> .. but not <code>python</code>)</p>
@@ -167,8 +167,8 @@ exactly same as we can in rust. (there are more … <code>raku</code>, <code>rub
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="ot">'</span><span class="ss">minutes</span><span class="ot">'</span> =&gt; <span class="dv">53</span>,</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>You can define even a constant value in the same way in perl.
-In Rust, we cannot end the implicit statement with semicolon(;), On the contrary,
+<p>You can define even a constant value in the same way in perl.</p>
+<p>In Rust, we cannot end the implicit statement with semicolon(;), On the contrary,
 we can even add a semi-colon in perl. (maybe in ruby as well?)
 as perl always return the last statement in a code block.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode perl"><code class="sourceCode perl"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># perl code</span></span>
@@ -187,7 +187,7 @@ as perl always return the last statement in a code block.</p>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">use</span> <span class="kw">constant</span> PI =&gt; <span class="dv">4</span> <span class="ot">*</span> <span class="fu">atan2</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
-<p>Nevetheless, it is quite convenient way to return a type and we can make sure that
+<p>Nevetheless, it is quite convenient way to return a value and we can make sure that
 there is no more code logically after <code>the code without semicolon</code>.</p>
 <p>So if I put more code after <code class="verbatim">*self</code>, the compiler will report an error regarding to
 your syntax.</p>
@@ -279,7 +279,7 @@ your syntax.</p>
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span><span class="kw">self</span></span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>I am till not sure I need to separate the values into <code>hours</code> and <code>minutes</code>, but I guess
+<p>I am still unsure I need to separate the values into <code>hours</code> and <code>minutes</code>, but I guess
 it is depends on the situation. I could only guess that If we modify the value less
 and display more, it is better idea to separate them. Otherwise, we can keep in a
 single member variable.</p>
@@ -290,7 +290,7 @@ single member variable.</p>
 <li>Implicit way of returning a value is similar to perl or raku.
 <ul>
 <li>it has simpler syntax</li>
-<li>we could write them on purpose to detect redundant code afterward.</li>
+<li>we could write them on purpose to detect redundant code after returning a value.</li>
 </ul></li>
 <li>As instruction suggests, to implement <code>std::fmt::Display</code> is generally good idea
 for better integration with other formatting method.</li>
