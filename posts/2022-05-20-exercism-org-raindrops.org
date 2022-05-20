@@ -142,7 +142,7 @@ reviewer to understand a little bit harder.
 
 ** leave it as basic
 
-In [[https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra][Maybe-Extra package]], there is [[https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra#orElse][=orElse=]] as well.
+In Elm lanauge, [[https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra][Maybe-Extra package]] exisits where [[https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra#orElse][=orElse=]] exists as well.
 
 #+begin_src elm
   Just 5
@@ -156,6 +156,8 @@ In [[https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Mayb
 
 But this is coming from an /extra/ package! because elm language encourages the user use
 simpler syntax, and it is pattern matching in this case.
+(thiis quite bold opinion, but I agree that it is not good idea to write many different
+version of function for a open source project which is involved by many people.)
 
 #+begin_src elm
   case Just 5 of
@@ -166,8 +168,9 @@ simpler syntax, and it is pattern matching in this case.
 #+end_src
 
 It results in a bit longer codes than one with helper package, nevertheless the user still
-understand the code easier with basic syntax background. No need to look up the extra documentation!
-+reading documentation is stressfull.+
+understand the code easier with plain syntax background.
+No need to look up the extra documentation! even though your IDE will teach you how to use it
+thesedays. +but still eading documentation is stressfull.+
 
 so finally I made another iteration.
 
@@ -214,6 +217,41 @@ so finally I made another iteration.
           .unwrap_or_else(|| n.to_string())
   }
 #+end_src
+
+** Haskell Version
+
+    I didn't expect the rust code can be easily tranlated into haskell code. Actually it was!
+    
+#+begin_src haskell
+  {-# LANGUAGE OverloadedStrings #-}
+
+  module Raindrops (convert)  where
+
+  import qualified Data.Text as T
+  import           Data.Text (Text)
+  import qualified Data.Maybe as MB
+
+  convert :: Int -> Text
+  convert n =
+    MB.fromMaybe (T.pack . show $ n) . (foldr helper Nothing) $
+    ([ (3, "Pling")
+     , (5, "Plang")
+     , (7, "Plong")
+     ] :: [ (Int, Text) ])
+
+    where
+      helper (k, sound) acc 
+        | n `rem` k == 0 =
+            case acc of
+              Nothing ->
+                Just sound
+              _ ->
+                (sound <>) <$> acc
+        | otherwise = acc
+#+end_src
+
+ Data.Text is used here, so code is less straightforward. and =foldr= is used here instead of
+ =fold= in Rust (which is actually =foldl= in /haskell/).
 
 ** Wrapping Up
 
