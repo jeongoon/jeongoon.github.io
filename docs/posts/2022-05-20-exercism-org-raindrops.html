@@ -85,7 +85,7 @@ does not have any of 3, 5, or 7 as a factor, the result should be the digits of 
 34 is not factored by 3, 5, or 7, so the result would be &quot;34&quot;.
 </code></pre>
 <h2 id="first-iteration">First Iteration</h2>
-<p>This is categories as an <em>easy</em> problem. and I solve the problem by using <code class="verbatim">.map()</code> and <code class="verbatim">.join()</code>.</p>
+<p>This is categorised as an <em>easy</em> problem. and I solve the problem by using <code class="verbatim">.map()</code> and <code class="verbatim">.join()</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> raindrops(n<span class="op">:</span> <span class="dt">u32</span>) <span class="op">-&gt;</span> <span class="dt">String</span> <span class="op">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> divisible_by <span class="op">=</span> <span class="op">|</span>k<span class="op">|</span> <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span> n <span class="op">%</span> k <span class="op">==</span> <span class="dv">0</span> <span class="op">};</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -101,7 +101,7 @@ does not have any of 3, 5, or 7 as a factor, the result should be the digits of 
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="divisible_by">divisible_by</h3>
 <p>this is not a function but it is called <em>closure</em>. Rust allows us to declare a function
-in a function but the <em>local function</em> is unabled to access local variables, which is
+inside another function but the <em>local function</em> is unabled to access local variables, which is
 uncomfortable for me because In <em>haskell</em>, we could make a local function which can access
 the variables in current scope:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ot">raindrops ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">String</span></span>
@@ -159,9 +159,9 @@ but I didn’t like the part shown below:</p>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>or_else(<span class="op">||</span> <span class="cn">Some</span>(<span class="dt">String</span><span class="pp">::</span>from(new_sound)))</span></code></pre></div>
 <p>because <code class="verbatim">.or_else</code> will always check the result of <code class="verbatim">acc.map()</code> is <em>Some</em> (Just in Haskell) or
 <em>None</em> (Nothing in Haskell).</p>
-<p>If I use the pattern matching, It runs either <code class="verbatim">.map()</code> part or <code class="verbatim">.or_else</code> part.
-even though it look fancy or expressive, it leads us less efficient code and it make for
-reviewer to understand a little bit harder.</p>
+<p>If I use the pattern matching, It runs either <code class="verbatim">.map()</code> part <em>or</em> <code class="verbatim">.or_else</code> part.
+Even if it looks fancy or expressive, it also leads us to write less efficient code
+and it make for reviewer to understand a little bit harder.</p>
 <h2 id="leave-it-as-basic">leave it as basic</h2>
 <p>In Elm lanauge, <a href="https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra">Maybe-Extra package</a> exisits where <a href="https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra#orElse"><code class="verbatim">orElse</code></a> exists as well.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode elm"><code class="sourceCode elm"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">Just</span> <span class="dv">5</span></span>
@@ -171,10 +171,10 @@ reviewer to understand a little bit harder.</p>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="dt">Nothing</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">|&gt;</span> <span class="fu">orElse</span> (<span class="dt">Just</span> <span class="dv">7</span>)</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt; Just 7</span></span></code></pre></div>
-<p>But this is coming from an <em>extra</em> package! because elm language encourages the user use
-simpler syntax, and it is pattern matching in this case.
+<p>But that function comes from an <em>extra</em> package! Because elm language encourages the user use
+simpler syntax, which is <strong>pattern matching</strong> in this case.
 (thiis quite bold opinion, but I agree that it is not good idea to write many different
-version of function for a open source project which is involved by many people.)</p>
+version of function for an open source project which is involved by many people.)</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode elm"><code class="sourceCode elm"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="dt">Just</span> <span class="dv">5</span> <span class="cf">of</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Nothing</span> <span class="op">-&gt;</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Just</span> <span class="dv">4</span></span>
@@ -252,7 +252,15 @@ thesedays. <del>but still eading documentation is stressfull.</del></p>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>              (sound <span class="op">&lt;&gt;</span>) <span class="op">&lt;$&gt;</span> acc</span>
 <span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> <span class="fu">otherwise</span> <span class="ot">=</span> acc</span></code></pre></div>
 <p>Data.Text is used here, so code is less straightforward. and <code class="verbatim">foldr</code> is used here instead of
-<code class="verbatim">fold</code> in Rust (which is actually <code class="verbatim">foldl</code> in <em>haskell</em>).</p>
+<code class="verbatim">fold</code> in Rust (which is actually <code class="verbatim">foldl</code> in <em>haskell</em>). The order of catenating texts is
+different from the one in <em>fold</em>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// append new sound to acc</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">// in fold in rust  </span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cn">Some</span>(sound_so_far) <span class="op">=&gt;</span> sound_so_far <span class="op">+</span> new_sound<span class="op">,</span></span></code></pre></div>
+<p>vs</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="op">//</span> preppend new sound to acc<span class="op">.</span> <span class="kw">in</span> <span class="fu">foldr</span>  <span class="kw">in</span> haskell</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>_ <span class="ot">-&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  (sound <span class="op">&lt;&gt;</span>) <span class="op">&lt;$&gt;</span> acc</span></code></pre></div>
 <h2 id="wrapping-up">Wrapping Up</h2>
 <ul>
 <li>In Rust, it is possible to solve a problem in a functional programming way.</li>

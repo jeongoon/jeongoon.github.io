@@ -35,7 +35,7 @@ The rules of raindrops are that if a given number:
 
 
 ** First Iteration
-This is categories as an /easy/ problem. and I solve the problem by using =.map()= and =.join()=.
+This is categorised as an /easy/ problem. and I solve the problem by using =.map()= and =.join()=.
 
 #+begin_src rust
   pub fn raindrops(n: u32) -> String {
@@ -55,7 +55,7 @@ This is categories as an /easy/ problem. and I solve the problem by using =.map(
 
 *** divisible_by
  this is not a function but it is called /closure/. Rust allows us to declare a function
- in a function but the /local function/ is unabled to access local variables, which is
+ inside another function but the /local function/ is unabled to access local variables, which is
  uncomfortable for me because In /haskell/, we could make a local function which can access
  the variables in current scope:
 
@@ -136,9 +136,10 @@ but I didn't like the part shown below:
 because =.or_else= will always check the result of =acc.map()= is /Some/ (Just in Haskell) or
 /None/ (Nothing in Haskell).
 
-If I use the pattern matching, It runs either =.map()= part or =.or_else= part.
-even though it look fancy or expressive, it leads us less efficient code and it make for
-reviewer to understand a little bit harder.
+If I use the pattern matching, It runs either =.map()= part /or/ =.or_else= part.
+Even if it looks fancy or expressive, it also leads us to write less efficient code
+and it make for reviewer to understand a little bit harder.
+
 
 ** leave it as basic
 
@@ -154,10 +155,10 @@ In Elm lanauge, [[https://package.elm-lang.org/packages/elm-community/maybe-extr
   --> Just 7
 #+end_src
 
-But this is coming from an /extra/ package! because elm language encourages the user use
-simpler syntax, and it is pattern matching in this case.
+But that function comes from an /extra/ package! Because elm language encourages the user use
+simpler syntax, which is *pattern matching* in this case.
 (thiis quite bold opinion, but I agree that it is not good idea to write many different
-version of function for a open source project which is involved by many people.)
+version of function for an open source project which is involved by many people.)
 
 #+begin_src elm
   case Just 5 of
@@ -251,7 +252,23 @@ so finally I made another iteration.
 #+end_src
 
  Data.Text is used here, so code is less straightforward. and =foldr= is used here instead of
- =fold= in Rust (which is actually =foldl= in /haskell/).
+ =fold= in Rust (which is actually =foldl= in /haskell/). The order of  catenating texts is
+ different from the one in /fold/.
+
+#+begin_src rust
+                  // append new sound to acc
+                  // in fold in rust  
+                  Some(sound_so_far) => sound_so_far + new_sound,
+#+end_src
+
+vs
+
+#+begin_src haskell
+              // preppend new sound to acc. in foldr  in haskell
+              _ ->
+                (sound <>) <$> acc
+#+end_src
+
 
 ** Wrapping Up
 
