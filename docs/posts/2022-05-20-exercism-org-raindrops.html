@@ -160,8 +160,8 @@ but I didn’t like the part shown below:</p>
 <p>because <code class="verbatim">.or_else</code> will always check the result of <code class="verbatim">acc.map()</code> is <em>Some</em> (Just in Haskell) or
 <em>None</em> (Nothing in Haskell).</p>
 <p>If I use the pattern matching, It runs either <code class="verbatim">.map()</code> part <em>or</em> <code class="verbatim">.or_else</code> part.
-Even if it looks fancy or expressive, it also leads us to write less efficient code
-and it make for reviewer to understand a little bit harder.</p>
+Even if it looks fancy or expressive, it can lead us to write less efficient code
+and also make the codes for reviewer who is not familiar with extra syntax to understand.</p>
 <h2 id="leave-it-as-basic">leave it as basic</h2>
 <p>In Elm lanauge, <a href="https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra">Maybe-Extra package</a> exisits where <a href="https://package.elm-lang.org/packages/elm-community/maybe-extra/latest/Maybe-Extra#orElse"><code class="verbatim">orElse</code></a> exists as well.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode elm"><code class="sourceCode elm"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">Just</span> <span class="dv">5</span></span>
@@ -183,7 +183,7 @@ version of function for an open source project which is involved by many people.
 <p>It results in a bit longer codes than one with helper package, nevertheless the user still
 understand the code easier with plain syntax background.
 No need to look up the extra documentation! even though your IDE will teach you how to use it
-thesedays. <del>but still eading documentation is stressfull.</del></p>
+thesedays. <del>but still reading documentation is stressfull.</del></p>
 <p>so finally I made another iteration.</p>
 <h2 id="third-iteration">Third Iteration</h2>
 <p><strong>Note:</strong> I add more types and implentation for study purpose.</p>
@@ -258,7 +258,7 @@ different from the one in <em>fold</em>.</p>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">// in fold in rust  </span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cn">Some</span>(sound_so_far) <span class="op">=&gt;</span> sound_so_far <span class="op">+</span> new_sound<span class="op">,</span></span></code></pre></div>
 <p>vs</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="op">//</span> preppend new sound to acc<span class="op">.</span> <span class="kw">in</span> <span class="fu">foldr</span>  <span class="kw">in</span> haskell</span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- preppend new sound to acc. in foldr  in haskell</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>_ <span class="ot">-&gt;</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  (sound <span class="op">&lt;&gt;</span>) <span class="op">&lt;$&gt;</span> acc</span></code></pre></div>
 <h2 id="wrapping-up">Wrapping Up</h2>

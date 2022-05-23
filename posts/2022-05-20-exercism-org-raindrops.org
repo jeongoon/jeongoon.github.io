@@ -137,8 +137,8 @@ because =.or_else= will always check the result of =acc.map()= is /Some/ (Just i
 /None/ (Nothing in Haskell).
 
 If I use the pattern matching, It runs either =.map()= part /or/ =.or_else= part.
-Even if it looks fancy or expressive, it also leads us to write less efficient code
-and it make for reviewer to understand a little bit harder.
+Even if it looks fancy or expressive, it can lead us to write less efficient code
+and also make the codes for reviewer who is not familiar with extra syntax to understand.
 
 
 ** leave it as basic
@@ -171,7 +171,7 @@ version of function for an open source project which is involved by many people.
 It results in a bit longer codes than one with helper package, nevertheless the user still
 understand the code easier with plain syntax background.
 No need to look up the extra documentation! even though your IDE will teach you how to use it
-thesedays. +but still eading documentation is stressfull.+
+thesedays. +but still reading documentation is stressfull.+
 
 so finally I made another iteration.
 
@@ -264,7 +264,7 @@ so finally I made another iteration.
 vs
 
 #+begin_src haskell
-              // preppend new sound to acc. in foldr  in haskell
+              -- preppend new sound to acc. in foldr  in haskell
               _ ->
                 (sound <>) <$> acc
 #+end_src
