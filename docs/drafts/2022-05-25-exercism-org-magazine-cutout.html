@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="my magazine cut out soloution at exercism.org">
+
+
+    <meta name="keywords" content="rust, closure, function">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - Exercism - Rust - Magazine Cu Out</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/19Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Exercism - Rust - Magazine Cu Out
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../drafts.html">Drafts</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on May 25, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'rust'." href="../tags/rust.html">rust</a>, <a title="All pages tagged 'function'." href="../tags/function.html">function</a>
+  
+</div>
+
+<h2 id="introductions">Introductions</h2>
+<h3 id="latest-version-found-at-here.">latest version: found at <a href="https://exercism.org/tracks/rust/exercises/magazine-cutout">here</a>.</h3>
+<p>In this exercise you’ll be using a HashMap, along with entry API methods,
+to solve a simple algorithm problem.</p>
+<p>Given &amp;[&amp;str] representing the words of a magazine article, and &amp;[&amp;str] representing
+the words of a note you would like to send, can you compose your note by cutting words
+out of the magazine and pasting them into a letter?</p>
+<h3 id="notes">Notes:</h3>
+<blockquote>
+<p>This implies physical cutting and pasting; the magazine needs to contain at least
+as many copies of each word as the note requires.
+Capitalization matters; just because you’re pasting together a note composed from
+words of a magazine doesn’t mean you’re willing to be ungrammatical.</p>
+</blockquote>
+<p>You’ll start with the following stubbed function signature:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> can_construct_note(magazine<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">,</span> note<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="pp">unimplemented!</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>  </span></code></pre></div>
+<p>Given the following input</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> magazine <span class="op">=</span> <span class="st">&quot;two times three is not four&quot;</span><span class="op">.</span>split_whitespace()<span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> note <span class="op">=</span> <span class="st">&quot;two times two is four&quot;</span><span class="op">.</span>split_whitespace()<span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">assert!</span>(<span class="op">!</span>can_construct_note(<span class="op">&amp;</span>magazine<span class="op">,</span> <span class="op">&amp;</span>note))<span class="op">;</span></span></code></pre></div>
+<p>The function returns false since the magazine only contains one instance of “two”
+when the note requires two of them.</p>
+<p>The following input will succeed:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> magazine <span class="op">=</span> <span class="st">&quot;Astronomer Amy Mainzer spent hours chatting with Leonardo DiCaprio for Netflix's 'Don't Look Up'&quot;</span><span class="op">.</span>split_whitespace()<span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> note <span class="op">=</span> <span class="st">&quot;Amy Mainzer chatting with Leonardo DiCaprio.&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>split_whitespace()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="pp">assert!</span>(can_construct_note(<span class="op">&amp;</span>magazine<span class="op">,</span> <span class="op">&amp;</span>note))<span class="op">;</span></span></code></pre></div>
+<h2 id="incorrect-introduction">Incorrect Introduction</h2>
+<p>If introduction is correct, most of other’s solution are not working, however they seem get passed the test
+codes, I think there might be some mistakes on <code class="verbatim">.split_whitespace()</code> function. because <em>DiCaprio</em> in last example
+code, it will be devided into:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>[<span class="st">&quot;Amy&quot;</span><span class="op">,</span> <span class="st">&quot;Mainzer&quot;</span><span class="op">,</span> <span class="st">&quot;chatting&quot;</span><span class="op">,</span> <span class="st">&quot;with&quot;</span><span class="op">,</span> <span class="st">&quot;Leonardo&quot;</span><span class="op">,</span> <span class="st">&quot;DiCaprio.&quot;</span>]</span></code></pre></div>
+<p>Please note on punctuation in /“DiCaprio.”/ and below code is an example solution from community.</p>
+<p>credit: <a href="https://exercism.org/tracks/rust/exercises/magazine-cutout/solutions/surfingtomchen">https://exercism.org/tracks/rust/exercises/magazine-cutout/solutions/surfingtomchen</a></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::collections::</span>HashMap<span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> can_construct_note(magazine<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">,</span> note<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> magazine_words <span class="op">=</span> magazine<span class="op">.</span>iter()<span class="op">.</span>fold(<span class="pp">HashMap::</span>new()<span class="op">,</span> <span class="op">|</span><span class="kw">mut</span> words<span class="op">,</span> <span class="dt">str</span><span class="op">|</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>words<span class="op">.</span>entry(<span class="dt">str</span>)<span class="op">.</span>or_insert(<span class="dv">0</span>) <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        words</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> note_words <span class="op">=</span> note<span class="op">.</span>iter()<span class="op">.</span>fold(<span class="pp">HashMap::</span>new()<span class="op">,</span> <span class="op">|</span><span class="kw">mut</span> words<span class="op">,</span> <span class="dt">str</span><span class="op">|</span> <span class="op">{</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>words<span class="op">.</span>entry(<span class="dt">str</span>)<span class="op">.</span>or_insert(<span class="dv">0</span>) <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        words</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    note_words</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>iter()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>all(<span class="op">&amp;|</span>(w<span class="op">,</span> count)<span class="op">|</span> magazine_words<span class="op">.</span>get(w)<span class="op">.</span>unwrap_or(<span class="op">&amp;</span><span class="dv">0</span>) <span class="op">&gt;=</span> count)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This is really clean code in my opinion, however the test code given in introduction doesn’t allow pass
+this code.</p>
+<pre class="shell"><code>thread 'main' panicked at 'assertion failed: can_construct_note2(&amp;magazine, &amp;note)', src/main.rs:57:5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+cargo-run exited abnormally with code 101 at Wed May 25 22:29:47
+</code></pre>
+<h2 id="my-first-try">My first try</h2>
+<h2 id="closure-is-easier">Closure is easier</h2>
+<h2 id="lifetime">Lifetime??</h2>
+<h2 id="local-function-will-be-like">local function will be like</h2>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->
