@@ -1,0 +1,20 @@
+---
+title: Exercism - Haskell, Rust - Pangram
+description: my solution for Pangram at exercism.org
+keywords: pangram, haskell, rust, functional programming, fp, fold
+author: Myoungjin Jeon
+---
+
+** Introductions
+
+***  isLower is more complicated than I thought
+
+*** only for excat solution
+
+** general solution by using set
+
+** Rust version
+*** lower case is also compliated in rust
+*** HashSet variation
+
+** Wrapping Up
