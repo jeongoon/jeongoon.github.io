@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="explain how the fold the series of series of numbers in lazy way">
+
+
+    <meta name="keywords" content="fold, union, haskell, foldt">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - Union Fold Tree</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/19Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Union Fold Tree
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../drafts.html">Drafts</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on June  2, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'haskell'." href="../tags/haskell.html">haskell</a>
+  
+</div>
+
+<h2 id="where-folding-tree-was-used">Where folding-tree was used</h2>
+<p>I found this method in genrating prime numbers. which I hardly understand at the
+time, even though it looks very interesting. fortuneately I had better
+understanding about it so I’d like to share.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">UnionFoldTree</span> (foldt) <span class="kw">where</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.List</span> (sort)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ot">foldt ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [a]</span></code></pre></div>
+<h3 id="foldt">foldt</h3>
+<p><code>foldt</code> takes a list of list of series of numbers and return a folded
+(union) and sorted list. however has some assumption shown below:</p>
+<ul>
+<li>Each list, which is inside the list, contains sorted already in ascending order</li>
+<li>All the groups is sorted by order of The first element of each group.</li>
+</ul>
+<p>So If we have multiples of number three and five and seven,</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> make_some_multiples n <span class="ot">=</span> [ n, n<span class="op">+</span>n <span class="op">..</span> <span class="dv">20</span> ]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> three_multiples <span class="ot">=</span> make_some_multiples <span class="dv">3</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">take</span> <span class="dv">5</span> <span class="op">$</span> three_multiples</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">18</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="co">-- ^ already sorted</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> five_multiples <span class="ot">=</span> make_some_multiples <span class="dv">5</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> seven_multiples <span class="ot">=</span> make_some_multiples <span class="dv">7</span></span></code></pre></div>
+<p>We need to apply the list of each multiples in this way:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> foldt [ three_multiples, five_multiples, seven_multiples ]</span></code></pre></div>
+<p>The original foldt is for the infinite list has less condition,
+however, I’d like to apply foldt to fixed size of list so has more
+edge cases:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>foldt [] <span class="ot">=</span> []</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>foldt ([]<span class="op">:</span>_) <span class="ot">=</span> []</span></code></pre></div>
+<p>So, on second condition, we can reutrn empty list if the list of left hand side
+has empty body. because each multiples has shorter length of list if the initial
+number is larger.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>foldt ((x<span class="op">:</span>xs)<span class="op">:</span>t) <span class="ot">=</span> x <span class="op">:</span> unionSort xs (foldt (pairs t))</span></code></pre></div>
+<p>The last is for general condition and as you can see foldt appears in the end again
+to make recursive call. Basically the first element of leftmost group has lowest value,
+so it will be the first element in the result. <code>unionSort</code> will remove duplicated
+member and take the element at lowest value out of the both list.</p>
+<h3 id="unionsort">unionSort</h3>
+<p>unionSort :: Ord a =&gt; [a] -&gt; [a] -&gt; [a]
+unionSort [] ys = ys
+unionSort xs [] = xs
+unionSort xs@(x:xt) ys@(y:yt) =
+case x <code>compare</code> y of
+LT -&gt; x : unionSort xt ys
+EQ -&gt; x : unionSort xt yt
+GT -&gt; y : unionSort xs yt</p>
+<p>\end{code}</p>
+<p><code>unionSort</code> also has recursive call to finish the <code>union</code> and <code>sort</code> on rest of
+members which depends on the value is choosen for the first place.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ot">pairs ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- edge cases ...</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>pairs [] <span class="ot">=</span> []</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>pairs ([]<span class="op">:</span>_) <span class="ot">=</span> [] <span class="co">-- left always has longer list; no need to go further</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>pairs (ms<span class="op">:</span>[]) <span class="ot">=</span> [ms]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>pairs ((m<span class="op">:</span>ms)<span class="op">:</span>ns<span class="op">:</span>t') <span class="ot">=</span> (m <span class="op">:</span> unionSort ms ns) <span class="op">:</span> pairs t'</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ot">sumOfMultiples ::</span> [<span class="dt">Integer</span>] <span class="ot">-&gt;</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>sumOfMultiples factors limit <span class="ot">=</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span> <span class="op">$</span> foldt [ [n,n<span class="op">+</span>n<span class="op">..</span>(limit <span class="op">-</span><span class="dv">1</span>)] <span class="op">|</span> n <span class="ot">&lt;-</span> factors', n <span class="op">&gt;</span> <span class="dv">0</span> ]</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> factors' <span class="ot">=</span> <span class="fu">sort</span> factors</span></code></pre></div>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->

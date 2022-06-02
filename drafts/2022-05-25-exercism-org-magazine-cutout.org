@@ -1,5 +1,5 @@
 ---
-title: Exercism - Rust - Magazine Cu Out
+title: Exercism - Rust - Magazine Cut Out
 description: my magazine cut out soloution at exercism.org
 keywords: rust, closure, function
 author: Myoungjin Jeon
