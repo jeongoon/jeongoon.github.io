@@ -63,9 +63,11 @@ foldt ((x:xs):t) = x : unionSort xs (foldt (pairs t))
 \end{code}
 
 The last is for general condition and as you can see foldt appears in the end again
-to make recursive call. Basically the first element of leftmost group has lowest value,
-so it will be the first element in the result. `unionSort` will remove duplicated
-member and take the element at lowest value out of the both list.
+to make recursive call. Basically the *first element of leftmost group* has lowest value,
+so it will be the first element in the result. This is the basic concept of `foldt`.
+
+`unionSort` will remove duplicated member and take the element at lowest value
+out of the both list.
 
 === unionSort
 
@@ -74,8 +76,8 @@ unionSort [] ys = ys
 unionSort xs [] = xs
 unionSort xs@(x:xt) ys@(y:yt) =
   case x `compare` y of
-    LT -> x : unionSort xt ys
-    EQ -> x : unionSort xt yt
+    LT -> x : unionSort xt ys -- x used; do unionSort on rest of them
+    EQ -> x : unionSort xt yt -- x used; y is duplicated
     GT -> y : unionSort xs yt
 
 \end{code}
@@ -83,23 +85,88 @@ unionSort xs@(x:xt) ys@(y:yt) =
 `unionSort` also has recursive call to finish the `union` and `sort` on rest of
 members which depends on the value is choosen for the first place.
 
-\begin{code}
+=== pairs
 
+`pairs` do the same sort method which is used in `foldt`. `foldt` takes only
+one group each time, but `pairs` on the other hand tries to take two groups
+each time. If it cannot, it returns empty or the leftmost group.
+
+\begin{code}
 
 pairs :: Ord a => [[a]] -> [[a]]
 -- edge cases ...
 pairs [] = []
 pairs ([]:_) = [] -- left always has longer list; no need to go further
-pairs (ms:[]) = [ms]
+pairs (ms:[]) = [ms] -- just return leftmost group
+
+\end{code}
 
 pairs ((m:ms):ns:t') = (m : unionSort ms ns) : pairs t'
+\end{code}
 
+Or if it can take two groups, `m` will be the lowest value and do `unionSort`
+on rest of between two groups, and `pairs` will bite the tail of the code again
+to finish the job.
 
+== foldt examples
 
-sumOfMultiples :: [Integer] -> Integer -> Integer
+=== sumOfMultiples
 
+This task is introduced at [exercism.org](https://exercism.org/tracks/haskell/exercises/sum-of-multiples).
+Even though, we could solve this problem by checking divisibility of all the
+member numbers in given `factor` list, it was worth to try because `foldt` is
+fast enough to solve by *union*ing the numbers and get only one of common
+multiples.
+
+\begin{code}
 sumOfMultiples factors limit =
   sum $ foldt [ [n,n+n..(limit -1)] | n <- factors', n > 0 ]
   where factors' = sort factors
-
 \end{code}
+
+```haskell
+λ= sumOfMultiples [2,3,5,7,11] 100000
+3961010983
+```
+
+=== original prime method
+
+I'll just leave the whole code for now. Too many recursive call
+probably makes us confused at first. but if you know how foldt works
+in there, it will be easier to figure out how it works!
+
+To be honest, This code is still hard for me to understand. Or I could
+understand but I don't think I could invent something like this. 😅
+
+The basic idea of the generating is that if I found a prime,
+`prime square` and `prime * (prime + 1)` couldn't be prime numbers.
+so will be removed from the prime list.
+
+```haskell
+module PrimeNumber
+  ( primesTME
+  ) where
+
+primesTME :: [Int]
+primesTME =   2 : ([3,5..] `minus` foldt [ [p*p,p*p+2*p..] | p <- primes_ ])
+  where
+    primes_ = 3 : ([5,7..] `minus` foldt [ [p*p,p*p+2*p..] | p <- primes_ ])
+    foldt ~((x:xs):t) = x : union xs (foldt (pairs t))
+    pairs ~((x:xs):ys:t) = (x : union xs ys) : pairs t
+
+minus :: [Int] -> [Int] -> [Int]
+minus xs@(x:xt) ys@(y:yt) = case compare x y of
+                              LT -> x : minus xt ys
+                              EQ ->     minus xt yt
+                              GT ->     minus xs yt
+
+union :: [Int] -> [Int] -> [Int]
+union xs@(x:xt) ys@(y:yt) = case compare x y of
+                              LT -> x : union xt ys
+                              EQ -> x : union xt yt
+                              GT -> y : union xs yt
+
+```
+
+As you can see `foldt` and `pairs` are now much simpler because it works
+on the infinite list.
