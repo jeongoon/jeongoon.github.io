@@ -28,7 +28,7 @@
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MJ's kind weird Code - Union Fold Tree</title>
+    <title>MJ's kind weird Code - Let's Fold Tree</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
@@ -41,7 +41,7 @@
         <a href="../">MJ's Kind Weird Code</a>
       </div>
       <div id="page-title">
-        <p> 📰 Union Fold Tree
+        <p> 📰 Let's Fold Tree
         </p>
       </div>
       <nav id="main-nav" class="font-menu-title">
@@ -66,10 +66,16 @@
   
 </div>
 
-<h2 id="where-folding-tree-was-used">Where folding-tree was used</h2>
-<p>I found this method in genrating prime numbers. which I hardly understand at the
-time, even though it looks very interesting. fortuneately I had better
-understanding about it so I’d like to share.</p>
+<h1 id="folding-tree">folding-tree?</h1>
+<blockquote>
+<p><em>The term of <code>folding-tree</code> is not an official name. I just wanted to call
+the function as specific name.</em></p>
+<p>I lost the original source code because link I have is broken now. So
+this article is licensed under MIT as I borrow from other’s</p>
+</blockquote>
+<p>I found this function in another function genrating prime numbers.</p>
+<p>which I hardly understand at the time, even though it looks very interesting.</p>
+<p>Fortuneately I had betterunderstanding about it so I’d like to share.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">UnionFoldTree</span> (foldt) <span class="kw">where</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.List</span> (sort)</span>
@@ -92,7 +98,9 @@ understanding about it so I’d like to share.</p>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> seven_multiples <span class="ot">=</span> make_some_multiples <span class="dv">7</span></span></code></pre></div>
 <p>We need to apply the list of each multiples in this way:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> foldt [ three_multiples, five_multiples, seven_multiples ]</span></code></pre></div>
-<p>The original foldt is for the infinite list has less condition,
+<p>This assumption helps our <em>thunk</em> only cares about the the list in the future.
+and which idea very well goes with nature of lazy evaluation!</p>
+<p>The original <code>foldt</code> is for the infinite list has less condition,
 however, I’d like to apply foldt to fixed size of list so has more
 edge cases:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>foldt [] <span class="ot">=</span> []</span>
@@ -101,83 +109,101 @@ edge cases:</p>
 has empty body. because each multiples has shorter length of list if the initial
 number is larger.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>foldt ((x<span class="op">:</span>xs)<span class="op">:</span>t) <span class="ot">=</span> x <span class="op">:</span> unionSort xs (foldt (pairs t))</span></code></pre></div>
-<p>The last is for general condition and as you can see foldt appears in the end again
-to make recursive call. Basically the <em>first element of leftmost group</em> has lowest value,
-so it will be the first element in the result. This is the basic concept of <code>foldt</code>.</p>
+<p>The last pattern is for general condition and as you can see foldt appears
+in the end again to make recursive call.</p>
+<p>Basically the <em>first element of leftmost group</em> has lowest value,
+so it will be the first element in the result. This is the basic concept of <code>foldt</code>.
+And rest of list (xs) will be union-ed with rest of <code>foldt</code>-ed list.</p>
 <p><code>unionSort</code> will remove duplicated member and take the element at lowest value
 out of the both list.</p>
 <h3 id="unionsort">unionSort</h3>
-<p>unionSort :: Ord a =&gt; [a] -&gt; [a] -&gt; [a]
-unionSort [] ys = ys
-unionSort xs [] = xs
-unionSort xs@(x:xt) ys@(y:yt) =
-case x <code>compare</code> y of
-LT -&gt; x : unionSort xt ys – x used; do unionSort on rest of them
-EQ -&gt; x : unionSort xt yt – x used; y is duplicated
-GT -&gt; y : unionSort xs yt</p>
-<p>\end{code}</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ot">unionSort ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [a]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>unionSort [] ys <span class="ot">=</span> ys</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>unionSort xs [] <span class="ot">=</span> xs</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>unionSort xs<span class="op">@</span>(x<span class="op">:</span>xt) ys<span class="op">@</span>(y<span class="op">:</span>yt) <span class="ot">=</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">case</span> x <span class="ot">`compare`</span> y <span class="kw">of</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">LT</span> <span class="ot">-&gt;</span> x <span class="op">:</span> unionSort xt ys <span class="co">-- x used; do unionSort on rest of them</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">EQ</span> <span class="ot">-&gt;</span> x <span class="op">:</span> unionSort xt yt <span class="co">-- x used; y is duplicated</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">GT</span> <span class="ot">-&gt;</span> y <span class="op">:</span> unionSort xs yt</span></code></pre></div>
 <p><code>unionSort</code> also has recursive call to finish the <code>union</code> and <code>sort</code> on rest of
 members which depends on the value is choosen for the first place.</p>
 <h3 id="pairs">pairs</h3>
 <p><code>pairs</code> do the same sort method which is used in <code>foldt</code>. <code>foldt</code> takes only
-one group each time, but <code>pairs</code> on the other hand tries to take two groups
-each time. If it cannot, it returns empty or the leftmost group.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ot">pairs ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [[a]]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- edge cases ...</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>pairs [] <span class="ot">=</span> []</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>pairs ([]<span class="op">:</span>_) <span class="ot">=</span> [] <span class="co">-- left always has longer list; no need to go further</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>pairs (ms<span class="op">:</span>[]) <span class="ot">=</span> [ms] <span class="co">-- just return leftmost group</span></span></code></pre></div>
-<p>pairs ((m:ms):ns:t’) = (m : unionSort ms ns) : pairs t’
-\end{code}</p>
-<p>Or if it can take two groups, <code>m</code> will be the lowest value and do <code>unionSort</code>
-on rest of between two groups, and <code>pairs</code> will bite the tail of the code again
-to finish the job.</p>
+one group each time, but <code>pairs</code> – on the other hand – tries to take two groups
+every time. If it cannot, it returns empty or the <em>leftmost</em> group so that
+<code>foldt</code> will end its job.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ot">pairs ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [[a]]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- edge cases ...</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>pairs [] <span class="ot">=</span> []</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pairs ([]<span class="op">:</span>_) <span class="ot">=</span> [] <span class="co">-- left always has longer list; no need to go further</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>pairs (ms<span class="op">:</span>[]) <span class="ot">=</span> [ms] <span class="co">-- just return leftmost group</span></span></code></pre></div>
+<p>The second pattern matching will reduce the searching time as well as
+we can see in the pattern matching of <code>foldt</code>.</p>
+<p><em>Those edge cases coulbe be different when we are dealing with different type
+of sereies of numbers.</em></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pairs ((m<span class="op">:</span>ms)<span class="op">:</span>ns<span class="op">:</span>t') <span class="ot">=</span> (m <span class="op">:</span> unionSort ms ns) <span class="op">:</span> pairs t'</span></code></pre></div>
+<p>If it can take two groups, <code>m</code> will be the lowest value and will be the firt value
+of <code>pairs</code> function – which is actually doing amazing job to wiring all the
+<code>foldt</code> and <code>pairs</code> smoothly.</p>
+<p>To organize the rest of them <code>unionSort</code> will be applied on rest of between
+wo groups, and <code>pairs</code> will bite the tail of the code again to finish the job.</p>
+<p>I could see this process as a beautiful piece of recursive programming.</p>
 <h2 id="foldt-examples">foldt examples</h2>
 <h3 id="sumofmultiples">sumOfMultiples</h3>
 <p>This task is introduced at <a href="https://exercism.org/tracks/haskell/exercises/sum-of-multiples">exercism.org</a>.
 Even though, we could solve this problem by checking divisibility of all the
-member numbers in given <code>factor</code> list, it was worth to try because <code>foldt</code> is
-fast enough to solve by <em>union</em>ing the numbers and get only one of common
+member numbers which is given as <code>factor</code> list, it was worth to try because <code>foldt</code> is
+fast enough to solve by <em>union</em>-ing the numbers and get only one of common
 multiples.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sumOfMultiples factors limit <span class="ot">=</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span> <span class="op">$</span> foldt [ [n,n<span class="op">+</span>n<span class="op">..</span>(limit <span class="op">-</span><span class="dv">1</span>)] <span class="op">|</span> n <span class="ot">&lt;-</span> factors', n <span class="op">&gt;</span> <span class="dv">0</span> ]</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> factors' <span class="ot">=</span> <span class="fu">sort</span> factors</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>λ<span class="ot">=</span> sumOfMultiples [<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">11</span>] <span class="dv">100000</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dv">3961010983</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sumOfMultiples factors limit <span class="ot">=</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span> <span class="op">$</span> foldt [ [n,n<span class="op">+</span>n<span class="op">..</span>(limit <span class="op">-</span><span class="dv">1</span>)] <span class="op">|</span> n <span class="ot">&lt;-</span> factors', n <span class="op">&gt;</span> <span class="dv">0</span> ]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> factors' <span class="ot">=</span> <span class="fu">sort</span> factors</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>λ<span class="ot">=</span> sumOfMultiples [<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">11</span>] <span class="dv">100000</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dv">3961010983</span></span></code></pre></div>
 <h3 id="original-prime-method">original prime method</h3>
 <p>I’ll just leave the whole code for now. Too many recursive call
-probably makes us confused at first. but if you know how foldt works
+probably makes us confused at first. if you know how foldt works
 in there, it will be easier to figure out how it works!</p>
 <p>To be honest, This code is still hard for me to understand. Or I could
 understand but I don’t think I could invent something like this. 😅</p>
 <p>The basic idea of the generating is that if I found a prime,
 <code>prime square</code> and <code>prime * (prime + 1)</code> couldn’t be prime numbers.
 so will be removed from the prime list.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">PrimeNumber</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  ( primesTME</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">where</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ot">primesTME ::</span> [<span class="dt">Int</span>]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>primesTME <span class="ot">=</span>   <span class="dv">2</span> <span class="op">:</span> ([<span class="dv">3</span>,<span class="dv">5</span><span class="op">..</span>] <span class="ot">`minus`</span> foldt [ [p<span class="op">*</span>p,p<span class="op">*</span>p<span class="op">+</span><span class="dv">2</span><span class="op">*</span>p<span class="op">..</span>] <span class="op">|</span> p <span class="ot">&lt;-</span> primes_ ])</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    primes_ <span class="ot">=</span> <span class="dv">3</span> <span class="op">:</span> ([<span class="dv">5</span>,<span class="dv">7</span><span class="op">..</span>] <span class="ot">`minus`</span> foldt [ [p<span class="op">*</span>p,p<span class="op">*</span>p<span class="op">+</span><span class="dv">2</span><span class="op">*</span>p<span class="op">..</span>] <span class="op">|</span> p <span class="ot">&lt;-</span> primes_ ])</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    foldt <span class="op">~</span>((x<span class="op">:</span>xs)<span class="op">:</span>t) <span class="ot">=</span> x <span class="op">:</span> union xs (foldt (pairs t))</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">~</span>((x<span class="op">:</span>xs)<span class="op">:</span>ys<span class="op">:</span>t) <span class="ot">=</span> (x <span class="op">:</span> union xs ys) <span class="op">:</span> pairs t</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ot">minus ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>minus xs<span class="op">@</span>(x<span class="op">:</span>xt) ys<span class="op">@</span>(y<span class="op">:</span>yt) <span class="ot">=</span> <span class="kw">case</span> <span class="fu">compare</span> x y <span class="kw">of</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">LT</span> <span class="ot">-&gt;</span> x <span class="op">:</span> minus xt ys</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">EQ</span> <span class="ot">-&gt;</span>     minus xt yt</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">GT</span> <span class="ot">-&gt;</span>     minus xs yt</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="ot">union ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>union xs<span class="op">@</span>(x<span class="op">:</span>xt) ys<span class="op">@</span>(y<span class="op">:</span>yt) <span class="ot">=</span> <span class="kw">case</span> <span class="fu">compare</span> x y <span class="kw">of</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">LT</span> <span class="ot">-&gt;</span> x <span class="op">:</span> union xt ys</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">EQ</span> <span class="ot">-&gt;</span> x <span class="op">:</span> union xt yt</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">GT</span> <span class="ot">-&gt;</span> y <span class="op">:</span> union xs yt</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">PrimeNumber</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  ( primesTME</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">where</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ot">primesTME ::</span> [<span class="dt">Int</span>]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>primesTME <span class="ot">=</span>   <span class="dv">2</span> <span class="op">:</span> ([<span class="dv">3</span>,<span class="dv">5</span><span class="op">..</span>] <span class="ot">`minus`</span> foldt [ [p<span class="op">*</span>p,p<span class="op">*</span>p<span class="op">+</span><span class="dv">2</span><span class="op">*</span>p<span class="op">..</span>] <span class="op">|</span> p <span class="ot">&lt;-</span> primes_ ])</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    primes_ <span class="ot">=</span> <span class="dv">3</span> <span class="op">:</span> ([<span class="dv">5</span>,<span class="dv">7</span><span class="op">..</span>] <span class="ot">`minus`</span> foldt [ [p<span class="op">*</span>p,p<span class="op">*</span>p<span class="op">+</span><span class="dv">2</span><span class="op">*</span>p<span class="op">..</span>] <span class="op">|</span> p <span class="ot">&lt;-</span> primes_ ])</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    foldt <span class="op">~</span>((x<span class="op">:</span>xs)<span class="op">:</span>t) <span class="ot">=</span> x <span class="op">:</span> union xs (foldt (pairs t))</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">~</span>((x<span class="op">:</span>xs)<span class="op">:</span>ys<span class="op">:</span>t) <span class="ot">=</span> (x <span class="op">:</span> union xs ys) <span class="op">:</span> pairs t</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="ot">minus ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>minus xs<span class="op">@</span>(x<span class="op">:</span>xt) ys<span class="op">@</span>(y<span class="op">:</span>yt) <span class="ot">=</span> <span class="kw">case</span> <span class="fu">compare</span> x y <span class="kw">of</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">LT</span> <span class="ot">-&gt;</span> x <span class="op">:</span> minus xt ys</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">EQ</span> <span class="ot">-&gt;</span>     minus xt yt</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">GT</span> <span class="ot">-&gt;</span>     minus xs yt</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="ot">union ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>union xs<span class="op">@</span>(x<span class="op">:</span>xt) ys<span class="op">@</span>(y<span class="op">:</span>yt) <span class="ot">=</span> <span class="kw">case</span> <span class="fu">compare</span> x y <span class="kw">of</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">LT</span> <span class="ot">-&gt;</span> x <span class="op">:</span> union xt ys</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">EQ</span> <span class="ot">-&gt;</span> x <span class="op">:</span> union xt yt</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">GT</span> <span class="ot">-&gt;</span> y <span class="op">:</span> union xs yt</span></code></pre></div>
 <p>As you can see <code>foldt</code> and <code>pairs</code> are now much simpler because it works
-on the infinite list.</p>
+on the infinite list. and <code>~</code> prefix will calm down the <code>ghc</code> because it tells
+<code>ghc</code> to trust our pattern matching to be serve all the cases even though
+it doesn’t look like exhaustive.</p>
+<h2 id="what-we-can-do-more">What we can do more?</h2>
+<p>I was thinking about making business hours by using <code>foldt</code>. A trading hours
+could be relying on the public holiday and day light saving time. or each weekday
+could have the different schedule like <em>“shopping day”</em> (which is Thursday
+in Australia).</p>
+<p>So we could have many groups of time tables and union and sort them to
+show recent trading hours and remove some of that based on the special or
+public holidays!</p>
+<p>I hope I could write an article about it!</p>
 
     </div>
 

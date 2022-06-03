@@ -1,15 +1,25 @@
 ---
-title: Union Fold Tree
+title: Let's Fold Tree
 description: explain how the fold the series of series of numbers in lazy way
 keywords: fold, union, haskell, foldt
 author: Myoungjin Jeon
 ---
 
-== Where folding-tree was used
+= folding-tree?
 
-I found this method in genrating prime numbers. which I hardly understand at the
-time, even though it looks very interesting. fortuneately I had better
-understanding about it so I'd like to share.
+ >  *The term of `folding-tree` is not an official name. I just wanted to call
+ >  the function as specific name.*
+ >
+ >  I lost the original source code because link I have is broken now. So
+ >  this article is licensed under MIT as I borrow from other's
+
+I found this function in another function genrating prime numbers.
+
+which I hardly understand at the time, even though it looks very interesting.
+
+Fortuneately I had betterunderstanding about it so I'd like to share.
+
+
 
 \begin{code}
 module UnionFoldTree (foldt) where
@@ -45,7 +55,10 @@ We need to apply the list of each multiples in this way:
 λ> foldt [ three_multiples, five_multiples, seven_multiples ]
 ```
 
-The original foldt is for the infinite list has less condition,
+This assumption helps our *thunk* only cares about the the list in the future.
+and which idea very well goes with nature of lazy evaluation!
+
+The original `foldt` is for the infinite list has less condition,
 however, I'd like to apply foldt to fixed size of list so has more
 edge cases:
 
@@ -62,15 +75,19 @@ number is larger.
 foldt ((x:xs):t) = x : unionSort xs (foldt (pairs t))
 \end{code}
 
-The last is for general condition and as you can see foldt appears in the end again
-to make recursive call. Basically the *first element of leftmost group* has lowest value,
+The last pattern is for general condition and as you can see foldt appears
+in the end again to make recursive call.
+
+Basically the *first element of leftmost group* has lowest value,
 so it will be the first element in the result. This is the basic concept of `foldt`.
+And rest of list (xs) will be union-ed with rest of `foldt`-ed list.
 
 `unionSort` will remove duplicated member and take the element at lowest value
 out of the both list.
 
 === unionSort
 
+\begin{code}
 unionSort :: Ord a => [a] -> [a] -> [a]
 unionSort [] ys = ys
 unionSort xs [] = xs
@@ -88,25 +105,37 @@ members which depends on the value is choosen for the first place.
 === pairs
 
 `pairs` do the same sort method which is used in `foldt`. `foldt` takes only
-one group each time, but `pairs` on the other hand tries to take two groups
-each time. If it cannot, it returns empty or the leftmost group.
+one group each time, but `pairs` --  on the other hand -- tries to take two groups
+every time. If it cannot, it returns empty or the *leftmost* group so that
+`foldt` will end its job.
 
 \begin{code}
-
 pairs :: Ord a => [[a]] -> [[a]]
 -- edge cases ...
 pairs [] = []
 pairs ([]:_) = [] -- left always has longer list; no need to go further
 pairs (ms:[]) = [ms] -- just return leftmost group
-
 \end{code}
 
+The second pattern matching will reduce the searching time as well as
+we can see in the pattern matching of `foldt`.
+
+*Those edge cases coulbe be different when we are dealing with different type
+of sereies of numbers.*
+
+
+\begin{code}
 pairs ((m:ms):ns:t') = (m : unionSort ms ns) : pairs t'
 \end{code}
 
-Or if it can take two groups, `m` will be the lowest value and do `unionSort`
-on rest of between two groups, and `pairs` will bite the tail of the code again
-to finish the job.
+If it can take two groups, `m` will be the lowest value and will be the firt value
+of `pairs` function -- which is actually doing amazing job to wiring all the
+`foldt` and `pairs` smoothly.
+
+To organize the rest of them `unionSort` will be applied on rest of between
+wo groups, and `pairs` will bite the tail of the code again to finish the job.
+
+I could see this process as a beautiful piece of recursive programming.
 
 == foldt examples
 
@@ -114,8 +143,8 @@ to finish the job.
 
 This task is introduced at [exercism.org](https://exercism.org/tracks/haskell/exercises/sum-of-multiples).
 Even though, we could solve this problem by checking divisibility of all the
-member numbers in given `factor` list, it was worth to try because `foldt` is
-fast enough to solve by *union*ing the numbers and get only one of common
+member numbers which is given as `factor` list, it was worth to try because `foldt` is
+fast enough to solve by *union*-ing the numbers and get only one of common
 multiples.
 
 \begin{code}
@@ -132,7 +161,7 @@ sumOfMultiples factors limit =
 === original prime method
 
 I'll just leave the whole code for now. Too many recursive call
-probably makes us confused at first. but if you know how foldt works
+probably makes us confused at first.  if you know how foldt works
 in there, it will be easier to figure out how it works!
 
 To be honest, This code is still hard for me to understand. Or I could
@@ -169,4 +198,19 @@ union xs@(x:xt) ys@(y:yt) = case compare x y of
 ```
 
 As you can see `foldt` and `pairs` are now much simpler because it works
-on the infinite list.
+on the infinite list. and `~` prefix will calm down the `ghc` because it tells
+`ghc` to trust our pattern matching to be serve all the cases even though
+it doesn't look like exhaustive.
+
+== What we can do more?
+
+I was thinking about making business hours by using `foldt`. A trading hours
+could be relying on the public holiday and day light saving time. or each weekday
+could have the different schedule like *"shopping day"* (which is Thursday
+in Australia).
+
+So we could have many groups of time tables and union and sort them to
+show recent trading hours and remove some of that based on the special or
+public holidays!
+
+I hope I could write an article about it!
