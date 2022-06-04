@@ -7,8 +7,8 @@ author: Myoungjin Jeon
 
 = folding-tree?
 
- >  *The term of `folding-tree` is not an official name. I just wanted to call
- >  the function as specific name.*
+ >  *The term of `folding-tree` is not an official or common name. But I'll
+ >  call the function as `folding-tree`.
  >
  >  I lost the original source code because link I have is broken now. So
  >  this article is licensed under MIT as I borrow from other's
@@ -158,18 +158,19 @@ sumOfMultiples factors limit =
 3961010983
 ```
 
-=== original prime method
+=== origin of foldt (prime numbers)
 
-I'll just leave the whole code for now. Too many recursive call
-probably makes us confused at first.  if you know how foldt works
-in there, it will be easier to figure out how it works!
+Too many recursive call probably makes us confused at first.
+if you know how foldt works in there, it will be easier to figure out how it works!
 
 To be honest, This code is still hard for me to understand. Or I could
 understand but I don't think I could invent something like this. 😅
 
-The basic idea of the generating is that if I found a prime,
-`prime square` and `prime * (prime + 1)` couldn't be prime numbers.
-so will be removed from the prime list.
+The basic idea of the generating is called [`Sieve of Eratosthenes`](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). But foldt is an unique approach
+to achieve to sieving when compared to imperative [pseudo code](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode).
+
+We could think `minus` function is to used sieve and `foldt` function used to eliminate
+the duplication and to sort.
 
 ```haskell
 module PrimeNumber

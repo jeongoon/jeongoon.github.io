@@ -68,8 +68,8 @@
 
 <h1 id="folding-tree">folding-tree?</h1>
 <blockquote>
-<p><em>The term of <code>folding-tree</code> is not an official name. I just wanted to call
-the function as specific name.</em></p>
+<p>*The term of <code>folding-tree</code> is not an official or common name. But I’ll
+call the function as <code>folding-tree</code>.</p>
 <p>I lost the original source code because link I have is broken now. So
 this article is licensed under MIT as I borrow from other’s</p>
 </blockquote>
@@ -160,15 +160,15 @@ multiples.</p>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> factors' <span class="ot">=</span> <span class="fu">sort</span> factors</span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>λ<span class="ot">=</span> sumOfMultiples [<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">11</span>] <span class="dv">100000</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dv">3961010983</span></span></code></pre></div>
-<h3 id="original-prime-method">original prime method</h3>
-<p>I’ll just leave the whole code for now. Too many recursive call
-probably makes us confused at first. if you know how foldt works
-in there, it will be easier to figure out how it works!</p>
+<h3 id="origin-of-foldt-prime-numbers">origin of foldt (prime numbers)</h3>
+<p>Too many recursive call probably makes us confused at first.
+if you know how foldt works in there, it will be easier to figure out how it works!</p>
 <p>To be honest, This code is still hard for me to understand. Or I could
 understand but I don’t think I could invent something like this. 😅</p>
-<p>The basic idea of the generating is that if I found a prime,
-<code>prime square</code> and <code>prime * (prime + 1)</code> couldn’t be prime numbers.
-so will be removed from the prime list.</p>
+<p>The basic idea of the generating is called <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"><code>Sieve of Eratosthenes</code></a>. But foldt is an unique approach
+to achieve to sieving when compared to imperative <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode">pseudo code</a>.</p>
+<p>We could think <code>minus</code> function is to used sieve and <code>foldt</code> function used to eliminate
+the duplication and to sort.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">PrimeNumber</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  ( primesTME</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">where</span></span>
