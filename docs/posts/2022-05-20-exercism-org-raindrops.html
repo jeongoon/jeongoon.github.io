@@ -173,7 +173,7 @@ and also make the codes for reviewer who is not familiar with extra syntax to un
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt; Just 7</span></span></code></pre></div>
 <p>But that function comes from an <em>extra</em> package! Because elm language encourages the user use
 simpler syntax, which is <strong>pattern matching</strong> in this case.
-(thiis quite bold opinion, but I agree that it is not good idea to write many different
+(this quite strong point of view, but I agree that it is not good idea to write many different
 version of function for an open source project which is involved by many people.)</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode elm"><code class="sourceCode elm"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="dt">Just</span> <span class="dv">5</span> <span class="cf">of</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Nothing</span> <span class="op">-&gt;</span></span>
@@ -183,7 +183,7 @@ version of function for an open source project which is involved by many people.
 <p>It results in a bit longer codes than one with helper package, nevertheless the user still
 understand the code easier with plain syntax background.
 No need to look up the extra documentation! even though your IDE will teach you how to use it
-thesedays. <del>but still reading documentation is stressfull.</del></p>
+thesedays. <del>But reading a documentation is still stressful.</del></p>
 <p>so finally I made another iteration.</p>
 <h2 id="third-iteration">Third Iteration</h2>
 <p><strong>Note:</strong> I add more types and implentation for study purpose.</p>
@@ -253,14 +253,20 @@ thesedays. <del>but still reading documentation is stressfull.</del></p>
 <span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>      <span class="op">|</span> <span class="fu">otherwise</span> <span class="ot">=</span> acc</span></code></pre></div>
 <p>Data.Text is used here, so code is less straightforward. and <code class="verbatim">foldr</code> is used here instead of
 <code class="verbatim">fold</code> in Rust (which is actually <code class="verbatim">foldl</code> in <em>haskell</em>). The order of catenating texts is
-different from the one in <em>fold</em>.</p>
+different from the one in <em>fold</em>. i.e:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// append new sound to acc</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">// in fold in rust  </span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cn">Some</span>(sound_so_far) <span class="op">=&gt;</span> sound_so_far <span class="op">+</span> new_sound<span class="op">,</span></span></code></pre></div>
-<p>vs</p>
+<p><strong>vs</strong></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- preppend new sound to acc. in foldr  in haskell</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>_ <span class="ot">-&gt;</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  (sound <span class="op">&lt;&gt;</span>) <span class="op">&lt;$&gt;</span> acc</span></code></pre></div>
+<p>If you are not comfortable with <code>&lt;$&gt;</code> operator, you can use <code>fmap</code>. and I put a lamda variable
+to how it really works. (<em>Frankly speaking,</em> I wish <code>elm</code> had this kind of feature but it is not
+supported <strong>on purose!!</strong>)</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- preppend new sound to acc. in foldr  in haskell</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>_ <span class="ot">-&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmap</span> (\acc' <span class="ot">-&gt;</span> sound <span class="op">&lt;&gt;</span> acc') acc</span></code></pre></div>
 <h2 id="wrapping-up">Wrapping Up</h2>
 <ul>
 <li>In Rust, it is possible to solve a problem in a functional programming way.</li>

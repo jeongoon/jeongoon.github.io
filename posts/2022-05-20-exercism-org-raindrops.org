@@ -157,7 +157,7 @@ In Elm lanauge, [[https://package.elm-lang.org/packages/elm-community/maybe-extr
 
 But that function comes from an /extra/ package! Because elm language encourages the user use
 simpler syntax, which is *pattern matching* in this case.
-(thiis quite bold opinion, but I agree that it is not good idea to write many different
+(this quite strong point of view, but I agree that it is not good idea to write many different
 version of function for an open source project which is involved by many people.)
 
 #+begin_src elm
@@ -171,7 +171,7 @@ version of function for an open source project which is involved by many people.
 It results in a bit longer codes than one with helper package, nevertheless the user still
 understand the code easier with plain syntax background.
 No need to look up the extra documentation! even though your IDE will teach you how to use it
-thesedays. +but still reading documentation is stressfull.+
+thesedays. +But reading a documentation is still stressful.+
 
 so finally I made another iteration.
 
@@ -253,7 +253,7 @@ so finally I made another iteration.
 
  Data.Text is used here, so code is less straightforward. and =foldr= is used here instead of
  =fold= in Rust (which is actually =foldl= in /haskell/). The order of  catenating texts is
- different from the one in /fold/.
+ different from the one in /fold/. i.e:
 
 #+begin_src rust
                   // append new sound to acc
@@ -261,12 +261,22 @@ so finally I made another iteration.
                   Some(sound_so_far) => sound_so_far + new_sound,
 #+end_src
 
-vs
+*vs*
 
 #+begin_src haskell
               -- preppend new sound to acc. in foldr  in haskell
               _ ->
                 (sound <>) <$> acc
+#+end_src
+
+ If you are not comfortable with ~<$>~ operator, you can use ~fmap~. and I put a lamda variable
+ to how it really works. (/Frankly speaking,/ I wish ~elm~ had this kind of feature but it is not
+ supported *on purose!!*)
+
+#+begin_src haskell
+              -- preppend new sound to acc. in foldr  in haskell
+              _ ->
+                fmap (\acc' -> sound <> acc') acc
 #+end_src
 
 
