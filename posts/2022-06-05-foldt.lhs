@@ -32,6 +32,7 @@ shell> curl -sL https://raw.githubusercontent.com/jeongoon/jeongoon.github.io/ma
 shell> ghci
 GHCi, version 8.10.7: https://www.haskell.org/ghc/  :? for help
 Loaded GHCi configuration from /home/myoungjin/.config/ghc/ghci.conf
+λ= :l FoldTree.lhs
 λ= :l FoldTree.lhs 
 [1 of 1] Compiling FoldTree         ( FoldTree.lhs, interpreted )
 Ok, one module loaded.
