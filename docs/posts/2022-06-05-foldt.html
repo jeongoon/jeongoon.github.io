@@ -73,12 +73,12 @@ call the function as <code>folding-tree</code> here.</em> I guess <code>Tree Mer
 accurate term. <a href="https://wiki.haskell.org/Prime_numbers#Tree_merging">see more</a>.</p>
 <p><del>I lost the original source code because link I have is broken now. So this article is licensed under MIT as I borrow from other’s</del></p>
 </blockquote>
-<h1 id="credit">Credit</h1>
+<h1 id="credit-update">Credit Update</h1>
 <p>I found the original <a href="https://wiki.haskell.org/Prime_numbers">link</a>!
 and What I saw for the first time is <a href="https://ideone.com/p0e81">this</a>.</p>
 <p>I found this function in another function generating prime numbers.</p>
 <p>which I hardly understand at the time, even though it looks very interesting.</p>
-<h2 id="how-to-usetest">How to use(test)</h2>
+<h2 id="how-to-use-test">How to use (test)</h2>
 <p>Fortunately I have better understanding about it so I’d like to share.
 This source code is written literate haskell and you try to use in <sub>ghci</sub>
 like below:</p>
@@ -86,13 +86,12 @@ like below:</p>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">shell</span><span class="op">&gt;</span> ghci</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">GHCi,</span> version 8.10.7: https://www.haskell.org/ghc/  :<span class="pp">?</span> for help</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Loaded</span> GHCi configuration from /home/myoungjin/.config/ghc/ghci.conf</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">λ=</span> :l FoldTree.lhs</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">λ=</span> :l FoldTree.lhs </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[1</span> of 1] Compiling FoldTree         <span class="er">(</span> <span class="ex">FoldTree.lhs,</span> interpreted <span class="kw">)</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Ok,</span> one module loaded.</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">λ=</span> take 7 . foldt $ [[3,6..], [5,10..], [7,14..]]</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">[3,5,6,7,9,10,12]</span></span></code></pre></div>
-<h2 id="module-begins">Module begins</h2>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">λ=</span> :l FoldTree.lhs </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[1</span> of 1] Compiling FoldTree         <span class="er">(</span> <span class="ex">FoldTree.lhs,</span> interpreted <span class="kw">)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Ok,</span> one module loaded.</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">λ=</span> take 7 . foldt $ [[3,6..], [5,10..], [7,14..]]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[3,5,6,7,9,10,12]</span></span></code></pre></div>
+<h2 id="module-foldtree">Module FoldTree</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">FoldTree</span> (foldt) <span class="kw">where</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.List</span> (sort)</span>
@@ -103,8 +102,8 @@ like below:</p>
 (union) and sorted list. It is more like making a rope with the strings.</p>
 <p>However, there are some assumption about usage:</p>
 <ul>
-<li>Each list, which is inside the list, contains sorted already in ascending order</li>
-<li>All the groups is sorted by order of The first element of each group.</li>
+<li>Each inner list contains sorted already in ascending order</li>
+<li>All the groups is sorted by order of the first element of each group.</li>
 </ul>
 <p>So If we have multiples of number three and five and seven,</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> make_some_multiples n <span class="ot">=</span> [ n, n<span class="op">+</span>n <span class="op">..</span> <span class="dv">20</span> ]</span>
@@ -115,25 +114,26 @@ like below:</p>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> five_multiples <span class="ot">=</span> make_some_multiples <span class="dv">5</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> seven_multiples <span class="ot">=</span> make_some_multiples <span class="dv">7</span></span></code></pre></div>
 <blockquote>
-<p>Note: In general, if your implementation has specific limitation, you’d better
-use the funciton name imposing the limitation or your own data type.</p>
-<p>You’d better thinkg about phanthom type<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Note: In general, if your implementation has specific limitation on input
+value, or you might need to write the funciton name as something imposing
+the limitation or your own data type.</p>
+<p>Another option would be phanthom type<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 </blockquote>
 <p>We need to apply the list of each multiples in this way:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> foldt [ three_multiples, five_multiples, seven_multiples ]</span></code></pre></div>
 <p>This assumption helps for our <em>thunk<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>s</em> to care about only the the list in
 the future, which goes pretty well with the nature of lazy evaluation!</p>
-<p>The original <code>foldt</code> is for the infinite list has less condition,
+<p>The original <code>foldt</code> impentation is for the infinite list has less condition,
 however, I’d like to apply foldt to fixed size of list so has more
 edge cases:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>foldt [] <span class="ot">=</span> []</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>foldt ([]<span class="op">:</span>_) <span class="ot">=</span> []</span></code></pre></div>
-<p>So, on second condition, we can reutrn empty list if the list of left hand side
+<p>So, on second condition, we can return empty list if the list of left hand side
 has empty body. because each multiples has shorter length of list if the initial
 number is larger.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>foldt ((x<span class="op">:</span>xs)<span class="op">:</span>t) <span class="ot">=</span> x <span class="op">:</span> unionSort xs (foldt (pairs t))</span></code></pre></div>
-<p>The last pattern is for general condition and as you can see that foldt appears
-in the end again to make recursive call.</p>
+<p>The last pattern is for general condition. And foldt appears in the end again to
+make recursive call.</p>
 <p>Basically the <em>first element of leftmost group</em> has lowest value,
 so it will be the first element in the result. This is the basic concept of <code>foldt</code>.
 And rest of list (xs) will be union-ed with rest of <code>foldt</code>-ed list.</p>
@@ -149,29 +149,29 @@ out of the both list.</p>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">EQ</span> <span class="ot">-&gt;</span> x <span class="op">:</span> unionSort xt yt <span class="co">-- x used; y is duplicated</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">GT</span> <span class="ot">-&gt;</span> y <span class="op">:</span> unionSort xs yt</span></code></pre></div>
 <p><code>unionSort</code> also has recursive call to finish the <code>union</code> and <code>sort</code> on rest of
-members which depend on the value is choosen for the first place.</p>
+members which depend on the value choosen for the <sub>head</sub> of result.</p>
 <h3 id="pairs">pairs</h3>
 <p><code>pairs</code> do the same sort method used in <code>foldt</code>. <code>foldt</code> takes only
 one group each time, on the other hand, <code>pairs</code> tries to take every two groups
 each time. If the pair is not available, it returns empty or the <em>leftmost</em> group
-so that <code>foldt</code> will end its job earilier.</p>
+so that <code>foldt</code> will end its job earlier.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ot">pairs ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [[a]]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- edge cases ...</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pairs [] <span class="ot">=</span> []</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pairs ([]<span class="op">:</span>_) <span class="ot">=</span> [] <span class="co">-- left always has longer list; no need to go further</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>pairs (ms<span class="op">:</span>[]) <span class="ot">=</span> [ms] <span class="co">-- just return leftmost group</span></span></code></pre></div>
-<p>The second pattern matching will reduce the searching time as well as
-we can see in the pattern matching of <code>foldt</code>.</p>
-<p><em>Those edge cases could be different when we are dealing with different type
-of sereies of numbers.</em></p>
+<p>The second pattern matching will reduce the searching time as well – as
+we saw in the pattern matching of <code>foldt</code>.</p>
+<p><em>Those edge cases could be different when the different types of sereies of numbers
+are used.</em></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pairs ((m<span class="op">:</span>ms)<span class="op">:</span>ns<span class="op">:</span>t') <span class="ot">=</span> (m <span class="op">:</span> unionSort ms ns) <span class="op">:</span> pairs t'</span></code></pre></div>
 <p>If two groups are taken to perform union, <code>m</code> is supposed to be the lowest value
 and will be the first value of <code>pairs</code> function – which is actually doing
 amazing job to wiring all the <code>foldt</code> and <code>pairs</code> smoothly because it doesn’t
 need to go further to get first value.</p>
 <blockquote>
-<p>there is no doubt that less evaluation tends to be more efficient in lazy
-computation.</p>
+<p>Note: there is no doubt that less evaluation tends to be more efficient in
+lazy computation.</p>
 </blockquote>
 <p>To organize the rest of them <code>unionSort</code> will be applied on rest of between
 wo groups, and <code>pairs</code> will persue the tail of the code again to finish the job.</p>
@@ -185,19 +185,20 @@ fast enough to solve by <em>union</em>-ing the numbers and get only one of commo
 multiples.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sumOfMultiples factors limit <span class="ot">=</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span> <span class="op">$</span> foldt [ [n,n<span class="op">+</span>n<span class="op">..</span>(limit <span class="op">-</span><span class="dv">1</span>)] <span class="op">|</span> n <span class="ot">&lt;-</span> factors', n <span class="op">&gt;</span> <span class="dv">0</span> ]</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> factors' <span class="ot">=</span> <span class="fu">sort</span> factors</span></code></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> factors' <span class="ot">=</span> <span class="fu">sort</span> factors</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- note: sort is reqiuired due to the foldt has assumption!</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>λ<span class="ot">=</span> sumOfMultiples [<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">11</span>] <span class="dv">100000</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dv">3961010983</span></span></code></pre></div>
 <h3 id="origin-of-foldt---prime-numbers">origin of foldt - prime numbers</h3>
 <blockquote>
 <p>original file contains a lot more implementation of prime numbers<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
 </blockquote>
-<p>Too many recursive call probably makes us confused at first.
-if you know how foldt works in there, it will be easier to figure out how it works!</p>
+<p>Too many recursive call probably makes us confused at first. But
+if you know how foldt acts in there, it will be easier to figure out how it works!</p>
 <p>To be honest, This code is still hard for me to understand. Or even if I could
 understand it, I don’t think I could invent something like this. 😅</p>
 <p>The basic idea of the generating is called <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"><code>Sieve of Eratosthenes</code></a>. But foldt acomplish the task in unique way
-to achieve sieving when compared to imperative <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode">pseudo code</a>.</p>
+to perform sieving when compared to imperative <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode">pseudo code</a>.</p>
 <p>We could think <code>minus</code> function is to used sieve and <code>foldt</code> function used to eliminate
 the duplication and to sort.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">PrimeNumber</span></span>
@@ -227,12 +228,13 @@ on the infinite list. and <code>~</code> prefix will calm down the <code>ghc</co
 <code>ghc</code> to trust that our pattern matching will serve all the cases even though
 it doesn’t look like exhaustive.</p>
 <blockquote>
-<p>I was able to compile this module without <code>~</code>. I guess older ghc complier
-complained about non-exhaustive pattern matching before.</p>
+<p>I was able to compile this module without <code>~</code>. I guess that there are some
+still possibility for older ghc complier to complain about non-exhaustive
+pattern matching.</p>
 </blockquote>
 <h2 id="what-we-can-do-more">What we can do more?</h2>
 <p>I was thinking about making business hours by using <code>foldt</code>. A set of trading hours
-could relys the public holiday and day light saving time if applicable. (because
+could rely the public holiday and day light saving time if applicable. (because
 most of times, UTC will be prefered to save time information)
 or each weekday could have the different schedule like <em>“shopping day”</em>
 (which is Thursday in Australia).</p>

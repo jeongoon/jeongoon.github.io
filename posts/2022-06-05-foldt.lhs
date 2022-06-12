@@ -13,7 +13,7 @@ author: Myoungjin Jeon
  >
  >  ~~I lost the original source code because link I have is broken now. So this article is licensed under MIT as I borrow from other's~~
 
-= Credit
+= Credit Update
 
 I found the original [link](https://wiki.haskell.org/Prime_numbers)!
 and What I saw for the first time is [this](https://ideone.com/p0e81).
@@ -22,7 +22,7 @@ I found this function in another function generating prime numbers.
 
 which I hardly understand at the time, even though it looks very interesting.
 
-== How to use(test)
+== How to use (test)
 Fortunately I have better understanding about it so I'd like to share.
 This source code is written literate haskell and you try to use in ~ghci~
 like below:
@@ -32,7 +32,6 @@ shell> curl -sL https://raw.githubusercontent.com/jeongoon/jeongoon.github.io/ma
 shell> ghci
 GHCi, version 8.10.7: https://www.haskell.org/ghc/  :? for help
 Loaded GHCi configuration from /home/myoungjin/.config/ghc/ghci.conf
-λ= :l FoldTree.lhs
 λ= :l FoldTree.lhs 
 [1 of 1] Compiling FoldTree         ( FoldTree.lhs, interpreted )
 Ok, one module loaded.
@@ -40,7 +39,7 @@ Ok, one module loaded.
 [3,5,6,7,9,10,12]
 ```
 
-== Module begins
+== Module FoldTree
 
 \begin{code}
 module FoldTree (foldt) where
@@ -57,8 +56,8 @@ foldt :: Ord a => [[a]] -> [a]
 
 However, there are some assumption about usage:
 
-- Each list, which is inside the list, contains sorted already in ascending order
-- All the groups is sorted by order of The first element of each group.
+- Each inner list contains sorted already in ascending order
+- All the groups is sorted by order of the first element of each group.
 
 So If we have multiples of number three and five and seven,
 
@@ -72,10 +71,11 @@ So If we have multiples of number three and five and seven,
 λ> seven_multiples = make_some_multiples 7
 ```
 
- > Note: In general, if your implementation has specific limitation, you'd better
- > use the funciton name imposing the limitation or your own data type.
+ > Note: In general, if your implementation has specific limitation on input
+ > value, or you might need to write the funciton name as something imposing
+ > the limitation or your own data type.
  >
- > You'd better thinkg about phanthom type[^1]
+ > Another option would be phanthom type[^1].
 
 We need to apply the list of each multiples in this way:
 
@@ -86,7 +86,7 @@ We need to apply the list of each multiples in this way:
 This assumption helps for our *thunk[^2]s* to care about only the the list in
 the future, which goes pretty well with the nature of lazy evaluation!
 
-The original `foldt` is for the infinite list has less condition,
+The original `foldt` impentation is for the infinite list has less condition,
 however, I'd like to apply foldt to fixed size of list so has more
 edge cases:
 
@@ -95,7 +95,7 @@ foldt [] = []
 foldt ([]:_) = []
 \end{code}
 
-So, on second condition, we can reutrn empty list if the list of left hand side
+So, on second condition, we can return empty list if the list of left hand side
 has empty body. because each multiples has shorter length of list if the initial
 number is larger.
 
@@ -103,8 +103,8 @@ number is larger.
 foldt ((x:xs):t) = x : unionSort xs (foldt (pairs t))
 \end{code}
 
-The last pattern is for general condition and as you can see that foldt appears
-in the end again to make recursive call.
+The last pattern is for general condition. And foldt appears in the end again to
+make recursive call.
 
 Basically the *first element of leftmost group* has lowest value,
 so it will be the first element in the result. This is the basic concept of `foldt`.
@@ -128,14 +128,14 @@ unionSort xs@(x:xt) ys@(y:yt) =
 \end{code}
 
 `unionSort` also has recursive call to finish the `union` and `sort` on rest of
-members which depend on the value is choosen for the first place.
+members which depend on the value choosen for the ~head~ of result.
 
 === pairs
 
 `pairs` do the same sort method used in `foldt`. `foldt` takes only
 one group each time, on the other hand, `pairs` tries to take every two groups
 each time. If the pair is not available, it returns empty or the *leftmost* group
-so that `foldt` will end its job earilier.
+so that `foldt` will end its job earlier.
 
 \begin{code}
 pairs :: Ord a => [[a]] -> [[a]]
@@ -145,12 +145,11 @@ pairs ([]:_) = [] -- left always has longer list; no need to go further
 pairs (ms:[]) = [ms] -- just return leftmost group
 \end{code}
 
-The second pattern matching will reduce the searching time as well as
-we can see in the pattern matching of `foldt`.
+The second pattern matching will reduce the searching time as well -- as
+we saw in the pattern matching of `foldt`.
 
-*Those edge cases could be different when we are dealing with different type
-of sereies of numbers.*
-
+*Those edge cases could be different when the different types of sereies of numbers
+are used.*
 
 \begin{code}
 pairs ((m:ms):ns:t') = (m : unionSort ms ns) : pairs t'
@@ -161,8 +160,8 @@ and will be the first value of `pairs` function -- which is actually doing
 amazing job to wiring all the `foldt` and `pairs` smoothly because it doesn't
 need to go further to get first value.
 
- > there is no doubt that less evaluation tends to be more efficient in lazy
- > computation.
+ > Note: there is no doubt that less evaluation tends to be more efficient in
+ > lazy computation.
 
 To organize the rest of them `unionSort` will be applied on rest of between
 wo groups, and `pairs` will persue the tail of the code again to finish the job.
@@ -183,6 +182,7 @@ multiples.
 sumOfMultiples factors limit =
   sum $ foldt [ [n,n+n..(limit -1)] | n <- factors', n > 0 ]
   where factors' = sort factors
+  -- note: sort is reqiuired due to the foldt has assumption!
 \end{code}
 
 ```haskell
@@ -194,14 +194,14 @@ sumOfMultiples factors limit =
 
  > original file contains a lot more implementation of prime numbers[^3].
 
-Too many recursive call probably makes us confused at first.
-if you know how foldt works in there, it will be easier to figure out how it works!
+Too many recursive call probably makes us confused at first. But
+if you know how foldt acts in there, it will be easier to figure out how it works!
 
 To be honest, This code is still hard for me to understand. Or even if I could
 understand it, I don't think I could invent something like this. 😅
 
 The basic idea of the generating is called [`Sieve of Eratosthenes`](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). But foldt acomplish the task in unique way
-to achieve sieving when compared to imperative [pseudo code](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode).
+to perform sieving when compared to imperative [pseudo code](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode).
 
 We could think `minus` function is to used sieve and `foldt` function used to eliminate
 the duplication and to sort.
@@ -237,13 +237,14 @@ on the infinite list. and `~` prefix will calm down the `ghc` because it tells
 `ghc` to trust that our pattern matching will serve all the cases even though
 it doesn't look like exhaustive.
 
- > I was able to compile this module without `~`. I guess older ghc complier
- > complained about non-exhaustive pattern matching before.
+ > I was able to compile this module without `~`. I guess that there are some
+ > still possibility for older ghc complier to complain about non-exhaustive
+ > pattern matching.
 
 == What we can do more?
 
 I was thinking about making business hours by using `foldt`. A set of trading hours
-could relys the public holiday and day light saving time if applicable. (because
+could rely the public holiday and day light saving time if applicable. (because
 most of times, UTC will be prefered to save time information)
 or each weekday could have the different schedule like *"shopping day"*
 (which is Thursday in Australia).

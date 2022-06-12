@@ -9,7 +9,7 @@ author: Myoungjin Jeon
 
 ***  isLower is more complicated than I thought
 
-*** only for excat solution
+*** only for exact solution
 
 ** general solution by using set
 
