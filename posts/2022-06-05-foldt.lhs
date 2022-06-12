@@ -21,10 +21,11 @@ and What I saw for the first time is [this](https://ideone.com/p0e81).
 I found this function in another function generating prime numbers.
 
 which I hardly understand at the time, even though it looks very interesting.
+Fortunately I have better understanding about it, so I'd like to share.
 
 == How to use (test)
-Fortunately I have better understanding about it so I'd like to share.
-This source code is written literate haskell and you try to use in ~ghci~
+
+This source code is written literate haskell and you try to use in `ghci`
 like below:
 
 ```sh
