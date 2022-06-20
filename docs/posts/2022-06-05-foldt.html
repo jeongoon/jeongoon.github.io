@@ -109,8 +109,8 @@ like below:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> make_some_multiples n <span class="ot">=</span> [ n, n<span class="op">+</span>n <span class="op">..</span> <span class="dv">20</span> ]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> three_multiples <span class="ot">=</span> make_some_multiples <span class="dv">3</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">take</span> <span class="dv">5</span> <span class="op">$</span> three_multiples</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">18</span>]</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="co">-- ^ already sorted</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>,<span class="dv">15</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="co">-- ^ note: already sorted</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> five_multiples <span class="ot">=</span> make_some_multiples <span class="dv">5</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> seven_multiples <span class="ot">=</span> make_some_multiples <span class="dv">7</span></span></code></pre></div>
 <blockquote>
@@ -149,7 +149,7 @@ out of the both list.</p>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">EQ</span> <span class="ot">-&gt;</span> x <span class="op">:</span> unionSort xt yt <span class="co">-- x used; y is duplicated</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">GT</span> <span class="ot">-&gt;</span> y <span class="op">:</span> unionSort xs yt</span></code></pre></div>
 <p><code>unionSort</code> also has recursive call to finish the <code>union</code> and <code>sort</code> on rest of
-members which depend on the value choosen for the <sub>head</sub> of result.</p>
+members which depend on the value choosen for the <em>head</em> of result.</p>
 <h3 id="pairs">pairs</h3>
 <p><code>pairs</code> do the same sort method used in <code>foldt</code>. <code>foldt</code> takes only
 one group each time, on the other hand, <code>pairs</code> tries to take every two groups
@@ -182,7 +182,7 @@ wo groups, and <code>pairs</code> will persue the tail of the code again to fini
 Even though, we could solve this problem by checking divisibility of all the
 member numbers which is given as <code>factor</code> list, it was worth to try because <code>foldt</code> is
 fast enough to solve by <em>union</em>-ing the numbers and get only one of common
-multiples.</p>
+multiples if some are duplicated.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sumOfMultiples factors limit <span class="ot">=</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span> <span class="op">$</span> foldt [ [n,n<span class="op">+</span>n<span class="op">..</span>(limit <span class="op">-</span><span class="dv">1</span>)] <span class="op">|</span> n <span class="ot">&lt;-</span> factors', n <span class="op">&gt;</span> <span class="dv">0</span> ]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> factors' <span class="ot">=</span> <span class="fu">sort</span> factors</span>

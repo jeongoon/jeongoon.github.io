@@ -66,8 +66,8 @@ So If we have multiples of number three and five and seven,
 λ> make_some_multiples n = [ n, n+n .. 20 ]
 λ> three_multiples = make_some_multiples 3
 λ> take 5 $ three_multiples
-[3,6,9,12,15,18]
-λ> -- ^ already sorted
+[3,6,9,12,15]
+λ> -- ^ note: already sorted
 λ> five_multiples = make_some_multiples 5
 λ> seven_multiples = make_some_multiples 7
 ```
@@ -129,7 +129,7 @@ unionSort xs@(x:xt) ys@(y:yt) =
 \end{code}
 
 `unionSort` also has recursive call to finish the `union` and `sort` on rest of
-members which depend on the value choosen for the ~head~ of result.
+members which depend on the value choosen for the *head* of result.
 
 === pairs
 
@@ -177,7 +177,7 @@ This task is introduced at [exercism.org](https://exercism.org/tracks/haskell/ex
 Even though, we could solve this problem by checking divisibility of all the
 member numbers which is given as `factor` list, it was worth to try because `foldt` is
 fast enough to solve by *union*-ing the numbers and get only one of common
-multiples.
+multiples if some are duplicated.
 
 \begin{code}
 sumOfMultiples factors limit =
