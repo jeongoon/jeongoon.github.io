@@ -94,16 +94,14 @@ like below:</p>
 <h2 id="module-foldtree">Module FoldTree</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">FoldTree</span> (foldt) <span class="kw">where</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.List</span> (sort)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ot">foldt ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [a]</span></code></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ot">foldt ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [a]</span></code></pre></div>
 <h3 id="foldt">foldt</h3>
 <p><code>foldt</code> takes a list of list of series of numbers and return a merged
 (union) and sorted list. It is more like making a rope with the strings.</p>
 <p>However, there are some assumption about usage:</p>
 <ul>
 <li>Each inner list contains sorted already in ascending order</li>
-<li>All the groups is sorted by order of the first element of each group.</li>
+<li>All the (outter) groups is sorted by order of the first element of each group.</li>
 </ul>
 <p>So If we have multiples of number three and five and seven,</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> make_some_multiples n <span class="ot">=</span> [ n, n<span class="op">+</span>n <span class="op">..</span> <span class="dv">20</span> ]</span>
@@ -115,7 +113,7 @@ like below:</p>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> seven_multiples <span class="ot">=</span> make_some_multiples <span class="dv">7</span></span></code></pre></div>
 <blockquote>
 <p>Note: In general, if your implementation has specific limitation on input
-value, or you might need to write the funciton name as something imposing
+value, or you might need to write the function name as something imposing
 the limitation or your own data type.</p>
 <p>Another option would be phanthom type<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 </blockquote>
@@ -149,7 +147,7 @@ out of the both list.</p>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">EQ</span> <span class="ot">-&gt;</span> x <span class="op">:</span> unionSort xt yt <span class="co">-- x used; y is duplicated</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">GT</span> <span class="ot">-&gt;</span> y <span class="op">:</span> unionSort xs yt</span></code></pre></div>
 <p><code>unionSort</code> also has recursive call to finish the <code>union</code> and <code>sort</code> on rest of
-members which depend on the value choosen for the <em>head</em> of result.</p>
+members which depend on the value chosen for the <em>head</em> of result.</p>
 <h3 id="pairs">pairs</h3>
 <p><code>pairs</code> do the same sort method used in <code>foldt</code>. <code>foldt</code> takes only
 one group each time, on the other hand, <code>pairs</code> tries to take every two groups
@@ -162,7 +160,7 @@ so that <code>foldt</code> will end its job earlier.</p>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>pairs (ms<span class="op">:</span>[]) <span class="ot">=</span> [ms] <span class="co">-- just return leftmost group</span></span></code></pre></div>
 <p>The second pattern matching will reduce the searching time as well – as
 we saw in the pattern matching of <code>foldt</code>.</p>
-<p><em>Those edge cases could be different when the different types of sereies of numbers
+<p><em>Those edge cases could be different when the different types of series of numbers
 are used.</em></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pairs ((m<span class="op">:</span>ms)<span class="op">:</span>ns<span class="op">:</span>t') <span class="ot">=</span> (m <span class="op">:</span> unionSort ms ns) <span class="op">:</span> pairs t'</span></code></pre></div>
 <p>If two groups are taken to perform union, <code>m</code> is supposed to be the lowest value
@@ -183,10 +181,10 @@ Even though, we could solve this problem by checking divisibility of all the
 member numbers which is given as <code>factor</code> list, it was worth to try because <code>foldt</code> is
 fast enough to solve by <em>union</em>-ing the numbers and get only one of common
 multiples if some are duplicated.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sumOfMultiples factors limit <span class="ot">=</span></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sumOfMultiples factors limit <span class="ot">=</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span> <span class="op">$</span> foldt [ [n,n<span class="op">+</span>n<span class="op">..</span>(limit <span class="op">-</span><span class="dv">1</span>)] <span class="op">|</span> n <span class="ot">&lt;-</span> factors', n <span class="op">&gt;</span> <span class="dv">0</span> ]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> factors' <span class="ot">=</span> <span class="fu">sort</span> factors</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- note: sort is reqiuired due to the foldt has assumption!</span></span></code></pre></div>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- note: sort is required due to the foldt has assumption!</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>λ<span class="ot">=</span> sumOfMultiples [<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">11</span>] <span class="dv">100000</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dv">3961010983</span></span></code></pre></div>
 <h3 id="origin-of-foldt---prime-numbers">origin of foldt - prime numbers</h3>
@@ -197,7 +195,7 @@ multiples if some are duplicated.</p>
 if you know how foldt acts in there, it will be easier to figure out how it works!</p>
 <p>To be honest, This code is still hard for me to understand. Or even if I could
 understand it, I don’t think I could invent something like this. 😅</p>
-<p>The basic idea of the generating is called <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"><code>Sieve of Eratosthenes</code></a>. But foldt acomplish the task in unique way
+<p>The basic idea of the generating is called <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"><code>Sieve of Eratosthenes</code></a>. But foldt accomplish the task in unique way
 to perform sieving when compared to imperative <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode">pseudo code</a>.</p>
 <p>We could think <code>minus</code> function is to used sieve and <code>foldt</code> function used to eliminate
 the duplication and to sort.</p>
@@ -235,11 +233,11 @@ pattern matching.</p>
 <h2 id="what-we-can-do-more">What we can do more?</h2>
 <p>I was thinking about making business hours by using <code>foldt</code>. A set of trading hours
 could rely the public holiday and day light saving time if applicable. (because
-most of times, UTC will be prefered to save time information)
+most of times, UTC will be preferred to save time information)
 or each weekday could have the different schedule like <em>“shopping day”</em>
 (which is Thursday in Australia).</p>
 <p>So we could have many groups of time tables and get the final trading hours
-list by applying union and sort them and also fitler them by removing some
+list by applying union and sort them and also filter them by removing some
 special occasion or public holidays!</p>
 <p>It sounds the usage of <code>foldt</code> is suitable for this tasks, doesn’t it?</p>
 <p>I hope I could write an article about it! Thank you for reading!</p>

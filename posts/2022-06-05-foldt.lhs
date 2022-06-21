@@ -45,8 +45,6 @@ Ok, one module loaded.
 \begin{code}
 module FoldTree (foldt) where
 
-import Data.List (sort)
-
 foldt :: Ord a => [[a]] -> [a]
 \end{code}
 
@@ -58,7 +56,7 @@ foldt :: Ord a => [[a]] -> [a]
 However, there are some assumption about usage:
 
 - Each inner list contains sorted already in ascending order
-- All the groups is sorted by order of the first element of each group.
+- All the (outter) groups is sorted by order of the first element of each group.
 
 So If we have multiples of number three and five and seven,
 
@@ -73,7 +71,7 @@ So If we have multiples of number three and five and seven,
 ```
 
  > Note: In general, if your implementation has specific limitation on input
- > value, or you might need to write the funciton name as something imposing
+ > value, or you might need to write the function name as something imposing
  > the limitation or your own data type.
  >
  > Another option would be phanthom type[^1].
@@ -129,7 +127,7 @@ unionSort xs@(x:xt) ys@(y:yt) =
 \end{code}
 
 `unionSort` also has recursive call to finish the `union` and `sort` on rest of
-members which depend on the value choosen for the *head* of result.
+members which depend on the value chosen for the *head* of result.
 
 === pairs
 
@@ -149,7 +147,7 @@ pairs (ms:[]) = [ms] -- just return leftmost group
 The second pattern matching will reduce the searching time as well -- as
 we saw in the pattern matching of `foldt`.
 
-*Those edge cases could be different when the different types of sereies of numbers
+*Those edge cases could be different when the different types of series of numbers
 are used.*
 
 \begin{code}
@@ -179,12 +177,12 @@ member numbers which is given as `factor` list, it was worth to try because `fol
 fast enough to solve by *union*-ing the numbers and get only one of common
 multiples if some are duplicated.
 
-\begin{code}
+```haskell
 sumOfMultiples factors limit =
   sum $ foldt [ [n,n+n..(limit -1)] | n <- factors', n > 0 ]
   where factors' = sort factors
-  -- note: sort is reqiuired due to the foldt has assumption!
-\end{code}
+  -- note: sort is required due to the foldt has assumption!
+```
 
 ```haskell
 λ= sumOfMultiples [2,3,5,7,11] 100000
@@ -201,7 +199,7 @@ if you know how foldt acts in there, it will be easier to figure out how it work
 To be honest, This code is still hard for me to understand. Or even if I could
 understand it, I don't think I could invent something like this. 😅
 
-The basic idea of the generating is called [`Sieve of Eratosthenes`](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). But foldt acomplish the task in unique way
+The basic idea of the generating is called [`Sieve of Eratosthenes`](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). But foldt accomplish the task in unique way
 to perform sieving when compared to imperative [pseudo code](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode).
 
 We could think `minus` function is to used sieve and `foldt` function used to eliminate
@@ -246,12 +244,12 @@ it doesn't look like exhaustive.
 
 I was thinking about making business hours by using `foldt`. A set of trading hours
 could rely the public holiday and day light saving time if applicable. (because
-most of times, UTC will be prefered to save time information)
+most of times, UTC will be preferred to save time information)
 or each weekday could have the different schedule like *"shopping day"*
 (which is Thursday in Australia).
 
 So we could have many groups of time tables and get the final trading hours
-list by applying union and sort them and also fitler them by removing some
+list by applying union and sort them and also filter them by removing some
 special occasion or public holidays!
 
 It sounds the usage of `foldt` is suitable for this tasks, doesn't it?
