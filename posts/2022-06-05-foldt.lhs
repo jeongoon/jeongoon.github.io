@@ -56,7 +56,7 @@ foldt :: Ord a => [[a]] -> [a]
 However, there are some assumption about usage:
 
 - Each inner list contains sorted already in ascending order
-- All the (outter) groups is sorted by order of the first element of each group.
+- All the (outter) groups are sorted by order of the first element of each group.
 
 So If we have multiples of number three and five and seven,
 
@@ -71,7 +71,7 @@ So If we have multiples of number three and five and seven,
 ```
 
  > Note: In general, if your implementation has specific limitation on input
- > value, or you might need to write the function name as something imposing
+ > value, you might need to write the function name as something imposing
  > the limitation or your own data type.
  >
  > Another option would be phanthom type[^1].
@@ -82,10 +82,10 @@ We need to apply the list of each multiples in this way:
 λ> foldt [ three_multiples, five_multiples, seven_multiples ]
 ```
 
-This assumption helps for our *thunk[^2]s* to care about only the the list in
-the future, which goes pretty well with the nature of lazy evaluation!
+Those assumptions help for our *thunk[^2]s* to care about only the members of
+the list in the future, which goes pretty well with the nature of lazy evaluation!
 
-The original `foldt` impentation is for the infinite list has less condition,
+The original `foldt` implementation is for the infinite list has less condition,
 however, I'd like to apply foldt to fixed size of list so has more
 edge cases:
 
@@ -95,8 +95,8 @@ foldt ([]:_) = []
 \end{code}
 
 So, on second condition, we can return empty list if the list of left hand side
-has empty body. because each multiples has shorter length of list if the initial
-number is larger.
+has empty body. because each multiples which longer list if the initial
+number is less. (so if longer list is empty, we don't need to check shorter list)
 
 \begin{code}
 foldt ((x:xs):t) = x : unionSort xs (foldt (pairs t))
@@ -134,7 +134,8 @@ members which depend on the value chosen for the *head* of result.
 `pairs` do the same sort method used in `foldt`. `foldt` takes only
 one group each time, on the other hand, `pairs` tries to take every two groups
 each time. If the pair is not available, it returns empty or the *leftmost* group
-so that `foldt` will end its job earlier.
+so that `foldt` will end its job earlier. *Those edge cases are also only
+required when applied to finite list.*
 
 \begin{code}
 pairs :: Ord a => [[a]] -> [[a]]
@@ -163,7 +164,7 @@ need to go further to get first value.
  > lazy computation.
 
 To organize the rest of them `unionSort` will be applied on rest of between
-wo groups, and `pairs` will persue the tail of the code again to finish the job.
+wo groups, and `pairs` will pursue the tail of the code again to finish the job.
 
 This is one of most beautiful piece of recursive programming.
 

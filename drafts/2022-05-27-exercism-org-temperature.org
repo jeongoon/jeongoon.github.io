@@ -1,6 +1,6 @@
 ---
-title: Exercism - Rust - Magazine Cut Out
-description: my magazine cut out soloution at exercism.org
+title: Exercism - Haskell - Temperature
+description: my temperature soloution at exercism.org
 keywords: rust, closure, function
 author: Myoungjin Jeon
 ---
@@ -9,3 +9,4 @@ author: Myoungjin Jeon
 ** Solution is easy
 ** More generalized Parameters
 ** Testing with HSpec
+i

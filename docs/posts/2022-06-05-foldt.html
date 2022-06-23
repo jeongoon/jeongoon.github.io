@@ -101,7 +101,7 @@ like below:</p>
 <p>However, there are some assumption about usage:</p>
 <ul>
 <li>Each inner list contains sorted already in ascending order</li>
-<li>All the (outter) groups is sorted by order of the first element of each group.</li>
+<li>All the (outter) groups are sorted by order of the first element of each group.</li>
 </ul>
 <p>So If we have multiples of number three and five and seven,</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> make_some_multiples n <span class="ot">=</span> [ n, n<span class="op">+</span>n <span class="op">..</span> <span class="dv">20</span> ]</span>
@@ -113,22 +113,22 @@ like below:</p>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> seven_multiples <span class="ot">=</span> make_some_multiples <span class="dv">7</span></span></code></pre></div>
 <blockquote>
 <p>Note: In general, if your implementation has specific limitation on input
-value, or you might need to write the function name as something imposing
+value, you might need to write the function name as something imposing
 the limitation or your own data type.</p>
 <p>Another option would be phanthom type<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 </blockquote>
 <p>We need to apply the list of each multiples in this way:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> foldt [ three_multiples, five_multiples, seven_multiples ]</span></code></pre></div>
-<p>This assumption helps for our <em>thunk<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>s</em> to care about only the the list in
-the future, which goes pretty well with the nature of lazy evaluation!</p>
-<p>The original <code>foldt</code> impentation is for the infinite list has less condition,
+<p>Those assumptions help for our <em>thunk<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>s</em> to care about only the members of
+the list in the future, which goes pretty well with the nature of lazy evaluation!</p>
+<p>The original <code>foldt</code> implementation is for the infinite list has less condition,
 however, I’d like to apply foldt to fixed size of list so has more
 edge cases:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>foldt [] <span class="ot">=</span> []</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>foldt ([]<span class="op">:</span>_) <span class="ot">=</span> []</span></code></pre></div>
 <p>So, on second condition, we can return empty list if the list of left hand side
-has empty body. because each multiples has shorter length of list if the initial
-number is larger.</p>
+has empty body. because each multiples which longer list if the initial
+number is less. (so if longer list is empty, we don’t need to check shorter list)</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>foldt ((x<span class="op">:</span>xs)<span class="op">:</span>t) <span class="ot">=</span> x <span class="op">:</span> unionSort xs (foldt (pairs t))</span></code></pre></div>
 <p>The last pattern is for general condition. And foldt appears in the end again to
 make recursive call.</p>
@@ -152,7 +152,8 @@ members which depend on the value chosen for the <em>head</em> of result.</p>
 <p><code>pairs</code> do the same sort method used in <code>foldt</code>. <code>foldt</code> takes only
 one group each time, on the other hand, <code>pairs</code> tries to take every two groups
 each time. If the pair is not available, it returns empty or the <em>leftmost</em> group
-so that <code>foldt</code> will end its job earlier.</p>
+so that <code>foldt</code> will end its job earlier. <em>Those edge cases are also only
+required when applied to finite list.</em></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ot">pairs ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [[a]]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- edge cases ...</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pairs [] <span class="ot">=</span> []</span>
@@ -172,7 +173,7 @@ need to go further to get first value.</p>
 lazy computation.</p>
 </blockquote>
 <p>To organize the rest of them <code>unionSort</code> will be applied on rest of between
-wo groups, and <code>pairs</code> will persue the tail of the code again to finish the job.</p>
+wo groups, and <code>pairs</code> will pursue the tail of the code again to finish the job.</p>
 <p>This is one of most beautiful piece of recursive programming.</p>
 <h2 id="foldt-examples">foldt examples</h2>
 <h3 id="sumofmultiples">sumOfMultiples</h3>
