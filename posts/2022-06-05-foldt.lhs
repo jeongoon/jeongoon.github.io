@@ -25,7 +25,7 @@ Fortunately I have better understanding about it, so I'd like to share.
 
 == How to use (test)
 
-This source code is written literate haskell and you try to use in `ghci`
+This source code is written in **literate haskell** and you try to use in `ghci`
 like below:
 
 ```sh
@@ -70,17 +70,17 @@ So If we have multiples of number three and five and seven,
 λ> seven_multiples = make_some_multiples 7
 ```
 
- > Note: In general, if your implementation has specific limitation on input
- > value, you might need to write the function name as something imposing
- > the limitation or your own data type.
- >
- > Another option would be phanthom type[^1].
-
 We need to apply the list of each multiples in this way:
 
 ```haskell
 λ> foldt [ three_multiples, five_multiples, seven_multiples ]
 ```
+
+ > Note: In general, if your implementation has specific limitation on input
+ > value, you might need to write the function name as something imposing
+ > the limitation or your own data type.
+ >
+ > Another option would be phantom type[^1].
 
 Those assumptions help for our *thunk[^2]s* to care about only the members of
 the list in the future, which goes pretty well with the nature of lazy evaluation!
@@ -109,7 +109,7 @@ Basically the *first element of leftmost group* has lowest value,
 so it will be the first element in the result. This is the basic concept of `foldt`.
 And rest of list (xs) will be union-ed with rest of `foldt`-ed list.
 
-`unionSort` will remove duplicated member and take the element at lowest value
+`unionSort` will remove a duplicated member and take the element at lowest value
 out of the both list.
 
 === unionSort
@@ -133,7 +133,7 @@ members which depend on the value chosen for the *head* of result.
 
 `pairs` do the same sort method used in `foldt`. `foldt` takes only
 one group each time, on the other hand, `pairs` tries to take every two groups
-each time. If the pair is not available, it returns empty or the *leftmost* group
+each time. If any pair is not available, it returns empty or the *leftmost* group
 so that `foldt` will end its job earlier. *Those edge cases are also only
 required when applied to finite list.*
 
@@ -157,14 +157,14 @@ pairs ((m:ms):ns:t') = (m : unionSort ms ns) : pairs t'
 
 If two groups are taken to perform union, `m` is supposed to be the lowest value
 and will be the first value of `pairs` function -- which is actually doing
-amazing job to wiring all the `foldt` and `pairs` smoothly because it doesn't
+amazing job to wire all the `foldt` and `pairs` smoothly because it doesn't
 need to go further to get first value.
 
  > Note: there is no doubt that less evaluation tends to be more efficient in
  > lazy computation.
 
 To organize the rest of them `unionSort` will be applied on rest of between
-wo groups, and `pairs` will pursue the tail of the code again to finish the job.
+two groups, and `pairs` will pursue the tail of the code again to finish the job.
 
 This is one of most beautiful piece of recursive programming.
 
@@ -190,9 +190,9 @@ sumOfMultiples factors limit =
 3961010983
 ```
 
-=== origin of foldt - prime numbers
+=== the origin of foldt - prime numbers
 
- > original file contains a lot more implementation of prime numbers[^3].
+ > the original file contains a lot more implementation of prime numbers[^3].
 
 Too many recursive call probably makes us confused at first. But
 if you know how foldt acts in there, it will be easier to figure out how it works!
@@ -237,8 +237,8 @@ on the infinite list. and `~` prefix will calm down the `ghc` because it tells
 `ghc` to trust that our pattern matching will serve all the cases even though
 it doesn't look like exhaustive.
 
- > I was able to compile this module without `~`. I guess that there are some
- > still possibility for older ghc complier to complain about non-exhaustive
+ > I was able to compile this module without `~`. I guess that there are still
+ > some possibility for older ghc complier to complain about non-exhaustive
  > pattern matching.
 
 == What we can do more?
