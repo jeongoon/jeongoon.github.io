@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="my magazine cut out soloution at exercism.org">
+
+
+    <meta name="keywords" content="rust, closure, function">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - Exercism - Rust - Magazine Cut Out</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/19Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Exercism - Rust - Magazine Cut Out
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../drafts.html">Drafts</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on June 27, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: <a title="All pages tagged 'rust'." href="../tags/rust.html">rust</a>, <a title="All pages tagged 'closure'." href="../tags/closure.html">closure</a>, <a title="All pages tagged 'function'." href="../tags/function.html">function</a>
+  
+</div>
+
+<h2 id="introductions">Introductions</h2>
+<h3 id="latest-version-of-task-found-at-here">latest version of task: found at <a href="https://exercism.org/tracks/rust/exercises/magazine-cutout">here</a></h3>
+<p>In this exercise you’ll be using a HashMap, along with entry API methods,
+to solve a simple algorithm problem.</p>
+<p>Given &amp;[&amp;str] representing the words of a magazine article, and &amp;[&amp;str] representing
+the words of a note you would like to send, can you compose your note by cutting words
+out of the magazine and pasting them into a letter?</p>
+<h3 id="notes">Notes:</h3>
+<blockquote>
+<p>This implies physical cutting and pasting; the magazine needs to contain at least
+as many copies of each word as the note requires.
+Capitalization matters; just because you’re pasting together a note composed from
+words of a magazine doesn’t mean you’re willing to be ungrammatical.</p>
+</blockquote>
+<p>You’ll start with the following stubbed function signature:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> can_construct_note(magazine<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">,</span> note<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="pp">unimplemented!</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Given the following input</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> magazine <span class="op">=</span> <span class="st">&quot;two times three is not four&quot;</span><span class="op">.</span>split_whitespace()<span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> note <span class="op">=</span> <span class="st">&quot;two times two is four&quot;</span><span class="op">.</span>split_whitespace()<span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">assert!</span>(<span class="op">!</span>can_construct_note(<span class="op">&amp;</span>magazine<span class="op">,</span> <span class="op">&amp;</span>note))<span class="op">;</span></span></code></pre></div>
+<p>The function returns false since the magazine only contains one instance of “two”
+when the note requires two of them.</p>
+<p>The following input will succeed:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> magazine <span class="op">=</span> <span class="st">&quot;Astronomer Amy Mainzer spent hours chatting with Leonardo DiCaprio for Netflix's 'Don't Look Up'&quot;</span><span class="op">.</span>split_whitespace()<span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> note <span class="op">=</span> <span class="st">&quot;Amy Mainzer chatting with Leonardo DiCaprio.&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>split_whitespace()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="pp">assert!</span>(can_construct_note(<span class="op">&amp;</span>magazine<span class="op">,</span> <span class="op">&amp;</span>note))<span class="op">;</span></span></code></pre></div>
+<h2 id="incorrect-introduction">Incorrect Introduction</h2>
+<p>If introduction is correct, most of other’s solution are not working, however
+they seem get passed all the test codes,</p>
+<p>I guess there might be some mistakes on <code class="verbatim">.split_whitespace()</code> function.
+because <em>DiCaprio</em> in last example code, it will be devided into:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>[<span class="st">&quot;Amy&quot;</span><span class="op">,</span> <span class="st">&quot;Mainzer&quot;</span><span class="op">,</span> <span class="st">&quot;chatting&quot;</span><span class="op">,</span> <span class="st">&quot;with&quot;</span><span class="op">,</span> <span class="st">&quot;Leonardo&quot;</span><span class="op">,</span> <span class="st">&quot;DiCaprio.&quot;</span>]</span></code></pre></div>
+<p>Please note on punctuation in the end of “<em>DiCaprio.</em>” and below code is an example
+solution from community.</p>
+<p>credit: <a href="https://exercism.org/tracks/rust/exercises/magazine-cutout/solutions/surfingtomchen">https://exercism.org/tracks/rust/exercises/magazine-cutout/solutions/surfingtomchen</a></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::collections::</span>HashMap<span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> can_construct_note_others(magazine<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">,</span> note<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> magazine_words <span class="op">=</span> magazine<span class="op">.</span>iter()<span class="op">.</span>fold(<span class="pp">HashMap::</span>new()<span class="op">,</span> <span class="op">|</span><span class="kw">mut</span> words<span class="op">,</span> <span class="dt">str</span><span class="op">|</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>words<span class="op">.</span>entry(<span class="dt">str</span>)<span class="op">.</span>or_insert(<span class="dv">0</span>) <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        words</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> note_words <span class="op">=</span> note<span class="op">.</span>iter()<span class="op">.</span>fold(<span class="pp">HashMap::</span>new()<span class="op">,</span> <span class="op">|</span><span class="kw">mut</span> words<span class="op">,</span> <span class="dt">str</span><span class="op">|</span> <span class="op">{</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>words<span class="op">.</span>entry(<span class="dt">str</span>)<span class="op">.</span>or_insert(<span class="dv">0</span>) <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        words</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    note_words</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>iter()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>all(<span class="op">&amp;|</span>(w<span class="op">,</span> count)<span class="op">|</span> magazine_words<span class="op">.</span>get(w)<span class="op">.</span>unwrap_or(<span class="op">&amp;</span><span class="dv">0</span>) <span class="op">&gt;=</span> count)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> magazine <span class="op">=</span> <span class="st">&quot;Astronomer Amy Mainzer spent hours chatting with Leonardo DiCaprio for Netflix's 'Don't Look Up'&quot;</span><span class="op">.</span>split_whitespace()<span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> note <span class="op">=</span> <span class="st">&quot;Amy Mainzer chatting with Leonardo DiCaprio.&quot;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>split_whitespace()</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="pp">assert!</span>(can_construct_note_others(<span class="op">&amp;</span>magazine<span class="op">,</span> <span class="op">&amp;</span>note))<span class="op">;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This one is really clean code in my opinion, however the test code given in introduction
+doesn’t allow this code to pass.</p>
+<div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">thread</span> <span class="st">'main'</span> panicked at <span class="st">'assertion failed: can_construct_note_others(&amp;magazine, &amp;note)'</span>, src/main.rs:57:5</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">note:</span> run with <span class="kw">`</span><span class="va">RUST_BACKTRACE</span><span class="op">=</span>1<span class="kw">`</span> <span class="ex">environment</span> variable to display a backtrace</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo-run</span> exited abnormally with code 101 at Wed May 25 22:29:47</span></code></pre></div>
+<p>Because my solution was uploaded via web editor only (you can also upload with exercism
+command-line tool), To solve the problem according to instruction.
+So my solution has become little more complicated.</p>
+<h2 id="to-divide-the-note-correctly">To Divide the note correctly</h2>
+<p>To split the note correctly, the seperator should be something like non-alphabetic
+characters.</p>
+<p>So even though we get the words separated by white space (<code class="verbatim">.split_whitespace()</code>),
+we should do something like this: (note: this is pseudo code)</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> split_no_alphabets (splited_by_space<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]) <span class="op">-&gt;</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>] <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    splited_by_space</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>iter()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>map(<span class="op">|&amp;</span>m<span class="op">|</span> m<span class="op">.</span>split (<span class="op">|</span>c<span class="op">|</span> <span class="op">!</span>c<span class="op">.</span>is_alphabetic))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>flatten() <span class="co">// is required to maintain the same depth as original input</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>However I got many error message from complier.</p>
+<div class="sourceCode" id="cb8" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cutout</span><span class="er">)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">error</span><span class="op">[</span>E0106<span class="op">]</span><span class="ex">:</span> missing lifetime specifier</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">--</span><span class="op">&gt;</span> src/main.rs:5:54</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> <span class="kw">|</span> <span class="ex">fn</span> split_no_alphabets <span class="er">(</span><span class="ex">splited_by_space:</span> <span class="kw">&amp;</span><span class="ex">[</span><span class="kw">&amp;</span><span class="ex">str]</span><span class="kw">)</span> <span class="ex">-</span><span class="op">&gt;</span> <span class="kw">&amp;</span><span class="ex">[</span><span class="kw">&amp;</span><span class="ex">str]</span> {</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span>                                          <span class="ex">-------</span>     ^ expected named lifetime parameter</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">=</span> help: this function<span class="st">'s return type contains a borrowed value, but the signature does not say which one of `splited_by_space`'</span>s 2 lifetimes it is borrowed from</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">help:</span> consider introducing a named lifetime parameter</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> <span class="kw">|</span> <span class="ex">fn</span> split_no_alphabets<span class="op">&lt;</span><span class="st">'a&gt; (splited_by_space: &amp;'</span>a [<span class="kw">&amp;</span><span class="ex">str]</span><span class="er">)</span> <span class="ex">-</span><span class="op">&gt;</span> <span class="kw">&amp;</span><span class="st">'a [&amp;str] {</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">  |                      ++++                     ++             ++</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="st">error[E0106]: missing lifetime specifier</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="st"> --&gt; src/main.rs:5:56</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="st">  |</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="st">5 | fn split_no_alphabets (splited_by_space: &amp;[&amp;str]) -&gt; &amp;[&amp;str] {</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="st">  |                                          -------       ^ expected named lifetime parameter</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="st">  |</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="st">  = help: this function'</span><span class="ex">s</span> return type contains a borrowed value, but the signature does not say which one of <span class="kw">`</span><span class="ex">splited_by_space</span><span class="kw">`</span><span class="st">'s 2 lifetimes it is borrowed from</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="st">help: consider introducing a named lifetime parameter</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="st">  |</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="st">5 | fn split_no_alphabets&lt;'</span>a<span class="op">&gt;</span> <span class="er">(</span><span class="ex">splited_by_space:</span> <span class="kw">&amp;</span><span class="st">'a [&amp;str]) -&gt; &amp;[&amp;'</span><span class="ex">a</span> str] {</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span>                      <span class="ex">++++</span>                     ++               ++</span></code></pre></div>
+<h2 id="lifetime">Lifetime??</h2>
+<p>I got error message because splited_by_space is a reference to somewhere else,
+when I return the referece which is based on the reference from outside,
+rust must know life time of the variable correctly.</p>
+<p>Otherwise rust is unable to manage the variable life time and failed to collect any
+garbage. (still my base knowledge of rust is not sufficient to talk about further)</p>
+<h2 id="closure-can-be-handy">Closure can be handy</h2>
+<p>But when I use <code class="verbatim">let</code> and <a href="https://doc.rust-lang.org/rust-by-example/fn/closures.html">closure</a> (which is shown below) the problem is easier to
+solve thanks to smart LSP. let me introduce closure quickly.
+(and this kind of function very simliar to functional language which I preferred.)</p>
+<h3 id="closures-introduction-from-rust-lang.org">closures introduction from rust-lang.org</h3>
+<p>Closures are functions that can capture the enclosing environment.
+For example, a closure that captures the x variable:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">|</span> val <span class="op">|</span> val <span class="op">+</span> x</span></code></pre></div>
+<blockquote>
+<p>The syntax and capabilities of closures make them very convenient for on the fly
+usage. Calling a closure is exactly like calling a function. However, both input
+and return types can be inferred and input variable names must be specified.</p>
+</blockquote>
+<p>I’d like to focus on last sentence. i.e:</p>
+<blockquote>
+<p>both input and return types can be inferred.</p>
+</blockquote>
+<h3 id="lsp-and-inferred-types">LSP and inferred types</h3>
+<p>When we type some variable or closure inside a function, LSP will print out
+something useful information around the code, we could easily find out the
+correct type of variable or the suitable type of returning value in context.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> can_construct_note<span class="op">&lt;</span><span class="ot">'a</span><span class="op">&gt;</span>(magazine<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">,</span> note<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> split_no_alphabets <span class="op">=</span> <span class="op">|</span>splited_by_space<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">|</span> <span class="op">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        splited_by_space</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>iter()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>map(<span class="op">|&amp;</span>m<span class="op">|</span> m<span class="op">.</span>split(<span class="op">|</span>c<span class="op">|</span> <span class="op">!</span><span class="dt">char</span><span class="pp">::</span>is_alphabetic(c)))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>flatten()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">// snip ...</span></span></code></pre></div>
+<h3 id="the-screenshot-captured-in-emacs">the screenshot captured in emacs</h3>
+<p><img src="../images/27Jun2022-rust-lsp-message-from-emacs.png" /></p>
+<p>However, information is a bit limited. we’d better compile to get more messages.</p>
+<h3 id="compile-and-get-more-information">compile and get more information</h3>
+<p>Rust complier is quite clever for user to fix the error or create a better code
+by introduce that what cause the problem and how to fix it. It is not perfect
+but most of times give me many clues to fix it. So, if the code is being compiled,
+the help messages are given as below:</p>
+<div class="sourceCode" id="cb11" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Compiling</span> magazine-cutout v0.1.0 <span class="er">(</span><span class="ex">/home/myoungjin/my.github/exercism-rust/magazine-cutout</span><span class="kw">)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">error:</span> lifetime may not live long enough</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">--</span><span class="op">&gt;</span> src/main.rs:7:9</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>   <span class="kw">|</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">6</span>  <span class="kw">|</span>       <span class="bu">let</span> <span class="va">split_no_alphabets</span> <span class="op">=</span> <span class="kw">|</span><span class="ex">splited_by_space:</span> <span class="kw">&amp;</span><span class="ex">[</span><span class="kw">&amp;</span><span class="ex">str]</span><span class="kw">|</span> <span class="kw">{</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>   <span class="kw">|</span>                                                   <span class="ex">-</span>      <span class="at">-</span> return type of closure is Flatten<span class="op">&lt;</span>Map<span class="op">&lt;</span>std::slice::Iter<span class="op">&lt;</span><span class="st">'2, &amp;str&gt;, [closure@src/main.rs:9:18: 9:59]&gt;&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="st">   |                                                   |</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="st">   |                                                   let'</span>s call the lifetime of this reference <span class="kw">`</span><span class="st">'1`</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="st">7  | /         splited_by_space</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="st">8  | |             .iter()</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="st">9  | |             .map(|&amp;m| m.split(|c| !char::is_alphabetic(c)))</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="st">10 | |             .flatten()</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="st">   | |______________________^ returning this value requires that `'</span><span class="ex">1</span><span class="kw">`</span> must outlive <span class="kw">`</span><span class="st">'2`</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="st">error: lifetime may not live long enough</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="st">  --&gt; src/main.rs:7:9</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="st">   |</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="st">6  |       let split_no_alphabets = |splited_by_space: &amp;[&amp;str]| {</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="st">   |                                                     -    - return type of closure is Flatten&lt;Map&lt;std::slice::Iter&lt;'</span><span class="ex">2,</span> <span class="kw">&amp;</span><span class="ex">str</span><span class="op">&gt;</span>, [closure@src/main.rs:9:18: 9:59]<span class="op">&gt;&gt;</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>   <span class="kw">|</span>                                                     <span class="kw">|</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>   <span class="kw">|</span>                                                     <span class="ex">let</span><span class="st">'s call the lifetime of this reference `'</span><span class="ex">3</span><span class="kw">`</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="ex">7</span>  <span class="kw">|</span> <span class="ex">/</span>         splited_by_space</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="ex">8</span>  <span class="kw">|</span> <span class="kw">|</span>             <span class="fu">.iter()</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="ex">9</span>  <span class="kw">|</span> <span class="kw">|</span>             <span class="ex">.map</span><span class="er">(</span><span class="kw">|&amp;</span><span class="ex">m</span><span class="kw">|</span> <span class="ex">m.split</span><span class="er">(</span><span class="kw">|</span><span class="ex">c</span><span class="kw">|</span> <span class="ex">!char::is_alphabetic</span><span class="er">(</span><span class="ex">c</span><span class="kw">)))</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> <span class="kw">|</span> <span class="kw">|</span>             <span class="fu">.flatten()</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>   <span class="kw">|</span> <span class="kw">|</span><span class="ex">______________________^</span> returning this value requires that <span class="kw">`</span><span class="st">'3` must outlive `'</span><span class="ex">2</span><span class="kw">`</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="ex">error:</span> could not compile <span class="kw">`</span><span class="ex">magazine-cutout</span><span class="kw">`</span> due to 2 previous errors</span></code></pre></div>
+<p>This guide messages are quite useful 👍 to figure out the how to compile the code at
+first. (Compiling rust code reminds me how hard it is to compile a haskell code
+when I was learning for the first time. 😢)</p>
+<p>To summerize, when the closure return the value, life time of input must be sepecified,
+otherwise rust cannot gurantee the safety of the memory usage and won’t compile the
+code.</p>
+<h3 id="the-correct-signature-for-the-closure">The correct signature for the closure:</h3>
+<p>My situation is simple, I’d like to return the a value which has exactly same life
+time as what I got from the input.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> can_construct_note<span class="op">&lt;</span><span class="ot">'a</span><span class="op">&gt;</span>(magazine<span class="op">:</span> <span class="op">&amp;</span><span class="ot">'a</span> [<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">,</span> note<span class="op">:</span> <span class="op">&amp;</span><span class="ot">'a</span> [<span class="op">&amp;</span><span class="dt">str</span>]) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> split_no_alphabets <span class="op">=</span> <span class="op">|</span>splited_by_space<span class="op">:</span> <span class="op">&amp;</span><span class="ot">'a</span> [<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">|</span> <span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        splited_by_space</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>iter()</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>map(<span class="op">|&amp;</span>m<span class="op">|</span> m<span class="op">.</span>split(<span class="op">|</span>c<span class="op">|</span> <span class="op">!</span><span class="dt">char</span><span class="pp">::</span>is_alphabetic(c)))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>flatten()</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// snip ..</span></span></code></pre></div>
+<p>To specify the lifetime <code>can_construct_note</code> function requires <code>&lt;'a&gt;</code> lifetime specifier.
+which is applied to all the input type. And my next question is that:</p>
+<blockquote>
+<p>How about making a external function then?</p>
+</blockquote>
+<h2 id="the-function-as-external">The function as external</h2>
+<p>Now, we could possibly make an external function based on the information which LSP
+given to us. and final funciton can be written as below:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> split_no_alphabets_external<span class="op">&lt;</span><span class="ot">'a</span><span class="op">&gt;</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    splited_by_space<span class="op">:</span> <span class="op">&amp;</span><span class="ot">'a</span> [<span class="op">&amp;</span><span class="ot">'a</span> <span class="dt">str</span>]<span class="op">,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="bu">Iterator</span><span class="op">&lt;</span>Item <span class="op">=</span> <span class="op">&amp;</span><span class="ot">'a</span> <span class="dt">str</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    splited_by_space</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>iter()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>map(<span class="op">|&amp;</span>m<span class="op">|</span> m<span class="op">.</span>split(<span class="op">|</span>c<span class="op">|</span> <span class="op">!</span><span class="dt">char</span><span class="pp">::</span>is_alphabetic(c)))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>flatten()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>I am still unable to imagine I could make this function at first time.</p>
+<h2 id="solution-for-task">Solution for task</h2>
+<p>the solution consists of two steps:</p>
+<ol>
+<li>collect the magazine cuts as pairs of (<code class="verbatim">word</code>, <code class="verbatim">count</code>) via <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html">HashMap</a>.</li>
+<li>use the magzine cuts by deducting the count of the words stored
+in the hash map.</li>
+</ol>
+<p>The real aim of the task is how to use HashMap 😅.</p>
+<p>The whole code is not too long, I’d like to put altogether.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="at">#![</span>allow<span class="at">(</span>unused<span class="at">)]</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::collections::</span><span class="op">{</span><span class="pp">hash_map::Entry::</span>Occupied<span class="op">,</span> <span class="pp">hash_map::Entry::</span>Vacant<span class="op">,</span> HashMap<span class="op">};</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> can_construct_note<span class="op">&lt;</span><span class="ot">'a</span><span class="op">&gt;</span>(magazine<span class="op">:</span> <span class="op">&amp;</span><span class="ot">'a</span> [<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">,</span> note<span class="op">:</span> <span class="op">&amp;</span><span class="ot">'a</span> [<span class="op">&amp;</span><span class="dt">str</span>]) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> split_no_alphabets <span class="op">=</span> <span class="op">|</span>splited_by_space<span class="op">:</span> <span class="op">&amp;</span><span class="ot">'a</span> [<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">|</span> <span class="op">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        splited_by_space</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>iter()</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>map(<span class="op">|&amp;</span>m<span class="op">|</span> m<span class="op">.</span>split(<span class="op">|</span>c<span class="op">|</span> <span class="op">!</span><span class="dt">char</span><span class="pp">::</span>is_alphabetic(c)))</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>flatten()</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// from here</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="kw">mut</span> mag <span class="op">=</span> <span class="pp">HashMap::</span>new()<span class="op">;</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. count the magazine cuts</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    split_no_alphabets_external(magazine)<span class="op">.</span>for_each(<span class="op">|</span>w<span class="op">|</span> <span class="kw">match</span> (mag<span class="op">.</span>entry(w)) <span class="op">{</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        Occupied(o) <span class="op">=&gt;</span> <span class="op">*</span>o<span class="op">.</span>into_mut() <span class="op">+=</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>        Vacant(v) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>            v<span class="op">.</span>insert(<span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. use the cuts</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> n <span class="kw">in</span> split_no_alphabets(note) <span class="op">{</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">match</span> mag<span class="op">.</span>get_mut(n) <span class="op">{</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>            <span class="cn">None</span> <span class="op">|</span> <span class="cn">Some</span>(<span class="dv">0</span>) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>                <span class="kw">return</span> <span class="cn">false</span><span class="op">;</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>            <span class="cn">Some</span>(x) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>                <span class="op">*</span>x <span class="op">-=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    <span class="cn">true</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> magazine <span class="op">=</span> <span class="st">&quot;Astronomer Amy Mainzer spent hours chatting with Leonardo DiCaprio for Netflix's 'Don't Look Up'&quot;</span><span class="op">.</span>split_whitespace()<span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> note <span class="op">=</span> <span class="st">&quot;Amy Mainzer chatting with Leonardo DiCaprio.&quot;</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>split_whitespace()</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>    <span class="pp">assert!</span>(can_construct_note(<span class="op">&amp;</span>magazine<span class="op">,</span> <span class="op">&amp;</span>note))<span class="op">;</span></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="hash_mapentry">hash_map::Entry::*</h3>
+<p>In other’s solution, To check the entry is available or not, code like the following is used.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> magazine_words <span class="op">=</span> magazine<span class="op">.</span>iter()<span class="op">.</span>fold(<span class="pp">HashMap::</span>new()<span class="op">,</span> <span class="op">|</span><span class="kw">mut</span> words<span class="op">,</span> <span class="dt">str</span><span class="op">|</span> <span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>          <span class="op">*</span>words<span class="op">.</span>entry(<span class="dt">str</span>)<span class="op">.</span>or_insert(<span class="dv">0</span>) <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>          words</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span></code></pre></div>
+<p>But I try a different approach which is based on the same principle I talked in another <a href="https://jeongoon.github.io/posts/2022-05-20-exercism-org-raindrops.html#leave-it-as-basic">article</a>,</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>split_no_alphabets_external(magazine)<span class="op">.</span>for_each(<span class="op">|</span>w<span class="op">|</span> <span class="kw">match</span> (mag<span class="op">.</span>entry(w)) <span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    Occupied(o) <span class="op">=&gt;</span> <span class="op">*</span>o<span class="op">.</span>into_mut() <span class="op">+=</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    Vacant(v) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        v<span class="op">.</span>insert(<span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span></code></pre></div>
+<p>So, I could reduce one more step if the entry is not available. (<em>I have no idea how rust will
+optimize the former code, I could assure latter code is a little bit optimized.</em>)</p>
+<p>And same principle is applied for second step as well. but I’d like to quit earlier as soon as
+possible as I can. This kind of approach might be old school but still effient when we only
+concern about the <code>true / false</code> question.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 2. use the cuts</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> n <span class="kw">in</span> split_no_alphabets(note) <span class="op">{</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">match</span> mag<span class="op">.</span>get_mut(n) <span class="op">{</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">None</span> <span class="op">|</span> <span class="cn">Some</span>(<span class="dv">0</span>) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="cn">false</span><span class="op">;</span> <span class="co">// return earlier</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        <span class="cn">Some</span>(x) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">*</span>x <span class="op">-=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="cn">true</span></span></code></pre></div>
+<p>last <code class="verbatim">true</code> is final decision if everyting goes fine.</p>
+<h2 id="wrapping-up">Wrapping Up</h2>
+<ul>
+<li>closure could be handy inferred type of variable or return type (function type)</li>
+<li>go for basic <code class="verbatim">match</code> approach when we want ..
+<ul>
+<li>To get the insight of how utility function works.</li>
+<li>To apply more optimization</li>
+</ul></li>
+</ul>
+<h2 id="thank-you---happy-coding">Thank you - Happy coding !!!</h2>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->
