@@ -6,14 +6,174 @@ author: Myoungjin Jeon
 ---
 
 ** Introductions
+ Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan gramma, "every letter") is a sentence using every letter of the alphabet at least once. The best known English pangram is:
+
+#+begin_quote
+The quick borwn fox jumps over the lazy dog.
+#+end_quote
+
+  This is something we can see when choosing a font. This makes sense as we need to see
+  as many alphabets as we can to see the combinations!
+
+***  My strategy
+
+  There are a lot of ways is checking. and this is my stategy:
+
+#+begin_quote
+1. change the each character into lower case
+2. if is alphabet (strictly speaking, ascii alphabet) put into the accumlator.
+   (but do not insert more than once when duplicated)
+3. when finished to the list count and check it is 26. (a-z)
+#+end_quote
+
+
+***  procedural programming into functional programming
+
+  If we look at the procedure, we will realize that we can do them one by one,
+  and which is easier to be made of a chain of functions.
+
+  We could see the each step involving data transformation, Which is great because:
+
+#+begin_quote
+1. We could devide our logic into smaller and maintainable functions.
+2. Maintainable function means, we can write the unit tests per function easier.
+3. If the each function is general, we could re-use later.
+   (but making a function too general is always an evil, IMHO)
+#+end_quote
+  
+  However, I found something unexpected to check a character whether it is lower case
+  or not.
 
 ***  isLower is more complicated than I thought
 
-*** only for exact solution
+  Because, there are a lot of alphabets including basic english (a-z) in the world,
+  but our function should only care about english alphabets, which means:
+  ~Ã~ must be ignored in this test. and [[https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-Char.html#v:isLower][=isLower=]] in ~Data.Char~ module cares about non-ascii
+  alphabet as well (check all unicode characters), we need to check it is ascii as well.
 
-** general solution by using set
+
+***  check it is amazaon (a-z)
+
+  As Char data type is an [[https://hackage.haskell.org/package/base-4.16.0.0/docs/Data-Ord.html][~Ord~]] in haskell. we can compare the characters by using
+  arithmetic comparison:
+
+#+begin_src haskell
+λ> 'a' < 'b'
+True
+λ> 'Z' < 'a'
+True
+#+end_src
+
+
+** General solution by using set
+
+ [[https://hackage.haskell.org/package/containers/docs/Data-Set.html][Data.Set]] is a general module to handle the /set/ of data. We can ensure that te member
+ in the set always show once by using library.
+ we can safetly try to add more than once, and we will count the number of *kind*
+ of members later.
+
+ Some people would say this is not efficient solution Because it only has 26 cases in total.
+ In other words, We could do use bit (binary) artihmetic  which is memory effiecient and fast.
+ I agree that it is worth to try. But we are unable to
+ do it in general cases. So I'll go for more general case:
+
+#+begin_src haskell
+module Pangram (isPangram) where
+
+import qualified Data.Char as Char
+import qualified Data.Set as Set
+
+isPangram :: String -> Bool
+isPangram =
+  (26==)
+  . Set.size
+  . foldr sieve Set.empty
+
+  where
+    isLowerAlhpa26 lch = -- lch : lower character
+        'a' <= lch && lch <= 'z'
+
+    sieve c acc =
+      let lc = Char.toLower c
+      in
+        if isLowerAlhpa26 lc then
+          (Set.insert lc acc)
+        else
+          acc
+#+end_src
+
+ But wait... what if the string is very long and we want to get result quicker if is decided
+ to be ~True~?
+
+** Return to basic solution
+
+ ~foldr~ is not designed to quit earlier, (need to go until the end to finish)
+ but if we are using the normal ~List~, we can do something with lazy evaluation.
+
+#+begin_src haskell
+  module Pangram (isPangram) where
+
+  import qualified Data.Char as Char
+
+  isPangram :: String -> Bool
+  isPangram =
+    (26 ==)
+      . length
+      . accPangram' ""
+
+      where
+        accPangram' acc [] = []
+        accPangram' acc (c:cs) =
+          let lc = Char.toLower c
+          in
+            if isLowerAlhpa26 lc
+               && (not . elem lc $ acc) then
+              if length acc >= 25 then -- quit earlier if possible!
+                [True]
+              else
+                True : accPangram' (lc:acc) cs
+            else
+              accPangram' acc cs
+
+        isLowerAlhpa26 lch =
+            'a' <= lch && lch <= 'z'
+#+end_src
+
+  In this example, I use the some edge cases by checking the number of list is equal or
+  more than 26, to exit earlier. Another approach is using take 26.
+
+#+begin_src haskell
+    -- .. snip ..
+    (26 ==)
+      . length
+      . take 26 -- take only 26 from the beginning
+      . accPangram' ""
+
+      where
+        accPangram' acc [] = []
+        accPangram' acc (c:cs) =
+          let lc = Char.toLower c
+          in
+            if isLowerAlhpa26 lc
+               && (not . elem lc $ acc) then
+              --if length acc >= 25 then -- quit earlier if possible!
+              --[True]
+              --else
+              -- note : we don't need to do here anymore!
+                True : accPangram' (lc:acc) cs
+     -- .. snip ..
+#+end_src
+
+  This is another kind of design pattern we should consider when you develop in
+  lazy evaluation. i.e: think about that we could chain the function in context
+  of quit earlier if applicable.
+
+*** More options
+    We can achieve similar effect by using library function like [[https://hackage.haskell.org/package/base-4.16.1.0/docs/GHC-OldList.html#v:unfoldr][=unfoldr=]].
+    Or sometimes, we can go for =foldM= (but not in this task.)
 
 ** Rust version
+
 *** lower case is also compliated in rust
 *** HashSet variation
 

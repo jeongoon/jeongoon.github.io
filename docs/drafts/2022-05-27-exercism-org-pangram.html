@@ -67,9 +67,137 @@
 </div>
 
 <h2 id="introductions">Introductions</h2>
+<p>Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan gramma, “every letter”) is a sentence using every letter of the alphabet at least once. The best known English pangram is:</p>
+<blockquote>
+<p>The quick borwn fox jumps over the lazy dog.</p>
+</blockquote>
+<p>This is something we can see when choosing a font. This makes sense as we need to see
+as many alphabets as we can to see the combinations!</p>
+<h3 id="my-strategy">My strategy</h3>
+<p>There are a lot of ways is checking. and this is my stategy:</p>
+<blockquote>
+<ol>
+<li>change the each character into lower case</li>
+<li>if is alphabet (strictly speaking, ascii alphabet) put into the accumlator.
+(but do not insert more than once when duplicated)</li>
+<li>when finished to the list count and check it is 26. (a-z)</li>
+</ol>
+</blockquote>
+<h3 id="procedural-programming-into-functional-programming">procedural programming into functional programming</h3>
+<p>If we look at the procedure, we will realize that we can do them one by one,
+and which is easier to be made of a chain of functions.</p>
+<p>We could see the each step involving data transformation, Which is great because:</p>
+<blockquote>
+<ol>
+<li>We could devide our logic into smaller and maintainable functions.</li>
+<li>Maintainable function means, we can write the unit tests per function easier.</li>
+<li>If the each function is general, we could re-use later.
+(but making a function too general is always an evil, IMHO)</li>
+</ol>
+</blockquote>
+<p>However, I found something unexpected to check a character whether it is lower case
+or not.</p>
 <h3 id="islower-is-more-complicated-than-i-thought">isLower is more complicated than I thought</h3>
-<h3 id="only-for-exact-solution">only for exact solution</h3>
-<h2 id="general-solution-by-using-set">general solution by using set</h2>
+<p>Because, there are a lot of alphabets including basic english (a-z) in the world,
+but our function should only care about english alphabets, which means:
+<code>Ã</code> must be ignored in this test. and <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/Data-Char.html#v:isLower"><code class="verbatim">isLower</code></a> in <code>Data.Char</code> module cares about non-ascii
+alphabet as well (check all unicode characters), we need to check it is ascii as well.</p>
+<h3 id="check-it-is-amazaon-a-z">check it is amazaon (a-z)</h3>
+<p>As Char data type is an <a href="https://hackage.haskell.org/package/base-4.16.0.0/docs/Data-Ord.html"><code>Ord</code></a> in haskell. we can compare the characters by using
+arithmetic comparison:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="ch">'a'</span> <span class="op">&lt;</span> <span class="ch">'b'</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">True</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="ch">'Z'</span> <span class="op">&lt;</span> <span class="ch">'a'</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">True</span></span></code></pre></div>
+<h2 id="general-solution-by-using-set">General solution by using set</h2>
+<p><a href="https://hackage.haskell.org/package/containers/docs/Data-Set.html">Data.Set</a> is a general module to handle the <em>set</em> of data. We can ensure that te member
+in the set always show once by using library.
+we can safetly try to add more than once, and we will count the number of <strong>kind</strong>
+of members later.</p>
+<p>Some people would say this is not efficient solution Because it only has 26 cases in total.
+In other words, We could do use bit (binary) artihmetic which is memory effiecient and fast.
+I agree that it is worth to try. But we are unable to
+do it in general cases. So I’ll go for more general case:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Pangram</span> (isPangram) <span class="kw">where</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Data.Char</span> <span class="kw">as</span> <span class="dt">Char</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Data.Set</span> <span class="kw">as</span> <span class="dt">Set</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ot">isPangram ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>isPangram <span class="ot">=</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">26</span><span class="op">==</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span> Set.size</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span> <span class="fu">foldr</span> sieve Set.empty</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    isLowerAlhpa26 lch <span class="ot">=</span> <span class="co">-- lch : lower character</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="ch">'a'</span> <span class="op">&lt;=</span> lch <span class="op">&amp;&amp;</span> lch <span class="op">&lt;=</span> <span class="ch">'z'</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    sieve c acc <span class="ot">=</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> lc <span class="ot">=</span> <span class="dt">Char</span><span class="op">.</span><span class="fu">toLower</span> c</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">in</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> isLowerAlhpa26 lc <span class="kw">then</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>          (Set.insert lc acc)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">else</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>          acc</span></code></pre></div>
+<p>But wait… what if the string is very long and we want to get result quicker if is decided
+to be <code>True</code>?</p>
+<h2 id="return-to-basic-solution">Return to basic solution</h2>
+<p><code>foldr</code> is not designed to quit earlier, (need to go until the end to finish)
+but if we are using the normal <code>List</code>, we can do something with lazy evaluation.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Pangram</span> (isPangram) <span class="kw">where</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Data.Char</span> <span class="kw">as</span> <span class="dt">Char</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ot">isPangram ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>isPangram <span class="ot">=</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">26</span> <span class="op">==</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> <span class="fu">length</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span> accPangram' <span class="st">&quot;&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      accPangram' acc [] <span class="ot">=</span> []</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>      accPangram' acc (c<span class="op">:</span>cs) <span class="ot">=</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> lc <span class="ot">=</span> <span class="dt">Char</span><span class="op">.</span><span class="fu">toLower</span> c</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">in</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>          <span class="kw">if</span> isLowerAlhpa26 lc</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>             <span class="op">&amp;&amp;</span> (<span class="fu">not</span> <span class="op">.</span> <span class="fu">elem</span> lc <span class="op">$</span> acc) <span class="kw">then</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>            <span class="kw">if</span> <span class="fu">length</span> acc <span class="op">&gt;=</span> <span class="dv">25</span> <span class="kw">then</span> <span class="co">-- quit earlier if possible!</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>              [<span class="dt">True</span>]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>            <span class="kw">else</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>              <span class="dt">True</span> <span class="op">:</span> accPangram' (lc<span class="op">:</span>acc) cs</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>          <span class="kw">else</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>            accPangram' acc cs</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>      isLowerAlhpa26 lch <span class="ot">=</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>          <span class="ch">'a'</span> <span class="op">&lt;=</span> lch <span class="op">&amp;&amp;</span> lch <span class="op">&lt;=</span> <span class="ch">'z'</span></span></code></pre></div>
+<p>In this example, I use the some edge cases by checking the number of list is equal or
+more than 26, to exit earlier. Another approach is using take 26.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- .. snip ..</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>(<span class="dv">26</span> <span class="op">==</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span> <span class="fu">length</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span> <span class="fu">take</span> <span class="dv">26</span> <span class="co">-- take only 26 from the beginning</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span> accPangram' <span class="st">&quot;&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    accPangram' acc [] <span class="ot">=</span> []</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    accPangram' acc (c<span class="op">:</span>cs) <span class="ot">=</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> lc <span class="ot">=</span> <span class="dt">Char</span><span class="op">.</span><span class="fu">toLower</span> c</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">in</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> isLowerAlhpa26 lc</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>           <span class="op">&amp;&amp;</span> (<span class="fu">not</span> <span class="op">.</span> <span class="fu">elem</span> lc <span class="op">$</span> acc) <span class="kw">then</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>          <span class="co">--if length acc &gt;= 25 then -- quit earlier if possible!</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>          <span class="co">--[True]</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>          <span class="co">--else</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>          <span class="co">-- note : we don't need to do here anymore!</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="dt">True</span> <span class="op">:</span> accPangram' (lc<span class="op">:</span>acc) cs</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a> <span class="co">-- .. snip ..</span></span></code></pre></div>
+<p>This is another kind of design pattern we should consider when you develop in
+lazy evaluation. i.e: think about that we could chain the function in context
+of quit earlier if applicable.</p>
+<h3 id="more-options">More options</h3>
+<p>We can achieve similar effect by using library function like <a href="https://hackage.haskell.org/package/base-4.16.1.0/docs/GHC-OldList.html#v:unfoldr"><code class="verbatim">unfoldr</code></a>.
+Or sometimes, we can go for <code class="verbatim">foldM</code> (but not in this task.)</p>
 <h2 id="rust-version">Rust version</h2>
 <h3 id="lower-case-is-also-compliated-in-rust">lower case is also compliated in rust</h3>
 <h3 id="hashset-variation">HashSet variation</h3>

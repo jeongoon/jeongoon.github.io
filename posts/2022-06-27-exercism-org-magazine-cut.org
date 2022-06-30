@@ -1,6 +1,6 @@
 ---
 title: Exercism - Rust - Magazine Cut Out
-description: my magazine cut out soloution at exercism.org
+description: my magazine cut out solution at exercism.org
 keywords: rust, closure, function
 author: Myoungjin Jeon
 ---
@@ -373,8 +373,8 @@ How about making a external function then?
       // .. snip ..
 #+end_src
 
-    So, I could reduce one more step if the entry is not available. (/I have no idea how rust will
-    optimize the former code, I could assure latter code is a little bit optimized./)
+    So, I could reduce one more step (or_insert(0) and += 1) if the entry is not available.
+    (/I have no idea how rust will optimize the former code, on the other hand, I could assure latter code is a little bit more optimized./)
 
     And same principle is applied for second step as well. but I'd like to quit earlier as soon as
     possible as I can. This kind of approach might be old school but still effient when we only
@@ -396,12 +396,15 @@ How about making a external function then?
       true
 #+end_src
 
-    last =true= is final decision if everyting goes fine.
+    /I enjoyed the usage of =|= in =None | Some(0)=. which is what I want to use in haskell as well./
+
+    Lastly, =true= is final decision if everything goes fine.
 
 ** Wrapping Up
 
-  * closure could be handy inferred type of variable or return type (function type)
-  * go for basic =match= approach when we want ..
+  * HashMap is useful data structure storing the ~key-value~ data in memory.
+  * Closure could be handy due to inferred type of variable or return type (function type)
+  * Let's go for basic =match= approach when we want ..
     * To get the insight of how utility function works.
     * To apply more optimization
 

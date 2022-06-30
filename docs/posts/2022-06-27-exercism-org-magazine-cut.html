@@ -7,7 +7,7 @@
     <meta name="author" content="Myoungjin Jeon">
 
 
-    <meta name="description" content="my magazine cut out soloution at exercism.org">
+    <meta name="description" content="my magazine cut out solution at exercism.org">
 
 
     <meta name="keywords" content="rust, closure, function">
@@ -348,8 +348,8 @@ in the hash map.</li>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>)<span class="op">;</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span></code></pre></div>
-<p>So, I could reduce one more step if the entry is not available. (<em>I have no idea how rust will
-optimize the former code, I could assure latter code is a little bit optimized.</em>)</p>
+<p>So, I could reduce one more step (or_insert(0) and += 1) if the entry is not available.
+(<em>I have no idea how rust will optimize the former code, on the other hand, I could assure latter code is a little bit more optimized.</em>)</p>
 <p>And same principle is applied for second step as well. but I’d like to quit earlier as soon as
 possible as I can. This kind of approach might be old school but still effient when we only
 concern about the <code>true / false</code> question.</p>
@@ -366,11 +366,13 @@ concern about the <code>true / false</code> question.</p>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="cn">true</span></span></code></pre></div>
-<p>last <code class="verbatim">true</code> is final decision if everyting goes fine.</p>
+<p><em>I enjoyed the usage of <code class="verbatim">|</code> in <code class="verbatim">None | Some(0)</code>. which is what I want to use in haskell as well.</em></p>
+<p>Lastly, <code class="verbatim">true</code> is final decision if everything goes fine.</p>
 <h2 id="wrapping-up">Wrapping Up</h2>
 <ul>
-<li>closure could be handy inferred type of variable or return type (function type)</li>
-<li>go for basic <code class="verbatim">match</code> approach when we want ..
+<li>HashMap is useful data structure storing the <code>key-value</code> data in memory.</li>
+<li>Closure could be handy due to inferred type of variable or return type (function type)</li>
+<li>Let’s go for basic <code class="verbatim">match</code> approach when we want ..
 <ul>
 <li>To get the insight of how utility function works.</li>
 <li>To apply more optimization</li>
