@@ -251,8 +251,28 @@ pub fn is_pangram(sentence: &str) -> bool {
   }
 #+end_src
 
+*** One more solution using collect()
+   I found this solution after mine.
+#+begin_src rust
+use std::collections::HashSet;
+use std::ascii::AsciiExt;
+
+pub fn is_pangram(sentence: &str) -> bool
+{
+    sentence
+        .to_lowercase()
+        .chars()
+        .filter(|&c| c.is_ascii() && c.is_alphabetic())
+        .collect::<HashSet<char>>()
+        .len() == 26
+}
+#+end_src
+
+ This is very clear solution. my /.to_lowercase/ is applied to each =char=. but this solution
+ apply the function with same name on the =&str=, Moreorver, magic =.collect()= function looks
+ interesting, I'd like to dig more about later sometime.
+
 ** Wrapping Up  _정리하기 
-   I'm a bit surprised
 
  * Procedule programming could be transformed into functional programming
    especially when the task is related into data transformation.

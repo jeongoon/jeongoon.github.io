@@ -262,8 +262,24 @@ one with general function. So the following code is with Hashset:</p>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>len()</span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">==</span> <span class="dv">26</span></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="one-more-solution-using-collect">One more solution using collect()</h3>
+<p>I found this solution after mine.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::collections::</span>HashSet<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::ascii::</span>AsciiExt<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> is_pangram(sentence<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> <span class="dt">bool</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    sentence</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>to_lowercase()</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>chars()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>filter(<span class="op">|&amp;</span>c<span class="op">|</span> c<span class="op">.</span>is_ascii() <span class="op">&amp;&amp;</span> c<span class="op">.</span>is_alphabetic())</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span>HashSet<span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;&gt;</span>()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>len() <span class="op">==</span> <span class="dv">26</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This is very clear solution. my <em>.to<sub>lowercase</sub></em> is applied to each <code class="verbatim">char</code>. but this solution
+apply the function with same name on the <code class="verbatim">&amp;str</code>, Moreorver, magic <code class="verbatim">.collect()</code> function looks
+interesting, I’d like to dig more about later sometime.</p>
 <h2 id="wrapping-up-정리하기">Wrapping Up <sub>정리하기</sub></h2>
-<p>I’m a bit surprised</p>
 <ul>
 <li>Procedule programming could be transformed into functional programming
 especially when the task is related into data transformation.</li>
@@ -279,17 +295,17 @@ it is worth to try to make your own.</p>
 the first element could be determined right away, which doesn’t require to access
 full accumlator.</p>
 </blockquote>
-<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">foldr</span> (<span class="op">:</span>) [] [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>λ<span class="ot">=</span> <span class="fu">take</span> <span class="dv">10</span> <span class="op">$</span> <span class="fu">foldr</span> (<span class="op">:</span>) [] [<span class="dv">1</span>,<span class="dv">2</span><span class="op">..</span>]</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>]</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">foldr</span> (<span class="op">:</span>) [] [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>λ<span class="ot">=</span> <span class="fu">take</span> <span class="dv">10</span> <span class="op">$</span> <span class="fu">foldr</span> (<span class="op">:</span>) [] [<span class="dv">1</span>,<span class="dv">2</span><span class="op">..</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span></span></code></pre></div>
 <p>This behaviour achieved with only <code class="verbatim">foldr</code>, not <code class="verbatim">foldl</code>. This is beyond the subject of
 the article. I hope I could write about this later.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">take</span> <span class="dv">10</span> <span class="op">$</span> <span class="fu">foldl</span> (<span class="fu">flip</span> (<span class="op">:</span>)) [] [<span class="dv">1</span>,<span class="dv">2</span><span class="op">..</span>]</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- which runs forever.</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- So, I stopped by typing Ctrl-C</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">^</span><span class="dt">CInterrupted</span><span class="op">.</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">take</span> <span class="dv">10</span> <span class="op">$</span> <span class="fu">foldl</span> (<span class="fu">flip</span> (<span class="op">:</span>)) [] [<span class="dv">1</span>,<span class="dv">2</span><span class="op">..</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- which runs forever.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- So, I stopped by typing Ctrl-C</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="op">^</span><span class="dt">CInterrupted</span><span class="op">.</span></span></code></pre></div>
 <h2 id="thank-you-for-reading">Thank you for reading!!</h2>
 <p>If you need some classic music, I would recommend <a href="https://www.youtube.com/watch?v=DPJL488cfRw&amp;t=181s">Yunchan Lim 임윤찬 – RACHMANINOV Piano Concerto No. 3 in D Minor, op. 30 – 2022 Cliburn Competition</a>.
 Which was quite phenomenal performance for me even though I don’t know about the classic music.</p>
