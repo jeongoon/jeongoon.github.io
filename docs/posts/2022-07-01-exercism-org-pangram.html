@@ -10,7 +10,7 @@
     <meta name="description" content="my solution for Pangram at exercism.org">
 
 
-    <meta name="keywords" content="pangram, haskell, rust, functional programming, fp, fold">
+    <meta name="keywords" content="pangram, haskell, rust, functional programming, fp, fold, unicode, library">
 
    <!-- even though I setup @media to make change all the fixed font size;
         FF on mobile -- incorrectly -- scales font size again.
@@ -55,14 +55,14 @@
 
     <div id="content" class="font-friendly">
             <div class="info">
-    Posted on May 27, 2022
+    Posted on July  1, 2022
     
         by Myoungjin Jeon
     
 </div>
 <div class="info">
   
-  Tags: <a title="All pages tagged 'haskell'." href="../tags/haskell.html">haskell</a>, <a title="All pages tagged 'rust'." href="../tags/rust.html">rust</a>, <a title="All pages tagged 'fold'." href="../tags/fold.html">fold</a>
+  Tags: <a title="All pages tagged 'pangram'." href="../tags/pangram.html">pangram</a>, <a title="All pages tagged 'haskell'." href="../tags/haskell.html">haskell</a>, <a title="All pages tagged 'rust'." href="../tags/rust.html">rust</a>, <a title="All pages tagged 'functional programming'." href="../tags/functional%20programming.html">functional programming</a>, <a title="All pages tagged 'fp'." href="../tags/fp.html">fp</a>, <a title="All pages tagged 'fold'." href="../tags/fold.html">fold</a>, <a title="All pages tagged 'unicode'." href="../tags/unicode.html">unicode</a>, <a title="All pages tagged 'library'." href="../tags/library.html">library</a>
   
 </div>
 
@@ -142,8 +142,8 @@ do it in general cases. So I’ll go for more general case:</p>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>          acc</span></code></pre></div>
 <p>But wait… what if the string is very long and we want to get result quicker if is decided
 to be <code>True</code>?</p>
-<h2 id="return-to-basic-solution">Return to basic solution</h2>
-<p><code>foldr</code> is not designed to quit earlier, (need to go until the end to finish)
+<h2 id="return-to-basic">Return to basic</h2>
+<p><code class="verbatim">foldr</code> is not designed to quit earlier.
 but if we are using the normal <code>List</code>, we can do something with lazy evaluation.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Pangram</span> (isPangram) <span class="kw">where</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -186,10 +186,10 @@ more than 26, to exit earlier. Another approach is using take 26.</p>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">in</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> isLowerAlhpa26 lc</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>           <span class="op">&amp;&amp;</span> (<span class="fu">not</span> <span class="op">.</span> <span class="fu">elem</span> lc <span class="op">$</span> acc) <span class="kw">then</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>          <span class="co">--if length acc &gt;= 25 then -- quit earlier if possible!</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>          <span class="co">--[True]</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>          <span class="co">--else</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>          <span class="co">-- note : we don't need to do here anymore!</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>          <span class="co">-- note : we don't need to check here anymore.</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>          <span class="co">--if length acc &gt;= 25 then -- quit earlier if possible!</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>          <span class="co">--[True]</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>          <span class="co">--else</span></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="dt">True</span> <span class="op">:</span> accPangram' (lc<span class="op">:</span>acc) cs</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a> <span class="co">-- .. snip ..</span></span></code></pre></div>
 <p>This is another kind of design pattern we should consider when you develop in
@@ -200,8 +200,100 @@ of quit earlier if applicable.</p>
 Or sometimes, we can go for <code class="verbatim">foldM</code> (but not in this task.)</p>
 <h2 id="rust-version">Rust version</h2>
 <h3 id="lower-case-is-also-compliated-in-rust">lower case is also compliated in rust</h3>
-<h3 id="hashset-variation">HashSet variation</h3>
-<h2 id="wrapping-up">Wrapping Up</h2>
+<p>Rust also concerns about unicode, <a href="https://doc.rust-lang.org/std/primitive.char.html#method.to_lowercase">to<sub>lowercase</sub>()</a> looks like change <em>a</em> char into
+<em>another</em> char at first time. but the result could be serveral chars.
+we can check out the example in above to<sub>lowercase</sub>() link.</p>
+<p>So, what we want to here is <a href="https://doc.rust-lang.org/std/primitive.char.html#method.to_ascii_lowercase">to<sub>asciilowercase</sub>()</a>!</p>
+<h3 id="a-solution-with-storing-in-a-string">A Solution with Storing in a String</h3>
+<p>the total list in result is only 26 members in maximum, so it is safe to say
+we don’t need to dig for <a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html">HashSet</a> here.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> is_pangram(sentence<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> collect_as_lowercases <span class="op">=</span> <span class="op">|</span><span class="kw">mut</span> acc<span class="op">:</span> <span class="dt">String</span><span class="op">,</span> c<span class="op">:</span> <span class="dt">char</span><span class="op">|</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> c<span class="op">.</span>is_ascii_alphabetic() <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> uc <span class="op">=</span> c<span class="op">.</span>to_ascii_lowercase()<span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="kw">if</span> <span class="op">!</span>acc<span class="op">.</span>contains(uc) <span class="op">{</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                acc<span class="op">.</span>push(uc)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        acc</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    sentence</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>chars()</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>fold(<span class="dt">String</span><span class="pp">::</span>new()<span class="op">,</span> collect_as_lowercases)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>len()</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">==</span> <span class="dv">26</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The basic idea is the same as haskell version. I didn’t go for <em>early exit</em> when
+the mission is fulfiled already. I haven’t checked enough, but at least, we
+can go with normal <code class="verbatim">for</code> loop.</p>
+<p><em>I tried below code but has no luck yet. (which result is the same as haskell)</em></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    sentence</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>chars()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>fold(<span class="dt">Vec</span><span class="pp">::</span><span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;</span><span class="pp">::</span>new()<span class="op">,</span> collect_as_lowercases)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>into_iter()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>take(<span class="dv">26</span>) <span class="co">// please take 26 only!!</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>count()</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">==</span> <span class="dv">26</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="another-solution-wih-hashset">Another Solution wih HashSet</h3>
+<p>It is generally great idea to use general function or library as many as you can.
+You can even feel free to use or compare between your own solution and
+one with general function. So the following code is with Hashset:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::collections::</span>HashSet<span class="op">;</span> <span class="co">// required to use it as  `HashSet`</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> is_pangram(sentence<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> collect_as_lowercases <span class="op">=</span> <span class="op">|</span><span class="kw">mut</span> acc<span class="op">:</span> HashSet<span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;,</span> c<span class="op">:</span> <span class="dt">char</span><span class="op">|</span> <span class="op">{</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> c<span class="op">.</span>is_ascii_alphabetic() <span class="op">{</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> lc <span class="op">=</span> c<span class="op">.</span>to_ascii_lowercase()<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            <span class="co">// basically same as push() except that we don't need to check</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">// existence by ourselves. neat!</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            acc<span class="op">.</span>insert(lc)<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        acc</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    sentence</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>chars()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>fold(<span class="pp">HashSet::</span><span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;</span><span class="pp">::</span>new()<span class="op">,</span> collect_as_lowercases)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>len()</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">==</span> <span class="dv">26</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="wrapping-up-정리하기">Wrapping Up <sub>정리하기</sub></h2>
+<p>I’m a bit surprised</p>
+<ul>
+<li>Procedule programming could be transformed into functional programming
+especially when the task is related into data transformation.</li>
+<li>Breaking early is sometimes tricky for haskell beginner like me.
+We need to figure out how to do it by making custom function. or Monad
+Control in haskell (I hope I could learn more and talk about it.)</li>
+</ul>
+<p>. Use general library is good idea for robust programming even though
+it is worth to try to make your own.</p>
+<h2 id="little-more-information-about-foldr">Little More Information About foldr</h2>
+<blockquote>
+<p>Note: <code class="verbatim">foldr,</code> sometimes, could be finshed earlier in conjunction with <code class="verbatim">take</code>. When
+the first element could be determined right away, which doesn’t require to access
+full accumlator.</p>
+</blockquote>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">foldr</span> (<span class="op">:</span>) [] [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>λ<span class="ot">=</span> <span class="fu">take</span> <span class="dv">10</span> <span class="op">$</span> <span class="fu">foldr</span> (<span class="op">:</span>) [] [<span class="dv">1</span>,<span class="dv">2</span><span class="op">..</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span></span></code></pre></div>
+<p>This behaviour achieved with only <code class="verbatim">foldr</code>, not <code class="verbatim">foldl</code>. This is beyond the subject of
+the article. I hope I could write about this later.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>λ<span class="op">&gt;</span> <span class="fu">take</span> <span class="dv">10</span> <span class="op">$</span> <span class="fu">foldl</span> (<span class="fu">flip</span> (<span class="op">:</span>)) [] [<span class="dv">1</span>,<span class="dv">2</span><span class="op">..</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- which runs forever.</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- So, I stopped by typing Ctrl-C</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">^</span><span class="dt">CInterrupted</span><span class="op">.</span></span></code></pre></div>
+<h2 id="thank-you-for-reading">Thank you for reading!!</h2>
+<p>If you need some classic music, I would recommend <a href="https://www.youtube.com/watch?v=DPJL488cfRw&amp;t=181s">Yunchan Lim 임윤찬 – RACHMANINOV Piano Concerto No. 3 in D Minor, op. 30 – 2022 Cliburn Competition</a>.
+Which was quite phenomenal performance for me even though I don’t know about the classic music.</p>
+<p>I would say, connection between all of us is most important thing..</p>
 
     </div>
 

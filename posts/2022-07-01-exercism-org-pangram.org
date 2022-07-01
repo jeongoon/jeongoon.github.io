@@ -1,7 +1,7 @@
 ---
 title: Exercism - Haskell, Rust - Pangram
 description: my solution for Pangram at exercism.org
-keywords: pangram, haskell, rust, functional programming, fp, fold
+keywords: pangram, haskell, rust, functional programming, fp, fold, unicode, library
 author: Myoungjin Jeon
 ---
 
@@ -105,9 +105,9 @@ isPangram =
  But wait... what if the string is very long and we want to get result quicker if is decided
  to be ~True~?
 
-** Return to basic solution
+** Return to basic
 
- ~foldr~ is not designed to quit earlier, (need to go until the end to finish)
+ =foldr= is not designed to quit earlier.
  but if we are using the normal ~List~, we can do something with lazy evaluation.
 
 #+begin_src haskell
@@ -156,10 +156,10 @@ isPangram =
           in
             if isLowerAlhpa26 lc
                && (not . elem lc $ acc) then
+              -- note : we don't need to check here anymore.
               --if length acc >= 25 then -- quit earlier if possible!
               --[True]
               --else
-              -- note : we don't need to do here anymore!
                 True : accPangram' (lc:acc) cs
      -- .. snip ..
 #+end_src
@@ -175,6 +175,123 @@ isPangram =
 ** Rust version
 
 *** lower case is also compliated in rust
-*** HashSet variation
+    Rust also concerns about unicode, [[https://doc.rust-lang.org/std/primitive.char.html#method.to_lowercase][to_lowercase()]] looks like change /a/ char into
+    /another/ char at first time. but the result could be serveral chars.
+    we can check out the example in above to_lowercase() link.
 
-** Wrapping Up
+    So, what we want to here is [[https://doc.rust-lang.org/std/primitive.char.html#method.to_ascii_lowercase][to_ascii_lowercase()]]!
+
+*** A Solution with Storing in a String
+
+    the total list in result is only 26 members in maximum, so it is safe to say
+    we don't need to dig for [[https://doc.rust-lang.org/std/collections/struct.HashSet.html][HashSet]] here.
+#+begin_src rust
+pub fn is_pangram(sentence: &str) -> bool {
+    let collect_as_lowercases = |mut acc: String, c: char| {
+        if c.is_ascii_alphabetic() {
+            let uc = c.to_ascii_lowercase();
+            if !acc.contains(uc) {
+                acc.push(uc)
+            }
+        }
+        acc
+    };
+
+    sentence
+        .chars()
+        .fold(String::new(), collect_as_lowercases)
+        .len()
+        == 26
+}
+#+end_src
+    
+    The basic idea is the same as haskell version. I didn't go for /early exit/ when
+    the mission is fulfiled already. I haven't checked enough, but at least, we
+    can go with normal =for= loop.
+
+    /I tried below code but has no luck yet. (which result is the same as haskell)/
+#+begin_src rust
+// .. snip ..
+
+    sentence
+        .chars()
+        .fold(Vec::<char>::new(), collect_as_lowercases)
+        .into_iter()
+        .take(26) // please take 26 only!!
+        .count()
+        == 26
+}
+#+end_src
+
+*** Another Solution wih HashSet
+    It is generally great idea to use general function or library as many as you can.
+    You can even feel free to use or compare between your own solution and
+    one with general function. So the following code is with Hashset:
+    
+#+begin_src rust
+  use std::collections::HashSet; // required to use it as  `HashSet`
+
+  pub fn is_pangram(sentence: &str) -> bool {
+      let collect_as_lowercases = |mut acc: HashSet<char>, c: char| {
+          if c.is_ascii_alphabetic() {
+              let lc = c.to_ascii_lowercase();
+              // basically same as push() except that we don't need to check
+
+              // existence by ourselves. neat!
+              acc.insert(lc);
+          }
+          acc
+      };
+
+      sentence
+          .chars()
+          .fold(HashSet::<char>::new(), collect_as_lowercases)
+          .len()
+          == 26
+  }
+#+end_src
+
+** Wrapping Up  _정리하기 
+   I'm a bit surprised
+
+ * Procedule programming could be transformed into functional programming
+   especially when the task is related into data transformation.
+ * Breaking early is sometimes tricky for haskell beginner like me.
+   We need to figure out how to do it by making custom function. or Monad
+   Control in haskell (I hope I could learn more and talk about it.)
+ . Use general library is good idea for robust programming even though
+   it is worth to try to make your own.
+
+
+** Little More Information About foldr 
+
+#+begin_quote
+Note: =foldr,= sometimes, could be finshed earlier in conjunction with =take=. When
+the first element could be determined right away, which doesn't require to access
+full accumlator.
+#+end_quote
+
+#+begin_src haskell
+λ> foldr (:) [] [1,2,3,4,5]
+[1,2,3,4,5]
+λ= take 10 $ foldr (:) [] [1,2..]
+[1,2,3,4,5,6,7,8,9,10]
+λ>
+#+end_src
+
+  This behaviour achieved with only =foldr=, not =foldl=. This is beyond the subject of
+  the article. I hope I could write about this later.
+
+#+begin_src haskell
+λ> take 10 $ foldl (flip (:)) [] [1,2..]
+-- which runs forever.
+-- So, I stopped by typing Ctrl-C
+^CInterrupted.
+#+end_src
+
+** Thank you for reading!!
+
+ If you need some classic music, I would recommend [[https://www.youtube.com/watch?v=DPJL488cfRw&t=181s][Yunchan Lim 임윤찬 – RACHMANINOV Piano Concerto No. 3 in D Minor, op. 30 – 2022 Cliburn Competition]].
+ Which was quite phenomenal performance for me even though I don't know about the classic music.
+
+ I would say, connection between all of us is most important thing..
