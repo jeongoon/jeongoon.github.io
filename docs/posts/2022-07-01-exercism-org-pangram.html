@@ -200,10 +200,10 @@ of quit earlier if applicable.</p>
 Or sometimes, we can go for <code class="verbatim">foldM</code> (but not in this task.)</p>
 <h2 id="rust-version">Rust version</h2>
 <h3 id="lower-case-is-also-compliated-in-rust">lower case is also compliated in rust</h3>
-<p>Rust also concerns about unicode, <a href="https://doc.rust-lang.org/std/primitive.char.html#method.to_lowercase">to<sub>lowercase</sub>()</a> looks like change <em>a</em> char into
+<p>Rust also concerns about unicode, <a href="https://doc.rust-lang.org/std/primitive.char.html#method.to_lowercase">to_lowercase()</a> looks like change <em>a</em> char into
 <em>another</em> char at first time. but the result could be serveral chars.
-we can check out the example in above to<sub>lowercase</sub>() link.</p>
-<p>So, what we want to here is <a href="https://doc.rust-lang.org/std/primitive.char.html#method.to_ascii_lowercase">to<sub>asciilowercase</sub>()</a>!</p>
+we can check out the example in above to_lowercase() link.</p>
+<p>So, what we want to here is <a href="https://doc.rust-lang.org/std/primitive.char.html#method.to_ascii_lowercase">to_ascii_lowercase()</a>!</p>
 <h3 id="a-solution-with-storing-in-a-string">A Solution with Storing in a String</h3>
 <p>the total list in result is only 26 members in maximum, so it is safe to say
 we don’t need to dig for <a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html">HashSet</a> here.</p>
@@ -276,10 +276,10 @@ one with general function. So the following code is with Hashset:</p>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span>HashSet<span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;&gt;</span>()</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>len() <span class="op">==</span> <span class="dv">26</span></span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>This is very clear solution. my <em>.to<sub>lowercase</sub></em> is applied to each <code class="verbatim">char</code>. but this solution
+<p>This is very clear solution. my <em>.to_lowercase</em> is applied to each <code class="verbatim">char</code>. but this solution
 apply the function with same name on the <code class="verbatim">&amp;str</code>, Moreorver, magic <code class="verbatim">.collect()</code> function looks
 interesting, I’d like to dig more about later sometime.</p>
-<h2 id="wrapping-up-정리하기">Wrapping Up <sub>정리하기</sub></h2>
+<h2 id="wrapping-up-_정리하기">Wrapping Up _정리하기</h2>
 <ul>
 <li>Procedule programming could be transformed into functional programming
 especially when the task is related into data transformation.</li>

@@ -1,0 +1,9 @@
+---
+title: Exercism - Rust - Allergies
+description: my temperature soloution at exercism.org
+keywords: rust, enum, iter, into
+author: Myoungjin Jeon
+---
+
+** Introductions
+** What is difference between into_iter() and iter()
