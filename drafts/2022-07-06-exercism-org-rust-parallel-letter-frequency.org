@@ -5,6 +5,8 @@ keywords: rust, parallel, concurrency, channel
 author: Myoungjin Jeon
 ---
 
+#+OPTIONS: ^:{}
+
 ** Brief Introductions (not original)
 
  Count the frequency of letters stored in /a/ list of =&str=. i.e:
@@ -78,7 +80,7 @@ hi number 4 from the spawned thread!
 hi number 5 from the spawned thread!
 #+end_src
   
-** oh, no. we should wait for our friends.
+** oh no! we should wait for our friends!
 
   Does it look good? but if we look carefully. we can find that some output is missing as
   the our spawned thread is supposed to print up to *9*, but we only got 5 here
@@ -208,7 +210,7 @@ We cannot gurantee the what will happen
           let val = String::from("hi");
           // sending from the friend thread
           tx.send(val).unwrap();
-      }); // return value is not quite useful here so it in void context
+      }); // return value is not quite useful here so it is in void context
           // no `let` statement or no following function(method call) after that.
 
       // receiving from the main thread
@@ -297,8 +299,8 @@ We cannot gurantee the what will happen
   &[ "abc", "def", "ghi", "jkl" ]
      // ->
    vec![
-       vec!["abc", "ghi"], // note it is acually going to be String via to_string()
-       vec!["def", "jkl"],
+       "abcghi", // note stored in String
+       "defjkl",
    ]
 #+end_src
 
@@ -306,36 +308,36 @@ We cannot gurantee the what will happen
 
 ***  The partial code so far
 #+begin_src rust
-  pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize> {
-      let num_workers = if worker_count == 0 { 1 } else { worker_count };
-      let mut handles = vec![];
+   pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize> {
+       let num_workers = if worker_count == 0 { 1 } else { worker_count };
+       let mut handles = vec![];
 
-      // make a channel for all the results collected
-      let (tx_main, rx_main) = mpsc::channel();
+       // make a channel for all the results collected
+       let (tx_main, rx_main) = mpsc::channel();
 
-      let mut input_per_worker = vec![vec![]; num_workers];
-      input
-          .iter()
-          .zip((0..worker_count).cycle()) // .cycle() easy way to rotating
-                                          //  the numbers
-          .for_each(|(&s, i)| { // ( string as &str, index(or id) number )
-              input_per_worker.get_mut(i) // access the value at the index i`
-                  .unwrap() // it is safe to access because we allocate the
-                            // memory space already
-                  .push(s.to_string()); // required to copy
-                                        // to ensure life time inside the thread
-          });
+       let mut input_per_worker = vec![String::from(""); num_workers];
+       input
+           .iter()
+           .zip((0..worker_count).cycle()) // .cycle() easy way to rotating
+                                           //  the numbers
+           .for_each(|(&s, i)| { // ( string as &str, index(or id) number )
+               *input_per_worker.get_mut(i) // access the value at the index `i`
+                   .unwrap() // it is safe to access because we allocate the
+                             // memory space already
+                   += s;     // this very efficient way to copy the string from
+                             // a &str
+           });
 
-      input_per_worker.into_iter().for_each(|input_| {
-          // preprare for sending
-          let tx = tx_main.clone();
-          // prepare for listening
-          let handle = thread::spawn(move || {
-              // collect count
-              let mut subtotal = HashMap::<char, usize>::new();
+       input_per_worker.into_iter().for_each(|input_| {
+           // preprare for sending
+           let tx = tx_main.clone();
+           // prepare for listening
+           let handle = thread::spawn(move || {
+               // collect count
+               let mut subtotal = HashMap::<char, usize>::new();
 
-              input_.iter().for_each(|s| {
-                  // snip ..
+               input_.iter().for_each(|s| {
+                   // snip ..
 #+end_src
 
 *** benefits from memory access
@@ -357,32 +359,25 @@ We cannot gurantee the what will happen
           // collect count
           let mut subtotal = HashMap::<char, usize>::new();
 
-          input_.iter().for_each(|s| {
-              // input_ is vector string
-              // to access the character from string
-              // we need to go into first level here (1)
-              s.chars().for_each(|ch| {
-                  // and go through the character here (2)
+          input_.chars().for_each(|ch| {
+              if ch.is_alphabetic() {
+                  // note: this task actually only insensitive on ascii alphabets
+                  // speed up 2x when using simple to_ascii_lowercase()
+                  // another option is
+                  // change s.chars() -> s.to_lowercases().chars()
+                  // and use as it is.
+                  let lc = ch.to_ascii_lowercase();
+                  /*ch.to_lowercase().for_each(|lc|*/
 
-                  if ch.is_alphabetic() {
-                      // note: this task actually only insensitive on ascii alphabets
-                      // speed up 2x when using simple to_ascii_lowercase()
-                      // another option is
-                      // change s.chars() -> s.to_lowercases().chars()
-                      // and use as it is.
-                      let lc = ch.to_ascii_lowercase();
-                      /*ch.to_lowercase().for_each(|lc|*/
-
-                      // the following pattern was posted in
-                      // https://jeongoon.github.io/posts/2022-05-20-exercism-org-raindrops.html#leave-it-as-basic
-                      match subtotal.entry(lc) {
-                          Occupied(o) => *o.into_mut() += 1,
-                          Vacant(v) => {
-                              v.insert(1);
-                          }
-                      } /*);*/
-                  };
-              })
+                  // the following pattern was posted in
+                  // https://jeongoon.github.io/posts/2022-05-20-exercism-org-raindrops.html#leave-it-as-basic
+                  match subtotal.entry(lc) {
+                      Occupied(o) => *o.into_mut() += 1,
+                      Vacant(v) => {
+                          v.insert(1);
+                      }
+                  } /*);*/
+              };
           });
           // finally sending
           tx.send(subtotal).unwrap();
@@ -428,7 +423,8 @@ We cannot gurantee the what will happen
     on 9 years old xps.
 
 #+begin_src sh
-    Finished bench [optimized] target(s) in 0.74s
+   Compiling parallel-letter-frequency v0.0.0 (/home/myoungjin/exercism/rust/parallel-letter-frequency)
+    Finished bench [optimized] target(s) in 1.48s
      Running unittests src/lib.rs (target/release/deps/parallel_letter_frequency-016160b8c250f033)
 
 running 0 tests
@@ -438,19 +434,20 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
      Running benches/benchmark.rs (target/release/deps/benchmark-15a648eb6d4b6f2b)
 
 running 6 tests
-test bench_large_parallel   ... bench:     320,958 ns/iter (+/- 102,875)
-test bench_large_sequential ... bench:     693,308 ns/iter (+/- 49,224)
-test bench_small_parallel   ... bench:      70,801 ns/iter (+/- 3,162)
-test bench_small_sequential ... bench:      24,034 ns/iter (+/- 1,025)
-test bench_tiny_parallel    ... bench:      61,810 ns/iter (+/- 3,850)
-test bench_tiny_sequential  ... bench:          73 ns/iter (+/- 12)
+test bench_large_parallel   ... bench:     279,074 ns/iter (+/- 37,084)
+test bench_large_sequential ... bench:     661,265 ns/iter (+/- 14,291)
+test bench_small_parallel   ... bench:      68,663 ns/iter (+/- 3,665)
+test bench_small_sequential ... bench:      22,776 ns/iter (+/- 489)
+test bench_tiny_parallel    ... bench:      60,142 ns/iter (+/- 3,124)
+test bench_tiny_sequential  ... bench:          78 ns/iter (+/- 3)
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 6 measured; 0 filtered out; finished in 21.73s
+
 #+end_src
 
 *** parallel is not always helpful _병렬처리
-    Even though first /bench_large_parallel/ shows that benefit from the concurrency, the others
-    do not show the benefit at all.
+    Even though first /bench_large_parallel test case/ shows that performance benefit
+    from the concurrency, the others do not show the benefit at all.
 
     Because there are some overhead to make thread(s), we should be be careful on applying
     parallel or concurrency
@@ -467,8 +464,8 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 6 measured; 0 filtered out; fini
     - Once you making the threads, think about how to reap as well.
 
     - Communication between the threads is an important factor of concurrency.
-      - Message passing
-      - Shared memory
+      - Message passing - which isn't expensive at all compared to using return from a thread
+      - Shared memory - could be useful, requires more resource, not dangerous in rust.
 
     - Use the concurrency wisely
       - benchmarking is important to see the effect objectively

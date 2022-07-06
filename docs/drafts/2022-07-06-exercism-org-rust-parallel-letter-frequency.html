@@ -123,7 +123,7 @@ This is the first example on rust documentation</p>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">hi</span> number 4 from the main thread!</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">hi</span> number 4 from the spawned thread!</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">hi</span> number 5 from the spawned thread!</span></code></pre></div>
-<h2 id="oh-no.-we-should-wait-for-our-friends.">oh, no. we should wait for our friends.</h2>
+<h2 id="oh-no-we-should-wait-for-our-friends">oh no! we should wait for our friends!</h2>
 <p>Does it look good? but if we look carefully. we can find that some output is missing as
 the our spawned thread is supposed to print up to <strong>9</strong>, but we only got 5 here</p>
 <div class="sourceCode" id="cb4" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hi</span> number 5 from the spawned thread!</span></code></pre></div>
@@ -227,7 +227,7 @@ unless we are throwing a dice.</p>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> val <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">&quot;hi&quot;</span>)<span class="op">;</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">// sending from the friend thread</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        tx<span class="op">.</span>send(val)<span class="op">.</span>unwrap()<span class="op">;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span> <span class="co">// return value is not quite useful here so it in void context</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span> <span class="co">// return value is not quite useful here so it is in void context</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">// no `let` statement or no following function(method call) after that.</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">// receiving from the main thread</span></span>
@@ -258,7 +258,7 @@ something with the simple principle in rust after all. <strong>ownership</strong
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">// .. snip ..</span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
 <h3 id="my-first-collecting-the-partial-results-is-not-working">my first collecting the partial results is not working</h3>
-<p>The example code in rust shows me how to read from receiver(rx<sub>main</sub>).
+<p>The example code in rust shows me how to read from receiver(rx_main).
 But unknown reason make the following code runs infinitely.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    rx_main</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>into_iter()</span>
@@ -298,8 +298,8 @@ a certain amount of smaller pieces so that you can hand them over the our worker
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="op">&amp;</span>[ <span class="st">&quot;abc&quot;</span><span class="op">,</span> <span class="st">&quot;def&quot;</span><span class="op">,</span> <span class="st">&quot;ghi&quot;</span><span class="op">,</span> <span class="st">&quot;jkl&quot;</span> ]</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>   <span class="co">// -&gt;</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a> <span class="pp">vec!</span>[</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>     <span class="pp">vec!</span>[<span class="st">&quot;abc&quot;</span><span class="op">,</span> <span class="st">&quot;ghi&quot;</span>]<span class="op">,</span> <span class="co">// note it is acually going to be String via to_string()</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>     <span class="pp">vec!</span>[<span class="st">&quot;def&quot;</span><span class="op">,</span> <span class="st">&quot;jkl&quot;</span>]<span class="op">,</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;abcghi&quot;</span><span class="op">,</span> <span class="co">// note stored in String</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;defjkl&quot;</span><span class="op">,</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a> ]</span></code></pre></div>
 <ul>
 <li><em>Move</em> the each vector to the <em>one</em> appropriate thread.</li>
@@ -312,17 +312,17 @@ a certain amount of smaller pieces so that you can hand them over the our worker
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// make a channel for all the results collected</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> (tx_main<span class="op">,</span> rx_main) <span class="op">=</span> <span class="pp">mpsc::</span>channel()<span class="op">;</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="kw">mut</span> input_per_worker <span class="op">=</span> <span class="pp">vec!</span>[<span class="pp">vec!</span>[]<span class="op">;</span> num_workers]<span class="op">;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="kw">mut</span> input_per_worker <span class="op">=</span> <span class="pp">vec!</span>[<span class="dt">String</span><span class="pp">::</span>from(<span class="st">&quot;&quot;</span>)<span class="op">;</span> num_workers]<span class="op">;</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    input</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>iter()</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>zip((<span class="dv">0</span><span class="op">..</span>worker_count)<span class="op">.</span>cycle()) <span class="co">// .cycle() easy way to rotating</span></span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                                        <span class="co">//  the numbers</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>for_each(<span class="op">|</span>(<span class="op">&amp;</span>s<span class="op">,</span> i)<span class="op">|</span> <span class="op">{</span> <span class="co">// ( string as &amp;str, index(or id) number )</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            input_per_worker<span class="op">.</span>get_mut(i) <span class="co">// access the value at the index i`</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">*</span>input_per_worker<span class="op">.</span>get_mut(i) <span class="co">// access the value at the index `i`</span></span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>unwrap() <span class="co">// it is safe to access because we allocate the</span></span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                          <span class="co">// memory space already</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>push(s<span class="op">.</span>to_string())<span class="op">;</span> <span class="co">// required to copy</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                                      <span class="co">// to ensure life time inside the thread</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                <span class="op">+=</span> s<span class="op">;</span>     <span class="co">// this very efficient way to copy the string from</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                          <span class="co">// a &amp;str</span></span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span>)<span class="op">;</span></span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    input_per_worker<span class="op">.</span>into_iter()<span class="op">.</span>for_each(<span class="op">|</span>input_<span class="op">|</span> <span class="op">{</span></span>
@@ -352,46 +352,39 @@ maybe generating with lazy evaluation is better approach for this kind of proble
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">// collect count</span></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> <span class="kw">mut</span> subtotal <span class="op">=</span> <span class="pp">HashMap::</span><span class="op">&lt;</span><span class="dt">char</span><span class="op">,</span> <span class="dt">usize</span><span class="op">&gt;</span><span class="pp">::</span>new()<span class="op">;</span></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        input_<span class="op">.</span>iter()<span class="op">.</span>for_each(<span class="op">|</span>s<span class="op">|</span> <span class="op">{</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>            <span class="co">// input_ is vector string</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>            <span class="co">// to access the character from string</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>            <span class="co">// we need to go into first level here (1)</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>            s<span class="op">.</span>chars()<span class="op">.</span>for_each(<span class="op">|</span>ch<span class="op">|</span> <span class="op">{</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                <span class="co">// and go through the character here (2)</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> ch<span class="op">.</span>is_alphabetic() <span class="op">{</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// note: this task actually only insensitive on ascii alphabets</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// speed up 2x when using simple to_ascii_lowercase()</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// another option is</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// change s.chars() -&gt; s.to_lowercases().chars()</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// and use as it is.</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>                    <span class="kw">let</span> lc <span class="op">=</span> ch<span class="op">.</span>to_ascii_lowercase()<span class="op">;</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>                    <span class="co">/*ch.to_lowercase().for_each(|lc|*/</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// the following pattern was posted in</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// https://jeongoon.github.io/posts/2022-05-20-exercism-org-raindrops.html#leave-it-as-basic</span></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>                    <span class="kw">match</span> subtotal<span class="op">.</span>entry(lc) <span class="op">{</span></span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>                        Occupied(o) <span class="op">=&gt;</span> <span class="op">*</span>o<span class="op">.</span>into_mut() <span class="op">+=</span> <span class="dv">1</span><span class="op">,</span></span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>                        Vacant(v) <span class="op">=&gt;</span> <span class="op">{</span></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>                            v<span class="op">.</span>insert(<span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>                        <span class="op">}</span></span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>                    <span class="op">}</span> <span class="co">/*);*/</span></span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>                <span class="op">};</span></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span>)</span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span>)<span class="op">;</span></span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// finally sending</span></span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>        tx<span class="op">.</span>send(subtotal)<span class="op">.</span>unwrap()<span class="op">;</span></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span></span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    handles<span class="op">.</span>push(handle)<span class="op">;</span></span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>)<span class="op">;</span></span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
-<h3 id="tolowercase-or-toasciilowercase">to<sub>lowercase</sub>() or to<sub>asciilowercase</sub>()</h3>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        input_<span class="op">.</span>chars()<span class="op">.</span>for_each(<span class="op">|</span>ch<span class="op">|</span> <span class="op">{</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">if</span> ch<span class="op">.</span>is_alphabetic() <span class="op">{</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>                <span class="co">// note: this task actually only insensitive on ascii alphabets</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>                <span class="co">// speed up 2x when using simple to_ascii_lowercase()</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                <span class="co">// another option is</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                <span class="co">// change s.chars() -&gt; s.to_lowercases().chars()</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                <span class="co">// and use as it is.</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                <span class="kw">let</span> lc <span class="op">=</span> ch<span class="op">.</span>to_ascii_lowercase()<span class="op">;</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>                <span class="co">/*ch.to_lowercase().for_each(|lc|*/</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                <span class="co">// the following pattern was posted in</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>                <span class="co">// https://jeongoon.github.io/posts/2022-05-20-exercism-org-raindrops.html#leave-it-as-basic</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>                <span class="kw">match</span> subtotal<span class="op">.</span>entry(lc) <span class="op">{</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>                    Occupied(o) <span class="op">=&gt;</span> <span class="op">*</span>o<span class="op">.</span>into_mut() <span class="op">+=</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>                    Vacant(v) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>                        v<span class="op">.</span>insert(<span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>                    <span class="op">}</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span> <span class="co">/*);*/</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>        <span class="co">// finally sending</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>        tx<span class="op">.</span>send(subtotal)<span class="op">.</span>unwrap()<span class="op">;</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    handles<span class="op">.</span>push(handle)<span class="op">;</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
+<h3 id="to_lowercase-or-to_ascii_lowercase">to_lowercase() or to_ascii_lowercase()</h3>
 <p>As I mentioned as a comment, there are some issues with lower case. In short,</p>
 <ul>
-<li>If you need to apply lower case on whole <em>unicode</em> string: go for <a href="https://doc.rust-lang.org/std/primitive.str.html#method.to_lowercase">str::to<sub>lowercase</sub></a></li>
+<li>If you need to apply lower case on whole <em>unicode</em> string: go for <a href="https://doc.rust-lang.org/std/primitive.str.html#method.to_lowercase">str::to_lowercase</a></li>
 <li>otherwise use <code class="verbatim">char::to_ascii_lowercase</code> or <code class="verbatim">str::to_ascii_lowercase</code>.</li>
 </ul>
-<p><em>I used char::to<sub>asciilowercase</sub>() because I’d like to filter first (is<sub>alphabetic</sub>()), and then apply</em></p>
+<p><em>I used char::to_ascii_lowercase() because I’d like to filter first (is_alphabetic()), and then apply</em></p>
 <h2 id="finally-summerizing">Finally Summerizing</h2>
 <p>fold() could be handy when you are only asked to for the final result. And naturally
 we don’t need to worry about ownership and lifetime on the accumulator thanks to nature
@@ -414,27 +407,29 @@ of functional programming. I took the fold() again here.</p>
 <h2 id="brief-benchmark">Brief Benchmark</h2>
 <p>This task comes with benchmark code as well and the the following is one of my benchmark
 on 9 years old xps.</p>
-<div class="sourceCode" id="cb15" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Finished</span> bench [optimized] target<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="er">in</span> <span class="ex">0.74s</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>     <span class="ex">Running</span> unittests src/lib.rs <span class="er">(</span><span class="ex">target/release/deps/parallel_letter_frequency-016160b8c250f033</span><span class="kw">)</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">running</span> 0 tests</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> result: ok. 0 passed<span class="kw">;</span> <span class="ex">0</span> failed<span class="kw">;</span> <span class="ex">0</span> ignored<span class="kw">;</span> <span class="ex">0</span> measured<span class="kw">;</span> <span class="ex">0</span> filtered out<span class="kw">;</span> <span class="ex">finished</span> in 0.00s</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>     <span class="ex">Running</span> benches/benchmark.rs <span class="er">(</span><span class="ex">target/release/deps/benchmark-15a648eb6d4b6f2b</span><span class="kw">)</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="ex">running</span> 6 tests</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_large_parallel   ... bench:     320,958 ns/iter <span class="er">(</span><span class="ex">+/-</span> 102,875<span class="kw">)</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_large_sequential ... bench:     693,308 ns/iter <span class="er">(</span><span class="ex">+/-</span> 49,224<span class="kw">)</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_small_parallel   ... bench:      70,801 ns/iter <span class="er">(</span><span class="ex">+/-</span> 3,162<span class="kw">)</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_small_sequential ... bench:      24,034 ns/iter <span class="er">(</span><span class="ex">+/-</span> 1,025<span class="kw">)</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_tiny_parallel    ... bench:      61,810 ns/iter <span class="er">(</span><span class="ex">+/-</span> 3,850<span class="kw">)</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_tiny_sequential  ... bench:          73 ns/iter <span class="er">(</span><span class="ex">+/-</span> 12<span class="kw">)</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> result: ok. 0 passed<span class="kw">;</span> <span class="ex">0</span> failed<span class="kw">;</span> <span class="ex">0</span> ignored<span class="kw">;</span> <span class="ex">6</span> measured<span class="kw">;</span> <span class="ex">0</span> filtered out<span class="kw">;</span> <span class="ex">finished</span> in 21.73s</span></code></pre></div>
-<h3 id="parallel-is-not-always-helpful-병렬처리">parallel is not always helpful <sub>병렬처리</sub></h3>
-<p>Even though first <em>bench<sub>largeparallel</sub></em> shows that benefit from the concurrency, the others
-do not show the benefit at all.</p>
+<div class="sourceCode" id="cb15" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Compiling</span> parallel-letter-frequency v0.0.0 <span class="er">(</span><span class="ex">/home/myoungjin/exercism/rust/parallel-letter-frequency</span><span class="kw">)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Finished</span> bench [optimized] target<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="er">in</span> <span class="ex">1.48s</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>     <span class="ex">Running</span> unittests src/lib.rs <span class="er">(</span><span class="ex">target/release/deps/parallel_letter_frequency-016160b8c250f033</span><span class="kw">)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">running</span> 0 tests</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> result: ok. 0 passed<span class="kw">;</span> <span class="ex">0</span> failed<span class="kw">;</span> <span class="ex">0</span> ignored<span class="kw">;</span> <span class="ex">0</span> measured<span class="kw">;</span> <span class="ex">0</span> filtered out<span class="kw">;</span> <span class="ex">finished</span> in 0.00s</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>     <span class="ex">Running</span> benches/benchmark.rs <span class="er">(</span><span class="ex">target/release/deps/benchmark-15a648eb6d4b6f2b</span><span class="kw">)</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="ex">running</span> 6 tests</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_large_parallel   ... bench:     279,074 ns/iter <span class="er">(</span><span class="ex">+/-</span> 37,084<span class="kw">)</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_large_sequential ... bench:     661,265 ns/iter <span class="er">(</span><span class="ex">+/-</span> 14,291<span class="kw">)</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_small_parallel   ... bench:      68,663 ns/iter <span class="er">(</span><span class="ex">+/-</span> 3,665<span class="kw">)</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_small_sequential ... bench:      22,776 ns/iter <span class="er">(</span><span class="ex">+/-</span> 489<span class="kw">)</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_tiny_parallel    ... bench:      60,142 ns/iter <span class="er">(</span><span class="ex">+/-</span> 3,124<span class="kw">)</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> bench_tiny_sequential  ... bench:          78 ns/iter <span class="er">(</span><span class="ex">+/-</span> 3<span class="kw">)</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> result: ok. 0 passed<span class="kw">;</span> <span class="ex">0</span> failed<span class="kw">;</span> <span class="ex">0</span> ignored<span class="kw">;</span> <span class="ex">6</span> measured<span class="kw">;</span> <span class="ex">0</span> filtered out<span class="kw">;</span> <span class="ex">finished</span> in 21.73s</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
+<h3 id="parallel-is-not-always-helpful-_병렬처리">parallel is not always helpful _병렬처리</h3>
+<p>Even though first <em>bench_large_parallel test case</em> shows that performance benefit
+from the concurrency, the others do not show the benefit at all.</p>
 <p>Because there are some overhead to make thread(s), we should be be careful on applying
 parallel or concurrency</p>
 <p>The bench marking is pretty wise way to learn something to see the what we can earn or
@@ -446,8 +441,8 @@ on concurrency:</p>
 <li><p>Once you making the threads, think about how to reap as well.</p></li>
 <li><p>Communication between the threads is an important factor of concurrency.</p>
 <ul>
-<li>Message passing</li>
-<li>Shared memory</li>
+<li>Message passing - which isn’t expensive at all compared to using return from a thread</li>
+<li>Shared memory - could be useful, requires more resource, not dangerous in rust.</li>
 </ul></li>
 <li><p>Use the concurrency wisely</p>
 <ul>
