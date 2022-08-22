@@ -55,47 +55,48 @@
 
     <div id="content" class="font-friendly">
             <div class="info">
-    Posted on July  6, 2022
+    Posted on August 22, 2022
     
         by Myoungjin Jeon
     
 </div>
 <div class="info">
   
-  Tags: <a title="All pages tagged 'rust'." href="../tags/rust.html">rust</a>
+  Tags: <a title="All pages tagged 'rust'." href="../tags/rust.html">rust</a>, <a title="All pages tagged 'parallel'." href="../tags/parallel.html">parallel</a>, <a title="All pages tagged 'concurrency'." href="../tags/concurrency.html">concurrency</a>, <a title="All pages tagged 'channel'." href="../tags/channel.html">channel</a>
   
 </div>
 
 <h2 id="brief-introductions-not-original">Brief Introductions (not original)</h2>
 <p>Count the frequency of letters stored in <em>a</em> list of <code class="verbatim">&amp;str</code>. i.e:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> frequency(input<span class="op">:</span> <span class="op">&amp;</span>[<span class="op">&amp;</span><span class="dt">str</span>]<span class="op">,</span> worker_count<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> HashMap<span class="op">&lt;</span><span class="dt">char</span><span class="op">,</span> <span class="dt">usize</span><span class="op">&gt;</span></span></code></pre></div>
-<p>However, we need depoly workers(thread) which is specified as <code>worker_count</code>. This requirement
+<p>Moreover, we need depoly workers(thread) which is specified as <code>worker_count</code>. This requirement
 makes this task exciting and challenging as I have little exprience on concurrency programming.
-And original introduction also suggest:</p>
+And original introduction also suggests:</p>
+<blockquote>
 <p>Learn more about concurrency in Rust here: <a href="https://doc.rust-lang.org/book/ch16-00-concurrency.html">Concurrency</a></p>
-<p>Which actually covers enough knowledge about introduction to concurrency and helps to solve
-this task!</p>
+</blockquote>
+<p>Which covers general knowledge about concurrency enough to understand to solve the task!</p>
 <h2 id="working-on-concurrency">Working on concurrency</h2>
 <p>Breifely, we are using concurrent programming because to get</p>
 <blockquote>
 <ul>
 <li>Parallel - Do the <em>similar</em> or same job <strong>at the same</strong> time to <em>save time</em>.</li>
-<li>Concurrency - Separate the job because we really need to do several job <strong>at the same time</strong>.</li>
+<li>Concurrency - Separate the jobs into different parts.</li>
 </ul>
 </blockquote>
-<p>The task is about former case. And latter case is related to almost every programming
-related to dynamic I/O.</p>
+<p>The task is about the former case. And the latter case is related to almost every programming
+related to dynamic I/O to interact with user or other service.</p>
 <p>Now we should think about how to:</p>
 <blockquote>
 <ul>
-<li>How to communicate between thread</li>
-<li>Devide the task properly</li>
+<li>Communicate between threads</li>
+<li>Devide the task properly to make them work smooth and seemlessly</li>
 </ul>
 </blockquote>
 <p>The first thing is most important here because if we don’t know how to communicate each other,
 we could not achieve common goal, counting <em>whole</em> string. So how to talk to each others?</p>
 <h2 id="how-to-make-thread-and-how-to-reap-them">How To Make Thread and How To Reap them</h2>
-<p>Oh, wait, I found that we need to talk about how to make thread(s) and harvest the threads.
+<p>Oh, wait… I found that we need to talk about how to make thread(s) and harvest the threads.
 This is the first example on rust documentation</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::</span>thread<span class="op">;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::time::</span>Duration<span class="op">;</span></span>
@@ -124,8 +125,8 @@ This is the first example on rust documentation</p>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">hi</span> number 4 from the spawned thread!</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">hi</span> number 5 from the spawned thread!</span></code></pre></div>
 <h2 id="oh-no-we-should-wait-for-our-friends">oh no! we should wait for our friends!</h2>
-<p>Does it look good? but if we look carefully. we can find that some output is missing as
-the our spawned thread is supposed to print up to <strong>9</strong>, but we only got 5 here</p>
+<p>Does it look good? doesn’t is? But if we look carefully. we can find that some output is
+missing as the our spawned thread is supposed to print up to <strong>9</strong>, but we only got 5 here.</p>
 <div class="sourceCode" id="cb4" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hi</span> number 5 from the spawned thread!</span></code></pre></div>
 <p>This is because main thread reach the end of block before the children thread finished its job.</p>
 <p>We should have waited for our friend threads to see all the output.</p>
@@ -140,18 +141,19 @@ the our spawned thread is supposed to print up to <strong>9</strong>, but we onl
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
 <h3 id="what-join-returns">What join() returns</h3>
 <ul>
-<li>type</li>
+<li>type of last evaluation</li>
 <li>we can use it for the result of the task as well.</li>
 </ul>
 <h2 id="communication-between-threads-in-rust">Communication Between threads in rust</h2>
 <h3 id="return-value-from-thread">return value from thread</h3>
-<p>I could see many other’s solution using return value from the each thread after
-submitting the my first solution. I found the major pros and – maybe – cons:</p>
+<p>I could see many other’s solution at exercism which is using return value from the
+each thread after submitting the my first solution. And I found the major pros and
+– maybe – cons from using the return value:</p>
 <ul>
 <li>pros: similar approach to normal function call (no extra setup)</li>
 <li>??: the main thread is required to choose to which thread the main talks</li>
 </ul>
-<p>The latter sentence could be cons. let’s think about worst senario:</p>
+<p>The latter sentence could be cons. let’s think about what kind of worst senario might look like:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> sample <span class="op">=</span> <span class="op">&amp;</span>[<span class="st">&quot;very long string. abcdefghijklmnopqrstuvxyz...&quot;</span><span class="op">,</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;&quot;</span><span class="op">,</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;some more text&quot;</span><span class="op">,</span> ]<span class="op">;</span></span>
@@ -171,30 +173,34 @@ first thread to finished the job. <em>i.e: we lost the chance to summerize other
 <p>So, if the main thread could not figure out how to <em>choose</em> right thread, the performance
 in total isn’t great: no benefit from the thread at all.</p>
 <h3 id="shared-memory">Shared memory</h3>
-<p>I found the sentence from the original <a href="https://doc.rust-lang.org/book/ch16-03-shared-state.html">documentation</a>.</p>
+<p>I found the sentence shown below from the original <a href="https://doc.rust-lang.org/book/ch16-03-shared-state.html">documentation</a>.</p>
 <blockquote>
 <p>access the same shared data. Consider this part of the slogan from the
 Go language documentation again: “do not communicate by sharing memory.”</p>
 </blockquote>
-<p>But I found that rust wouldn’t say the same thing. but overall, my first impression on
-shared memory in concurrency is:</p>
-<ul>
-<li><p>optional</p></li>
-<li><p>less efficient</p></li>
-<li><p>complicated</p></li>
-<li><p>but it is still useuful when requirement of multi ownership comes in.</p>
-<p>So even though, I tried to use in my first try. I’d like to skip this one because:</p>
-<ul>
-<li>Less over-head is preferred in this simple task.</li>
-<li>Yet, one thread is enought to summerize the results from others</li>
-</ul>
-<p>Even though, I wouldn’t go further, rust ownership is great to dealing with shared-memory</p></li>
-</ul>
+<p>However, Rust language would not say those in the same nuance because it seems that
+rust ownership will deal with shared-memory very well.</p>
 <blockquote>
 <p>Management of mutexes can be incredibly tricky to get right, which is why so many people are enthusiastic about channels. However, thanks to Rust’s type system and ownership rules, you can’t get locking and unlocking wrong.</p>
 </blockquote>
 <p>Sounds promising, I hope I can go further on this subject later some time.</p>
 <p>By the way, <em>Mutex is an abbreviation for mutual exclusion</em>.</p>
+<p>Nevetheless, my first impression on shared-memory in concurrency are:</p>
+<blockquote>
+<ul>
+<li>it is optional</li>
+<li>less efficient</li>
+<li>more complicated than any other method</li>
+<li>but it is still useuful when requirement of multi ownership comes in.</li>
+</ul>
+</blockquote>
+<p>And the execuses 😱 why I’d like to skip the method in this task are:</p>
+<blockquote>
+<ul>
+<li>Less over-head is preferred in this simple task.</li>
+<li>Yet, one thread is enought to summerize the results from others</li>
+</ul>
+</blockquote>
 <h2 id="message-passing-via-channel">Message Passing via channel</h2>
 <p>let’s check outh why many people are enthusiastic about message passing.</p>
 <p><a href="https://doc.rust-lang.org/book/ch16-02-message-passing.html">The document of message passing(channel)</a> starts with the sentence like below:</p>
@@ -204,11 +210,11 @@ shared memory in concurrency is:</p>
 <p>We can safely assume that the message passing as a recommended method for communicating, can’t we?</p>
 <p>There is one more thing we need to think about before going further to solve the task</p>
 <h2 id="ownership-matters">ownership matters</h2>
-<p>The key difference between message passing and shared-memory is the number of ownership.
+<p>The key difference between “message passing” and “shared-memory” is the number of ownership.
 and message passing allows only one ownership at a time which gurantees
 the receiver could get the consistent result as it won’t be allowed for sender to access
 the value after sending them. It may sounds tedious at first.
-What if the value could be touched after sending them? the answer is:</p>
+What if the value could be touched after sending them? the answer is simple:</p>
 <blockquote>
 <p>We cannot gurantee the what will happen</p>
 </blockquote>
@@ -259,7 +265,7 @@ something with the simple principle in rust after all. <strong>ownership</strong
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
 <h3 id="my-first-collecting-the-partial-results-is-not-working">my first collecting the partial results is not working</h3>
 <p>The example code in rust shows me how to read from receiver(rx_main).
-But unknown reason make the following code runs infinitely.</p>
+But unknown reason makes the following code runs infinitely.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    rx_main</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>into_iter()</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>fold(<span class="pp">HashMap::</span>new()<span class="op">,</span> <span class="op">|</span><span class="kw">mut</span> acc<span class="op">,</span> partial_acc<span class="op">|</span> <span class="op">{</span></span>
@@ -315,7 +321,7 @@ a certain amount of smaller pieces so that you can hand them over the our worker
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="kw">mut</span> input_per_worker <span class="op">=</span> <span class="pp">vec!</span>[<span class="dt">String</span><span class="pp">::</span>from(<span class="st">&quot;&quot;</span>)<span class="op">;</span> num_workers]<span class="op">;</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    input</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>iter()</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>zip((<span class="dv">0</span><span class="op">..</span>worker_count)<span class="op">.</span>cycle()) <span class="co">// .cycle() easy way to rotating</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>zip((<span class="dv">0</span><span class="op">..</span>worker_count)<span class="op">.</span>cycle()) <span class="co">// .cycle() easy way to rotate</span></span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                                        <span class="co">//  the numbers</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>for_each(<span class="op">|</span>(<span class="op">&amp;</span>s<span class="op">,</span> i)<span class="op">|</span> <span class="op">{</span> <span class="co">// ( string as &amp;str, index(or id) number )</span></span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">*</span>input_per_worker<span class="op">.</span>get_mut(i) <span class="co">// access the value at the index `i`</span></span>
@@ -428,8 +434,8 @@ on 9 years old xps.</p>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> result: ok. 0 passed<span class="kw">;</span> <span class="ex">0</span> failed<span class="kw">;</span> <span class="ex">0</span> ignored<span class="kw">;</span> <span class="ex">6</span> measured<span class="kw">;</span> <span class="ex">0</span> filtered out<span class="kw">;</span> <span class="ex">finished</span> in 21.73s</span>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
 <h3 id="parallel-is-not-always-helpful-_병렬처리">parallel is not always helpful _병렬처리</h3>
-<p>Even though first <em>bench_large_parallel test case</em> shows that performance benefit
-from the concurrency, the others do not show the benefit at all.</p>
+<p>We could gain some time efficiency on first <em>bench_large_parallel</em> test case
+from the concurrency, wel.. the other benchmarks do not show the benefit at all.</p>
 <p>Because there are some overhead to make thread(s), we should be be careful on applying
 parallel or concurrency</p>
 <p>The bench marking is pretty wise way to learn something to see the what we can earn or

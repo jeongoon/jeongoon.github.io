@@ -15,37 +15,39 @@ author: Myoungjin Jeon
 pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize>
 #+end_src
 
- However, we need depoly workers(thread) which is specified as ~worker_count~. This requirement
+ Moreover, we need depoly workers(thread) which is specified as ~worker_count~. This requirement
  makes this task exciting and challenging as I have little exprience on concurrency programming.
- And original introduction also suggest:
+ And original introduction also suggests:
 
- Learn more about concurrency in Rust here: [[https://doc.rust-lang.org/book/ch16-00-concurrency.html][Concurrency]]
+#+begin_quote
+Learn more about concurrency in Rust here: [[https://doc.rust-lang.org/book/ch16-00-concurrency.html][Concurrency]]
+#+end_quote
 
- Which actually covers enough knowledge about introduction to concurrency and helps to solve
- this task!
+ Which covers general knowledge about concurrency enough to understand to solve the task!
 
 ** Working on concurrency
    Breifely, we are using concurrent programming because to get
 #+begin_quote
    - Parallel - Do the /similar/ or same job *at the same* time to /save time/.
-   - Concurrency - Separate the job because we really need to do several job *at the same time*.
+   - Concurrency - Separate the jobs into different parts.
 #+end_quote
 
-   The task is about former case. And latter case is related to almost every programming
-   related to dynamic I/O.
+   The task is about the former case. And the latter case is related to almost every programming
+   related to dynamic I/O to interact with user or other service.
 
    Now we should think about how to:
 
 #+begin_quote
-   - How to communicate between thread
-   - Devide the task properly
+   - Communicate between threads
+   - Devide the task properly to make them work smooth and seemlessly
 #+end_quote
 
    The first thing is most important here because if we don't know how to communicate each other,
    we could not achieve common goal, counting /whole/ string. So how to talk to each others?
 
 ** How To Make Thread and How To Reap them
-   Oh, wait, I found that we need to talk about how to make thread(s) and harvest the threads.
+
+   Oh, wait... I found that we need to talk about how to make thread(s) and harvest the threads.
    This is the first example on rust documentation
 
 #+begin_src rust
@@ -82,8 +84,9 @@ hi number 5 from the spawned thread!
   
 ** oh no! we should wait for our friends!
 
-  Does it look good? but if we look carefully. we can find that some output is missing as
-  the our spawned thread is supposed to print up to *9*, but we only got 5 here
+  Does it look good? doesn't is? But if we look carefully. we can find that some output is
+  missing as the our spawned thread is supposed to print up to *9*, but we only got 5 here.
+
 #+begin_src sh
 hi number 5 from the spawned thread!
 #+end_src
@@ -105,19 +108,21 @@ hi number 5 from the spawned thread!
 #+end_src
 
 *** What join() returns
-    - type
+    - type of last evaluation
     - we can use it for the result of the task as well.
 
 ** Communication Between threads in rust
 
 *** return value from thread
-    I could see many other's solution using return value from the each thread after
-    submitting the my first solution. I found the major pros and -- maybe -- cons:
+    I could see many other's solution at exercism which is using return value from the
+    each thread after submitting the my first solution. And I found the major pros and
+    -- maybe -- cons from using the return value:
 
     - pros: similar approach to normal function call (no extra setup)
     - ??: the main thread is required to choose to which thread the main talks
 
-  The latter sentence could be cons. let's think about worst senario:
+  The latter sentence could be cons. let's think about what kind of worst senario might look like:
+
 #+begin_src rust
   let sample = &["very long string. abcdefghijklmnopqrstuvxyz...",
                  "",
@@ -142,33 +147,39 @@ hi number 5 from the spawned thread!
     in total isn't great: no benefit from the thread at all.
 
 *** Shared memory
-    I found the sentence from the original [[https://doc.rust-lang.org/book/ch16-03-shared-state.html][documentation]].
+    I found the sentence shown below from the original [[https://doc.rust-lang.org/book/ch16-03-shared-state.html][documentation]].
 #+begin_quote
    access the same shared data. Consider this part of the slogan from the
    Go language documentation again: “do not communicate by sharing memory.”
 #+end_quote
 
-   But I found that rust wouldn't say the same thing. but overall, my first impression on
-   shared memory in concurrency is:
+   However, Rust language would not say those in the same nuance because it seems that
+   rust ownership will deal with shared-memory very well.
 
-   - optional
-   - less efficient
-   - complicated
-   - but it is still useuful when requirement of multi ownership comes in.
-
-    So even though, I tried to use in my first try. I'd like to skip this one because:
-
-    - Less over-head is preferred in this simple task.
-    - Yet, one thread is enought to summerize the results from others
-
-    Even though, I wouldn't go further, rust ownership is great to dealing with shared-memory
-    
 #+begin_quote
 Management of mutexes can be incredibly tricky to get right, which is why so many people are enthusiastic about channels. However, thanks to Rust’s type system and ownership rules, you can’t get locking and unlocking wrong.
 #+end_quote
-    Sounds promising, I hope I can go further on this subject later some time.
 
-    By the way, /Mutex is an abbreviation for mutual exclusion/.
+   Sounds promising, I hope I can go further on this subject later some time.
+
+   By the way, /Mutex is an abbreviation for mutual exclusion/.
+
+
+   Nevetheless, my first impression on shared-memory in concurrency are:
+
+#+begin_quote
+   - it is optional
+   - less efficient
+   - more complicated than any other method
+   - but it is still useuful when requirement of multi ownership comes in.
+#+end_quote
+
+   And the execuses 😱 why I'd like to skip the method in this task are:
+
+#+begin_quote
+   - Less over-head is preferred in this simple task.
+   - Yet, one thread is enought to summerize the results from others
+#+end_quote
 
 ** Message Passing via channel
     let's check outh why many people are enthusiastic about message passing.
@@ -182,11 +193,11 @@ One increasingly popular approach to ensuring safe concurrency is message passin
     There is one more thing we need to think about before going further to solve the task
 
 ** ownership matters
-    The key difference between message passing and shared-memory is the number of ownership.
+    The key difference between "message passing" and "shared-memory" is the number of ownership.
     and message passing allows only one ownership at a time which gurantees
     the receiver could get the consistent result as it won't be allowed for sender to access
     the value after sending them. It may sounds tedious at first.
-    What if the value could be touched after sending them? the answer is:
+    What if the value could be touched after sending them? the answer is simple:
 
 #+begin_quote
 We cannot gurantee the what will happen
@@ -250,7 +261,7 @@ We cannot gurantee the what will happen
 
 ***  my first collecting the partial results is not working
     The example code in rust shows me how to read from receiver(rx_main).
-    But unknown reason make the following code runs infinitely.
+    But unknown reason makes the following code runs infinitely.
 
 #+begin_src rust
       rx_main
@@ -318,7 +329,7 @@ We cannot gurantee the what will happen
        let mut input_per_worker = vec![String::from(""); num_workers];
        input
            .iter()
-           .zip((0..worker_count).cycle()) // .cycle() easy way to rotating
+           .zip((0..worker_count).cycle()) // .cycle() easy way to rotate
                                            //  the numbers
            .for_each(|(&s, i)| { // ( string as &str, index(or id) number )
                *input_per_worker.get_mut(i) // access the value at the index `i`
@@ -446,8 +457,8 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 6 measured; 0 filtered out; fini
 #+end_src
 
 *** parallel is not always helpful _병렬처리
-    Even though first /bench_large_parallel test case/ shows that performance benefit
-    from the concurrency, the others do not show the benefit at all.
+    We could gain some time efficiency on first /bench_large_parallel/ test case
+    from the concurrency, wel.. the other benchmarks do not show the benefit at all.
 
     Because there are some overhead to make thread(s), we should be be careful on applying
     parallel or concurrency

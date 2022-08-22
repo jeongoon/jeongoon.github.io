@@ -9,4 +9,4 @@ author: Myoungjin Jeon
 ** Solution is easy
 ** More generalized Parameters
 ** Testing with HSpec
-i
+
