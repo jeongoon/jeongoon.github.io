@@ -1,0 +1,164 @@
+---
+title: Installing Arch linux on Lenovo Thinkpad T14 Gen3
+description: my installation story for someone interested in recent lenovo ThinkPad T14 Gen3
+keywords: Lenovo, ThinkPad, T14, Arch Linux, Installation
+author: Myoungjin Jeon
+---
+
+** Btrfs with LUKS
+*** swap file issues
+     - https://askubuntu.com/questions/1206157/can-i-have-a-swapfile-on-btrfs
+     - https://unix.stackexchange.com/questions/599949/swapfile-swapon-invalid-argument
+       - fallocate is working for me.
+
+** finger print reader
+
+*** Resource
+     - [[https://wiki.archlinux.org/title/Fprint][Arch Linux Wiki]]
+       
+*** Install package
+#+begin_src sh
+  pacman -S frpintd
+#+end_src
+
+*** Enrolling Fingerprint(s)
+#+begin_src sh
+shell> fprintd-enroll --help                    4789ms  Mon 19 Sep 2022 10:20:33
+Usage:
+  fprintd-enroll [OPTION…] [username] Enroll a fingerprint
+
+Help Options:
+  -h, --help        Show help options
+
+Application Options:
+  -f, --finger      Finger selected to verify (default is automatic)
+
+shell> fprinted-enroll -f right-index-finger $USER
+Using device /net/reactivated/Fprint/Device/0
+Enrolling right-index-finger finger.
+Enroll result: enroll-stage-passed
+Enroll result: enroll-stage-passed
+Enroll result: enroll-stage-passed
+Enroll result: enroll-stage-passed
+Enroll result: enroll-retry-scan
+Enroll result: enroll-retry-scan
+Enroll result: enroll-stage-passed
+Enroll result: enroll-retry-scan
+Enroll result: enroll-retry-scan
+Enroll result: enroll-retry-scan
+Enroll result: enroll-stage-passed
+Enroll result: enroll-retry-scan
+Enroll result: enroll-retry-scan
+Enroll result: enroll-stage-passed
+Enroll result: enroll-stage-passed
+Enroll result: enroll-completed
+#+end_src
+
+*** Veryfy the fingerprint
+     After typing fprintd-verify
+#+begin_src sh
+shell> fprintd-verify
+Using device /net/reactivated/Fprint/Device/0
+Listing enrolled fingers:
+ - #0: right-index-finger
+Verify started!
+Verifying: right-index-finger
+Verify result: verify-match (done)
+#+end_src
+
+*** Add to pam.d
+**** TODO make sure ~sudo~ file is required to be modified
+:LOGBOOK:
+- State "TODO"       from "TODO"       [2022-09-19 Mon 16:23] \\
+  keyring is not working with finger print
+- State "TODO"       from              [2022-09-19 Mon 10:27] \\
+  to modify less files
+:END:
+   - add the line which is shown below to the /etc/pam.d/{system-local-login,polkit-1,sudo}
+     (those are sufficient for me; polkit-1 is for gnome) as a first entry
+
+     
+#+begin_quote
+auth    sufficient pam_fprintd.so
+auth    ....
+#+end_quote
+
+** Input Method
+    - ibus version working great with recent gnome. happy to use so far.
+
+** Change Control key with Caps lock
+    - this is setting for emacs primarily ... I'm so get used to with this setting
+
+*** Setting via Gnome ... (gesttings)
+
+
+** Google Account
+
+** Disable PC speaker
+** Fonts
+     - ko-pub
+     - nanum??
+     - gnu-free-fonts
+     - Fantasque Nerd Font  without loop (k vs k)
+     - helvetica and courier
+     - https://aur.archlinux.org/packages/adobe-base-14-fonts
+     - segoe ui
+     - symbola
+     - flatpak fire fox doesn't read local(host?) configuration
+       - https://github.com/flatpak/flatpak/issues/3947
+       - flatseal -> failed to apply
+       - (solved) just remove 75dpi fonts from the system...
+
+** Emacs
+*** gcc + wayland : great choice
+*** systemd
+     - https://emacsredux.com/blog/2020/07/16/running-emacs-with-systemd/
+     - sytemctl --user enable --now emacs
+       -> might be executed twice in my exprience
+
+** Pam.d ???
+
+
+** Pantheon-runapp
+
+*** make some directory and environment value settings
+**** issue on mapage install via cpan
+      - https://stackoverflow.com/questions/21240752/perl-cpanm-failing-to-install-modules-due-to-lack-of-usr-local-man-man3-write-pe
+        - will fix the problem with local installation with man page
+        - has conflict with value of PERL_MM ... PERL_MB .. values
+        - -> set PERL_INSTALL_ROOT to $HOME/perl5, PERL_M{M,B} to '.'
+
+*** Dependencies
+     - boolean
+     - File::HomeDir
+     - OptArgs
+
+#+begin_src sh
+cpan install boolean File::HomeDir OptArgs
+#+end_src
+
+
+
+** Printing and Scanner
+*** Model : HP ENVY PHOTO 7120
+
+*** hplip
+#+begin_src sh
+  sudo pacman -S hplip
+#+end_src
+
+*** avahi
+     - to enable network printing, I had to choose one of popular network naming service.
+     - documentation: https://wiki.archlinux.org/title/Avahi#Hostname_resolution
+
+     avahi provides local hostname resolution using a "hostname.local" naming scheme.
+     - install nss-mdns
+     - enbale avahi-daemon.service
+     - edit the file /etc/nsswitch.conf and change the hosts line to include
+        mdns_minimal [NOTFOUND=return] before resolve and dns:
+
+#+begin_quote
+hosts: mymachines mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] files myhostname dns
+#+end_quote
+
+*** gnome default scanner works great after installing above packages for me.
