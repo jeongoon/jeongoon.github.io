@@ -153,12 +153,43 @@ cpan install boolean File::HomeDir OptArgs
 
      avahi provides local hostname resolution using a "hostname.local" naming scheme.
      - install nss-mdns
-     - enbale avahi-daemon.service
+     - enbale avahi-daemon.service and start
      - edit the file /etc/nsswitch.conf and change the hosts line to include
         mdns_minimal [NOTFOUND=return] before resolve and dns:
+
+*** CUPS Settings
+     - Maintenance -> make it accept the job
+     - Adnimistration -> modify the printer -> change the device locaiton as some url under the section of
+       ~Discovered Network Printers~
+
 
 #+begin_quote
 hosts: mymachines mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] files myhostname dns
 #+end_quote
 
 *** gnome default scanner works great after installing above packages for me.
+
+
+** Raku
+    I have some raku script on my machine and need to install the packages
+    in the following way.
+
+** packages
+    - installing procedure are the same
+      1. download git repository from aur
+#+begin_src sh
+  shell> git clone <url>
+#+end_src
+      2. makepkg
+#+begin_src sh
+  shell> makepkg -si # will ask sudo password
+#+end_src
+
+    - moarvm: https://aur.archlinux.org/moarvm.git
+    - nqp: https://aur.archlinux.org/nqp.git
+    - rakudo: https://aur.archlinux.org/rakudo.git
+    - zef: https://aur.archlinux.org/zef.git
+      - for installing Readline via zef command line tool. run command after installing
+#+begin_src sh
+  shell> zef install Readline
+#+end_src
