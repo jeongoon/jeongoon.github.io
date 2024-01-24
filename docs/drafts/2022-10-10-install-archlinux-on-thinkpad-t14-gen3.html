@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="font-sans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="author" content="Myoungjin Jeon">
+
+
+    <meta name="description" content="my installation story for someone interested in recent lenovo ThinkPad T14 Gen3">
+
+
+    <meta name="keywords" content="Lenovo, ThinkPad, T14, Arch Linux, Installation">
+
+   <!-- even though I setup @media to make change all the fixed font size;
+        FF on mobile -- incorrectly -- scales font size again.
+        This happends when:
+
+        1. default font size variable (ex: 2vw, 3.5vw)
+        2. the width of some division is larger than original width of website
+           should be (or designed to be)
+        3. now we have larger webstie width and mobile webbrowser scale down the
+           website
+        4. now we have too small size font
+        5. FF scales up the font, which is irrelevant to the other normal divs.
+
+     so I ended up re-insert below meta line again to correct them.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MJ's kind weird Code - Installing Arch linux on Lenovo Thinkpad T14 Gen3</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
+    </style> 
+    <link rel="stylesheet" type="text/css" href="../css/19Apr2022.css" />
+    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+  </head>
+  <body class="surface-color">
+    <header id="main-header">
+      <div id="logo" class="font-atma primary-color">
+        <a href="../">MJ's Kind Weird Code</a>
+      </div>
+      <div id="page-title">
+        <p> 📰 Installing Arch linux on Lenovo Thinkpad T14 Gen3
+        </p>
+      </div>
+      <nav id="main-nav" class="font-menu-title">
+        <a href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../drafts.html">Drafts</a>
+        <a href="../archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <div id="content" class="font-friendly">
+            <div class="info">
+    Posted on October 10, 2022
+    
+        by Myoungjin Jeon
+    
+</div>
+<div class="info">
+  
+  Tags: 
+  
+</div>
+
+<h2 id="btrfs-with-luks">Btrfs with LUKS</h2>
+<h3 id="swap-file-issues">swap file issues</h3>
+<ul>
+<li><a href="https://askubuntu.com/questions/1206157/can-i-have-a-swapfile-on-btrfs">https://askubuntu.com/questions/1206157/can-i-have-a-swapfile-on-btrfs</a></li>
+<li><a href="https://unix.stackexchange.com/questions/599949/swapfile-swapon-invalid-argument">https://unix.stackexchange.com/questions/599949/swapfile-swapon-invalid-argument</a>
+<ul>
+<li>fallocate is working for me.</li>
+</ul></li>
+</ul>
+<h2 id="finger-print-reader">finger print reader</h2>
+<h3 id="resource">Resource</h3>
+<ul>
+<li><a href="https://wiki.archlinux.org/title/Fprint">Arch Linux Wiki</a></li>
+</ul>
+<h3 id="install-package">Install package</h3>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pacman</span> <span class="at">-S</span> frpintd</span></code></pre></div>
+<h3 id="enrolling-fingerprints">Enrolling Fingerprint(s)</h3>
+<div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shell</span><span class="op">&gt;</span> fprintd-enroll <span class="at">--help</span>                    4789ms  Mon 19 Sep 2022 10:20:33</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Usage:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fprintd-enroll</span> [OPTION…] [username] Enroll a fingerprint</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Help</span> Options:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-h,</span> <span class="at">--help</span>        Show help options</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Application</span> Options:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-f,</span> <span class="at">--finger</span>      Finger selected to verify <span class="er">(</span><span class="ex">default</span> is automatic<span class="kw">)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">shell</span><span class="op">&gt;</span> fprinted-enroll <span class="at">-f</span> right-index-finger <span class="va">$USER</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Using</span> device /net/reactivated/Fprint/Device/0</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Enrolling</span> right-index-finger finger.</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-stage-passed</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-stage-passed</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-stage-passed</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-stage-passed</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-retry-scan</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-retry-scan</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-stage-passed</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-retry-scan</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-retry-scan</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-retry-scan</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-stage-passed</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-retry-scan</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-retry-scan</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-stage-passed</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-stage-passed</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="ex">Enroll</span> result: enroll-completed</span></code></pre></div>
+<h3 id="veryfy-the-fingerprint">Veryfy the fingerprint</h3>
+<p>After typing fprintd-verify</p>
+<div class="sourceCode" id="cb3" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shell</span><span class="op">&gt;</span> fprintd-verify</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Using</span> device /net/reactivated/Fprint/Device/0</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Listing</span> enrolled fingers:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">-</span> <span class="co">#0: right-index-finger</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Verify</span> started!</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Verifying:</span> right-index-finger</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Verify</span> result: verify-match <span class="er">(</span><span class="cf">done</span><span class="kw">)</span></span></code></pre></div>
+<h3 id="add-to-pam.d">Add to pam.d</h3>
+<ol>
+<li><p><span class="todo TODO">TODO</span> make sure <code>sudo</code> file is required to be modified</p>
+<ul>
+<li>add the line which is shown below to the /etc/pam.d/{system-local-login,polkit-1,sudo}
+(those are sufficient for me; polkit-1 is for gnome) as a first entry</li>
+</ul>
+<blockquote>
+<p>auth sufficient pam<sub>fprintd</sub>.so
+auth ….</p>
+</blockquote></li>
+</ol>
+<h2 id="input-method">Input Method</h2>
+<ul>
+<li>ibus version working great with recent gnome. happy to use so far.</li>
+</ul>
+<h2 id="change-control-key-with-caps-lock">Change Control key with Caps lock</h2>
+<ul>
+<li>this is setting for emacs primarily … I’m so get used to with this setting</li>
+</ul>
+<h3 id="setting-via-gnome-gesttings">Setting via Gnome … (gesttings)</h3>
+<h2 id="google-account">Google Account</h2>
+<h2 id="disable-pc-speaker">Disable PC speaker</h2>
+<h2 id="fonts">Fonts</h2>
+<ul>
+<li>ko-pub</li>
+<li>nanum??</li>
+<li>gnu-free-fonts</li>
+<li>Fantasque Nerd Font without loop (k vs k)</li>
+<li>helvetica and courier</li>
+<li><a href="https://aur.archlinux.org/packages/adobe-base-14-fonts">https://aur.archlinux.org/packages/adobe-base-14-fonts</a></li>
+<li>segoe ui</li>
+<li>symbola</li>
+<li>flatpak fire fox doesn’t read local(host?) configuration
+<ul>
+<li><a href="https://github.com/flatpak/flatpak/issues/3947">https://github.com/flatpak/flatpak/issues/3947</a></li>
+<li>flatseal -&gt; failed to apply</li>
+<li>(solved) just remove 75dpi fonts from the system…</li>
+</ul></li>
+</ul>
+<h2 id="emacs">Emacs</h2>
+<h3 id="gcc-wayland-great-choice">gcc + wayland : great choice</h3>
+<h3 id="systemd">systemd</h3>
+<ul>
+<li><a href="https://emacsredux.com/blog/2020/07/16/running-emacs-with-systemd/">https://emacsredux.com/blog/2020/07/16/running-emacs-with-systemd/</a></li>
+<li>sytemctl –user enable –now emacs
+-&gt; might be executed twice in my exprience</li>
+</ul>
+<h2 id="pam.d">Pam.d ???</h2>
+<h2 id="pantheon-runapp">Pantheon-runapp</h2>
+<h3 id="make-some-directory-and-environment-value-settings">make some directory and environment value settings</h3>
+<ol>
+<li><p>issue on mapage install via cpan</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/21240752/perl-cpanm-failing-to-install-modules-due-to-lack-of-usr-local-man-man3-write-pe">https://stackoverflow.com/questions/21240752/perl-cpanm-failing-to-install-modules-due-to-lack-of-usr-local-man-man3-write-pe</a>
+<ul>
+<li>will fix the problem with local installation with man page</li>
+<li>has conflict with value of PERL<sub>MM</sub> … PERL<sub>MB</sub> .. values</li>
+<li>-&gt; set PERL<sub>INSTALLROOT</sub> to $HOME/perl5, PERL<sub>M</sub>{M,B} to ‘.’</li>
+</ul></li>
+</ul></li>
+</ol>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>boolean</li>
+<li><a href="File::HomeDir">File::HomeDir</a></li>
+<li>OptArgs</li>
+</ul>
+<div class="sourceCode" id="cb4" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cpan</span> install boolean File::HomeDir OptArgs</span></code></pre></div>
+<h2 id="printing-and-scanner">Printing and Scanner</h2>
+<h3 id="model-hp-envy-photo-7120">Model : HP ENVY PHOTO 7120</h3>
+<h3 id="hplip">hplip</h3>
+<div class="sourceCode" id="cb5" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> pacman <span class="at">-S</span> hplip</span></code></pre></div>
+<h3 id="avahi">avahi</h3>
+<ul>
+<li>to enable network printing, I had to choose one of popular network naming service.</li>
+<li>documentation: <a href="https://wiki.archlinux.org/title/Avahi#Hostname_resolution">https://wiki.archlinux.org/title/Avahi#Hostname_resolution</a></li>
+</ul>
+<p>avahi provides local hostname resolution using a “hostname.local” naming scheme.</p>
+<ul>
+<li>install nss-mdns</li>
+<li>enbale avahi-daemon.service and start</li>
+<li>edit the file /etc/nsswitch.conf and change the hosts line to include
+mdns<sub>minimal</sub> [NOTFOUND=return] before resolve and dns:</li>
+</ul>
+<h3 id="cups-settings">CUPS Settings</h3>
+<ul>
+<li>Maintenance -&gt; make it accept the job</li>
+<li>Adnimistration -&gt; modify the printer -&gt; change the device locaiton as some url under the section of
+<code>Discovered Network Printers</code></li>
+</ul>
+<blockquote>
+<p>hosts: mymachines mdns<sub>minimal</sub> [NOTFOUND=return] resolve [!UNAVAIL=return] files myhostname dns</p>
+</blockquote>
+<h3 id="gnome-default-scanner-works-great-after-installing-above-packages-for-me.">gnome default scanner works great after installing above packages for me.</h3>
+<h2 id="raku">Raku</h2>
+<p>I have some raku script on my machine and need to install the packages
+in the following way.</p>
+<h2 id="packages">packages</h2>
+<ul>
+<li>installing procedure are the same
+<ol>
+<li>download git repository from aur</li>
+</ol></li>
+</ul>
+<div class="sourceCode" id="cb6" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shell</span><span class="op">&gt;</span> git clone <span class="op">&lt;</span>url<span class="op">&gt;</span></span></code></pre></div>
+<ol>
+<li>makepkg</li>
+</ol>
+<div class="sourceCode" id="cb7" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shell</span><span class="op">&gt;</span> makepkg <span class="at">-si</span> <span class="co"># will ask sudo password</span></span></code></pre></div>
+<ul>
+<li>moarvm: <a href="https://aur.archlinux.org/moarvm.git">https://aur.archlinux.org/moarvm.git</a></li>
+<li>nqp: <a href="https://aur.archlinux.org/nqp.git">https://aur.archlinux.org/nqp.git</a></li>
+<li>rakudo: <a href="https://aur.archlinux.org/rakudo.git">https://aur.archlinux.org/rakudo.git</a></li>
+<li>zef: <a href="https://aur.archlinux.org/zef.git">https://aur.archlinux.org/zef.git</a>
+<ul>
+<li>for installing Readline via zef command line tool. run command after installing</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb8" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shell</span><span class="op">&gt;</span> zef install Readline</span></code></pre></div>
+
+    </div>
+
+    <footer id="main-footer">
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
+
+<!--
+    Todo:
+    add basic parallax and add some gradation??
+    
+    -->
