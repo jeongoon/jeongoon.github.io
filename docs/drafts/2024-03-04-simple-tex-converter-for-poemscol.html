@@ -7,6 +7,8 @@
     <meta name="author" content="Myoungjin Jeon">
 
 
+    <meta name="description" content="the story I made a simple converter by using haskell">
+
 
     <meta name="keywords" content="literate haskell, haskell, lhs, latex, parser">
 
@@ -26,12 +28,12 @@
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MJ's kind weird Code - Simple Converter for latex</title>
+    <title>MJ's kind weird Code - Poem Text Converter for Latex</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;500;700&family=Barlow+Condensed:ital,wght@0,100;0,300;0,600;1,100;1,500;1,600&family=Gamja+Flower&family=Hubballi&family=Jost:ital,wght@0,100;0,300;0,500;0,800;1,100;1,300;1,500;1,800&family=Unica+One&display=swap');
     </style> 
     <link rel="stylesheet" type="text/css" href="../css/19Apr2022.css" />
-    <link rel="stylesheet" type="text/css" href="../css/12Apr2022.code.css" />
+    <link rel="stylesheet" type="text/css" href="../css/05Mar2024.code.css" />
   </head>
   <body class="surface-color">
     <header id="main-header">
@@ -39,7 +41,7 @@
         <a href="../">MJ's Kind Weird Code</a>
       </div>
       <div id="page-title">
-        <p> 📰 Simple Converter for latex
+        <p> 📰 Poem Text Converter for Latex
         </p>
       </div>
       <nav id="main-nav" class="font-menu-title">
@@ -64,18 +66,16 @@
   
 </div>
 
-<h2 id="what-does-this-do">What Does This Do?</h2>
+<h1 id="what-does-this-do">What Does This Do?</h1>
 <p>This simple program converts sections of poetry written in text into LaTeX code compatible with the <a href="https://ctan.org/pkg/poemscol">poemscol package</a>. It’s important to note that it only converts the poetry sections, so you’ll still need to write other LaTeX commands manually.</p>
 <ul>
-<li>wrap around the poem with *“
-“*</li>
+<li>wrap around the poem with <em><code>\begin{poem}</code></em> … <em><code>\\end{poem}</code></em></li>
 <li>add title latex command if a argument is given</li>
 <li>read the poem text from STDIN</li>
-<li>split lines by stanza and add latex command *“
-“*</li>
-<li>add “/verseline at the end of each line, except last line of a stanza</li>
+<li>split lines by stanza and add latex command <em><code>\begin{stanza}</code></em> … <em><code>\end{stanza}</code></em></li>
+<li>add <code>\versline</code> at the end of each line, except last line of a stanza</li>
 </ul>
-<h2 id="why-i-made-this">Why I made this?</h2>
+<h1 id="why-i-made-this">Why I made this?</h1>
 <p>Manually converting text to LaTeX is tedious, so I’m looking for a converter to streamline the process. Interestingly, I tried to adding a command within ChatGPT4 to convert my text into poemscol syntax, but it was too slow and became slower overtime. Recognizing that the task wasn’t complex, I decided to tackle it myself using my favorite language (one I’m also eager to learn more about).</p>
 <ul>
 <li>summary: A converter text to Latex is required. but ChatGPT4 performance is not great, so I made it by myself.</li>
@@ -85,8 +85,8 @@
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">Main</span> (main) <span class="kw">where</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">System.Environment</span>               <span class="kw">as</span> <span class="dt">ENV</span></span></code></pre></div>
-<p>This program may not be large, but using <code>Data.Text</code> is a good idea for handling text. I believe this <a href="https://stackoverflow.com/a/22623325">answer</a> provides a good explanation for this approach. and this is a summary from GhatGPT v4</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a> <span class="dt">Data.Text</span> is more space<span class="op">-</span>efficient than <span class="dt">Haskell's</span> native <span class="dt">String</span>, which is a linked list <span class="kw">of</span> <span class="dt">Chars</span> with high space overhead<span class="op">.</span> <span class="dt">It</span> is also more performant, providing better memory locality <span class="fu">and</span> interfacing more efficiently with native system libraries, especially for <span class="dt">IO</span><span class="op">-</span>heavy programs<span class="op">.</span> <span class="dt">Additionally</span>, <span class="dt">Data.Text</span> offers text<span class="op">-</span>specific functions <span class="fu">not</span> available with native <span class="dt">Strings</span><span class="op">.</span></span></code></pre></div>
+<p>This program may not be large, but using <code>Data.Text</code> is a good idea for handling text. I believe this <a href="https://stackoverflow.com/a/22623325">answer</a> provides a good explanation for this approach. and this is a summary from ChatGPT v4</p>
+<pre class="quote"><code>Data.Text is more space-efficient than Haskell's native String, which is a linked list of Chars with high space overhead. It is also more performant, providing better memory locality and interfacing more efficiently with native system libraries, especially for IO-heavy programs. Additionally, Data.Text offers text-specific functions not available with native Strings.</code></pre>
 <p>So, <code>Data.Text</code>, <code>Data.Text.IO</code> is imported.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Data.Text</span>              <span class="kw">as</span> <span class="dt">T</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Data.Text.IO</span>           <span class="kw">as</span> <span class="dt">T</span></span>
@@ -170,30 +170,86 @@ And this approach offers better control over options when retrieving values from
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                  <span class="op">&gt;&gt;&gt;</span> foldStanzasWithTex</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                )</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    sil <span class="ot">=</span> <span class="dv">1</span> <span class="co">-- stanza indent level</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    lil <span class="ot">=</span> sil <span class="op">+</span> <span class="dv">1</span> <span class="co">-- line indent level</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Add &quot;\verseline&quot; to the end of each line except the last line of a stanza.</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    foldLinesWithTex <span class="ot">=</span> T.intercalate (middleEOLSurfix <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span> <span class="op">&lt;&gt;</span> (ind lil))</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Wrap each stanza in a stanza structure with indentation.</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    foldStanzasWithTex <span class="ot">=</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">foldr</span> (\n acc <span class="ot">-&gt;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> T.null n <span class="kw">then</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                  acc</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>                <span class="kw">else</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>                  (ind sil) <span class="op">&lt;&gt;</span> beginStanza <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>                  <span class="op">&lt;&gt;</span> (ind lil) <span class="op">&lt;&gt;</span> n <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>                  <span class="op">&lt;&gt;</span> (ind sil) <span class="op">&lt;&gt;</span> endStanza <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>                  <span class="op">&lt;&gt;</span> acc</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>            ) <span class="st">&quot;&quot;</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> getArgsText <span class="op">&gt;&gt;=</span> parseOpts <span class="op">&gt;&gt;=</span> parseContents <span class="op">&gt;&gt;=</span></span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  (\x <span class="ot">-&gt;</span> <span class="kw">case</span> x <span class="kw">of</span></span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>      <span class="dt">Left</span> l <span class="ot">-&gt;</span> T.putStr l</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>      <span class="dt">Right</span> r <span class="ot">-&gt;</span> T.putStr (beginPoem <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span> <span class="op">&lt;&gt;</span> r <span class="op">&lt;&gt;</span> endPoem <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span>) )</span></code></pre></div>
-<h2 id="another-advantage">Another Advantage</h2>
-<p>I could use this programme inside of org-mode in emacs so I could write down the text and generate syntaxed poem in the same place. I’ll post about this sooner or later.</p>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    lil <span class="ot">=</span> sil <span class="op">+</span> <span class="dv">1</span> <span class="co">-- line indent level</span></span></code></pre></div>
+<code>T.intercalate</code> works very similarly to the general <code>join</code> function in most programming languages. This perfectly fits my need to ensure that the last line doesn’t get an extra <code>\verseline</code> suffix.
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Add &quot;\verseline&quot; to the end of each line except the last line of a stanza.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    foldLinesWithTex <span class="ot">=</span> T.intercalate (middleEOLSurfix <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span> <span class="op">&lt;&gt;</span> (ind lil))</span></code></pre></div>
+<p>Unsurprisingly, <code>foldr</code> is used for folding. ☺️</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Wrap each stanza in a stanza structure with indentation.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    foldStanzasWithTex <span class="ot">=</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">foldr</span> (\n acc <span class="ot">-&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> T.null n <span class="kw">then</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                  acc</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                <span class="kw">else</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                  (ind sil) <span class="op">&lt;&gt;</span> beginStanza <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                  <span class="op">&lt;&gt;</span> (ind lil) <span class="op">&lt;&gt;</span> n <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                  <span class="op">&lt;&gt;</span> (ind sil) <span class="op">&lt;&gt;</span> endStanza <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                  <span class="op">&lt;&gt;</span> acc</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            ) <span class="st">&quot;&quot;</span></span></code></pre></div>
+<p>In the <code>main</code> function, combine that with the (&gt;&gt;=) operator. The last block of code will print out the result using T.putStr(Data.Text.putStr). In this case, I only have two scenarios for Either handling, but in both cases, I’ll print out a help message for Left or the result for Right.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> getArgsText <span class="op">&gt;&gt;=</span> parseOpts <span class="op">&gt;&gt;=</span> parseContents <span class="op">&gt;&gt;=</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  (\x <span class="ot">-&gt;</span> <span class="kw">case</span> x <span class="kw">of</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">Left</span> l <span class="ot">-&gt;</span> T.putStr l <span class="co">-- this will be help message</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">Right</span> r <span class="ot">-&gt;</span> T.putStr (beginPoem <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span> <span class="op">&lt;&gt;</span> r <span class="op">&lt;&gt;</span> endPoem <span class="op">&lt;&gt;</span> <span class="st">&quot;\n&quot;</span>) )</span></code></pre></div>
+<h1 id="any-possible-improvements">Any Possible Improvements?</h1>
+<p>I could handle an ‘empty title’ as a Warning, but I don’t feel it’s necessary here. If it were a warning instead of Right ““, I would need to handle the previous result differently in parseContents to check for any fixable errors that come in. Additionally, if I need to make changes, the <code>Either Text Text</code> data type is not sufficient to handle them correctly. Perhaps <code>Either SomeErrorHandlingDataType Text</code> or <code>Either Error WarningAndParsed</code> would be more suitable. I lean towards the second option because I’d like to parse the body even if there is no title.</p>
+<h1 id="another-advantage">Another Advantage</h1>
+<p>I could integrate this program within org-mode in Emacs, allowing me to write down the text and generate a syntaxed poem in the same place. I’ll post about this sooner or later, but before I get lazy, here’s a snippet:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">****</span> poem</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#+name: poem8</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#+begin_verse</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">눈물방울</span> 같았다.</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">피워내기보다</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="ex">터져나온</span> 듯한..</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="ex">목련</span> 꽃봉오리의</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="ex">우아한</span> 기다림.</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="ex">서서히</span> 진심이 피어난다.</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="ex">마음의</span> 여백과 같은 하얀..</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;진심에는 높낮이가 있는걸까.&quot;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="ex">그</span> 높이를 맞추어야</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="ex">눈</span> 속에 빨려들어와</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="ex">마음에까지</span> 박히는 것이었다.</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co">#+end_verse</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co">#+begin_src sh :stdin poem_example :results output :var title=&quot;Magnolia&quot;</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="ex">poemscol-portion-exe</span> <span class="va">$title</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co">#+end_src</span></span></code></pre></div>
+<p>And if we execute the code above, we can get a result like the following:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#+RESULTS:</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#+begin_example</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">\begin{poem}</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">\sequencetitle{Magnolia}</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">\poemtitle{}</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">\begin{stanza}</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">눈물방울</span> 같았다.<span class="dt">\v</span>erseline</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">피워내기보다\verseline</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">터져나온</span> 듯한..</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a> <span class="ex">\end{stanza}</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">\begin{stanza}</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">목련</span> 꽃봉오리의<span class="dt">\v</span>erseline</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">우아한</span> 기다림.</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">\end{stanza}</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">\begin{stanza}</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="ex">서서히</span> 진심이 피어난다.<span class="dt">\v</span>erseline</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="ex">마음의</span> 여백과 같은 하얀..</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a> <span class="ex">\end{stanza}</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a> <span class="ex">\begin{stanza}</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;진심에는 높낮이가 있는걸까.&quot;</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a> <span class="ex">\end{stanza}</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a> <span class="ex">\begin{stanza}</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  <span class="ex">그</span> 높이를 맞추어야<span class="dt">\v</span>erseline</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="ex">눈</span> 속에 빨려들어와<span class="dt">\v</span>erseline</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  <span class="ex">마음에까지</span> 박히는 것이었다.</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a> <span class="ex">\end{stanza}</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="ex">\end{poem}</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">#+end_example</span></span></code></pre></div>
+<p>Thank you for reading ^^</p>
 
     </div>
 

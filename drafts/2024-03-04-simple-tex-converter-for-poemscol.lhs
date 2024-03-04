@@ -1,23 +1,23 @@
 ---
-title: Simple Converter for latex
-description:
+title: Poem Text Converter for Latex
+description: the story I made a simple converter by using haskell
 keywords: literate haskell, haskell, lhs, latex, parser
 author: Myoungjin Jeon
 ---
 
 What Does This Do?
-------------------
+==================
 This simple program converts sections of poetry written in text into LaTeX code compatible with the [poemscol package](https://ctan.org/pkg/poemscol). It's important to note that it only converts the poetry sections, so you'll still need to write other LaTeX commands manually.
 
-- wrap around the poem with *"\begin{poem}"* ... *"\end{poem}"*
+- wrap around the poem with *`\begin{poem}`* ... *`\\end{poem}`*
 - add title latex command if a argument is given
 - read the poem text from STDIN
-- split lines by stanza and add latex command *"\begin{stanza}"* ... *"\end{stanza}"*
-- add "/verseline at the end of each line, except last line of a stanza
+- split lines by stanza and add latex command *`\begin{stanza}`* ... *`\end{stanza}`*
+- add `\versline`  at the end of each line, except last line of a stanza
 
 
 Why I made this?
-----------------
+================
 Manually converting text to LaTeX is tedious, so I'm looking for a converter to streamline the process. Interestingly, I tried to adding a command within ChatGPT4 to convert my text into poemscol syntax, but it was too slow and became slower overtime. Recognizing that the task wasn't complex, I decided to tackle it myself using my favorite language (one I'm also eager to learn more about).
 
 - summary: A converter text to Latex is required. but ChatGPT4 performance is not great, so I made it by myself.
@@ -30,9 +30,11 @@ module Main (main) where
 import System.Environment               as ENV
 \end{code}
 
-This program may not be large, but using `Data.Text` is a good idea for handling text. I believe this [answer](https://stackoverflow.com/a/22623325) provides a good explanation for this approach. and this is a summary from GhatGPT v4
+This program may not be large, but using `Data.Text` is a good idea for handling text. I believe this [answer](https://stackoverflow.com/a/22623325) provides a good explanation for this approach. and this is a summary from ChatGPT v4
 
->  Data.Text is more space-efficient than Haskell's native String, which is a linked list of Chars with high space overhead. It is also more performant, providing better memory locality and interfacing more efficiently with native system libraries, especially for IO-heavy programs. Additionally, Data.Text offers text-specific functions not available with native Strings.
+```quote
+Data.Text is more space-efficient than Haskell's native String, which is a linked list of Chars with high space overhead. It is also more performant, providing better memory locality and interfacing more efficiently with native system libraries, especially for IO-heavy programs. Additionally, Data.Text offers text-specific functions not available with native Strings.
+```
 
 So, `Data.Text`, `Data.Text.IO` is imported.
 
@@ -153,9 +155,17 @@ parseContents ei =
     sil = 1 -- stanza indent level
     lil = sil + 1 -- line indent level
 
+\end{code}
+`T.intercalate` works very similarly to the general `join` function in most programming languages. This perfectly fits my need to ensure that the last line doesn't get an extra `\verseline` suffix.
+\begin{code}
     -- Add "\verseline" to the end of each line except the last line of a stanza.
     foldLinesWithTex = T.intercalate (middleEOLSurfix <> "\n" <> (ind lil))
 
+\end{code}
+
+Unsurprisingly, `foldr` is used for folding. ☺️
+
+\begin{code}
     -- Wrap each stanza in a stanza structure with indentation.
     foldStanzasWithTex =
       foldr (\n acc ->
@@ -168,13 +178,86 @@ parseContents ei =
                   <> acc
             ) ""
 
+\end{code}
+
+In the `main` function, combine that with the (>>=) operator. The last block of code will print out the result using T.putStr(Data.Text.putStr). In this case, I only have two scenarios for Either handling, but in both cases, I'll print out a help message for Left or the result for Right.
+
+\begin{code}
 main :: IO ()
 main = getArgsText >>= parseOpts >>= parseContents >>=
   (\x -> case x of
-      Left l -> T.putStr l
+      Left l -> T.putStr l -- this will be help message
       Right r -> T.putStr (beginPoem <> "\n" <> r <> endPoem <> "\n") )
 \end{code}
 
+
+Any Possible Improvements?
+==========================
+I could handle an 'empty title' as a Warning, but I don't feel it's necessary here. If it were a warning instead of Right "", I would need to handle the previous result differently in parseContents to check for any fixable errors that come in. Additionally, if I need to make changes, the `Either Text Text` data type is not sufficient to handle them correctly. Perhaps `Either SomeErrorHandlingDataType Text` or `Either Error WarningAndParsed` would be more suitable. I lean towards the second option because I'd like to parse the body even if there is no title.
+
 Another Advantage
------------------
-I could use this programme inside of org-mode in emacs so I could write down the text and generate syntaxed poem in the same place. I'll post about this sooner or later.
+=================
+I could integrate this program within org-mode in Emacs, allowing me to write down the text and generate a syntaxed poem in the same place. I'll post about this sooner or later, but before I get lazy, here's a snippet:
+
+
+```sh
+**** poem
+#+name: poem8
+#+begin_verse
+눈물방울 같았다.
+피워내기보다
+터져나온 듯한..
+
+목련 꽃봉오리의
+우아한 기다림.
+
+서서히 진심이 피어난다.
+마음의 여백과 같은 하얀..
+
+"진심에는 높낮이가 있는걸까."
+
+그 높이를 맞추어야
+눈 속에 빨려들어와
+마음에까지 박히는 것이었다.
+#+end_verse
+
+#+begin_src sh :stdin poem_example :results output :var title="Magnolia"
+poemscol-portion-exe $title
+#+end_src
+```
+
+And if we execute the code above, we can get a result like the following:
+
+```sh
+#+RESULTS:
+#+begin_example
+\begin{poem}
+\sequencetitle{Magnolia}
+\poemtitle{}
+
+ \begin{stanza}
+  눈물방울 같았다.\verseline
+  피워내기보다\verseline
+  터져나온 듯한..
+ \end{stanza}
+ \begin{stanza}
+  목련 꽃봉오리의\verseline
+  우아한 기다림.
+ \end{stanza}
+ \begin{stanza}
+  서서히 진심이 피어난다.\verseline
+  마음의 여백과 같은 하얀..
+ \end{stanza}
+ \begin{stanza}
+  "진심에는 높낮이가 있는걸까."
+ \end{stanza}
+ \begin{stanza}
+  그 높이를 맞추어야\verseline
+  눈 속에 빨려들어와\verseline
+  마음에까지 박히는 것이었다.
+ \end{stanza}
+\end{poem}
+#+end_example
+```
+
+Thank you for reading ^^
