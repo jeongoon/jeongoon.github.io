@@ -260,4 +260,4 @@ And if we execute the code above, we can get a result like the following:
 #+end_example
 ```
 
-Thank you for reading ^^
+Thank you for reading ^^;
